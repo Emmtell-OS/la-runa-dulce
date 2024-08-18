@@ -1,0 +1,17 @@
+<!--<div *ngIf="mostrarAnimacion"> Animacion </div>
+<div *ngIf="mostrarInterpretacion"> {{textInterp}} </div>
+<p *ngIf="mostrarCaducado">Caducado</p>
+<p *ngIf="mostrarReintento">Reintento</p>-->
+
+<div class="pad">
+  <div class="animation" *ngIf="mostrarAnimacion" (click)="cerrarAnimacion()">
+      <p>{{ textoAnimacion }}</p><br>
+      <p>{{iniciar}}</p>
+  </div>
+
+  <div class="interpretation" *ngIf="!mostrarAnimacion">
+    <p *ngIf="mostrarInterpretacion">{{ textInterp }}</p>
+    <p *ngIf="mostrarCaducado">Ha caducado</p>
+    <p *ngIf="mostrarReintento">Reintenta mas tade</p>
+  </div>
+</div>
