@@ -21,6 +21,8 @@ import { DetallesLoteComponent } from './components/detalles-lote/detalles-lote.
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { AdminInterpComponent } from './components/admin-interp/admin-interp.component';
 import { ConfigComponent } from './components/config/config.component';
 import { GenerateQrComponent } from './components/generate-qr/generate-qr.component';
@@ -50,6 +52,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     MatDialogModule,
     MatDividerModule,
     MatGridListModule,
+    MatCheckboxModule
   ],
   providers: [provideClientHydration(), provideAnimationsAsync()],
   bootstrap: [AppComponent],

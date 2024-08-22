@@ -4,5 +4,5 @@ export interface HistorialTableModel {
     tipoPaquete: string;
     activo: string;
     creacion: string;
-    consultados: number;
+    consultados: any;
 } 
