@@ -7,17 +7,128 @@
   align-items: center;
 }
 
-.animation {
-  background-color: aqua;
+.base {
   width: 350px;
   height: 95%;
+}
+
+.animation {
+  background-color: aqua;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .interpretation {
   background-color: purple;
-  width: 350px;
-  height: 95%;
+}
+
+.inicio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: darkslategrey;
+}
+
+.btnIniciar {
+  border-radius: 100%;
+  border: solid 1px rgb(0, 0, 0);
+  background-color: rgb(165, 0, 0);
+  box-shadow: 4px 4px 70px rgb(3, 2, 2);
+  width: 130px;
+  height: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  animation-name: btnScala;
+  animation-duration: 3s;
+  animation-direction: alternate-reverse;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+.costal {
+  width: 120px;
+  height: 120px;
+}
+
+.text {
+  margin-top: 95px;
+  opacity: 0;
+  animation: txtAnim; 
+  animation-duration: 4s;
+  position: relative; 
+  animation-iteration-count: 6;
+}
+
+.anim {
+  position: relative;
+  //animation: textScala 3s linear 0 infinite normal;
+  animation-name: textScala;
+  animation-duration: 3s;
+  animation-direction: alternate-reverse;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+.dcostal {
+  position: relative;
+  animation-name: mezclar;
+  animation-duration: 2.7s;
+  animation-direction: alternate-reverse;
+  animation-iteration-count: 8;
+  animation-timing-function: ease-out;
+  transition: step-start;
+}
+
+@keyframes mezclar {
+  0% {
+    transform: rotate(18deg);
+    top: -100px;
+  }
+  25% {
+    transform: rotate(-18deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  75% {
+    transform: rotate(18deg);
+  }
+  100% {
+    transform: rotate(-18deg);
+    top: 70px;
+  }
+}
+
+@keyframes txtAnim {
+    from {
+      opacity: 0;
+      transform: translateX(-100%);
+    } to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+}
+
+@keyframes textScala {
+  from {
+    transform: scale(1, 1);
+  } to {
+    color: rgb(169, 4, 81);
+    transform: scale(1.3, 1.3);
+    //font-weight: bold;
+  }
+}
+
+@keyframes btnScala {
+  from {
+    transform: scale(1, 1);
+  } to {
+    //color: rgb(169, 4, 81);
+    transform: scale(1.2, 1.2);
+    //font-weight: bold;
+  }
 }

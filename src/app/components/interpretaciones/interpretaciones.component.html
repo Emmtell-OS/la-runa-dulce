@@ -4,12 +4,25 @@
 <p *ngIf="mostrarReintento">Reintento</p>-->
 
 <div class="pad">
-  <div class="animation" *ngIf="mostrarAnimacion" (click)="cerrarAnimacion()">
-      <p>{{ textoAnimacion }}</p><br>
-      <p>{{iniciar}}</p>
+    <div class="base inicio" *ngIf="mostrarInicio">
+    <div class="btnIniciar" (click)="btnIniciar()">Iniciar</div>
   </div>
 
-  <div class="interpretation" *ngIf="!mostrarAnimacion">
+  <div
+    class="base animation"
+    *ngIf="mostrarAnimacion && !mostrarInicio"
+    (click)="cerrarAnimacion()"
+  >
+    <div class="dcostal">
+      <img src="/assets/img/saco.png" class="costal" alt="costal-runas" />
+    </div>
+    <div class="text">
+      <p>{{ textoAnimacion }}</p>
+    </div>
+    <p class="anim">{{ iniciar }}</p>
+  </div>
+
+  <div class="base interpretation" *ngIf="!mostrarAnimacion">
     <p *ngIf="mostrarInterpretacion">{{ textInterp }}</p>
     <p *ngIf="mostrarCaducado">Ha caducado</p>
     <p *ngIf="mostrarReintento">Reintenta mas tade</p>

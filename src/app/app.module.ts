@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import {APP_BASE_HREF} from '@angular/common';
 import {
   BrowserModule,
   provideClientHydration,
@@ -54,7 +55,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     MatGridListModule,
     MatCheckboxModule
   ],
-  providers: [provideClientHydration(), provideAnimationsAsync()],
+  providers: [{provide: APP_BASE_HREF, useValue: '/la-runa-dulce'},provideClientHydration(), provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

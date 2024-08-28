@@ -17,6 +17,8 @@ export class InterpretacionesComponent implements OnInit {
   mostrarInterpretacion: boolean;
   mostrarReintento: boolean;
   mostrarCaducado: boolean;
+  mostrarInicio: boolean;
+  mostrarTexto: boolean;
   limiteDias = 7;
   textInterp = '';
   textoAnimacionList: any;
@@ -26,11 +28,12 @@ export class InterpretacionesComponent implements OnInit {
   iniciar;
 
   constructor(private activateRoute: ActivatedRoute) {
+    this.mostrarInicio = true;
     this.mostrarReintento = false;
     this.mostrarCaducado = false;
     this.mostrarInterpretacion = false;
-    this.textoAnimacionList = ['Abriendo bolsa...', 'Revolviendo...', 'Escogiendo runa...', 'Presiona para continuar ->'];
-    this.iniciarTexto();
+    this.textoAnimacionList = ['Abriendo bolsa ...', 'Revolviendo ...', 'Escogiendo runa ...', 'Continuar ->'];
+    //this.iniciarTexto();
   }
 
   ngOnInit(): void {
@@ -39,7 +42,14 @@ export class InterpretacionesComponent implements OnInit {
     this.showInterpretacion();
   }
 
+  btnIniciar() {
+    this.mostrarInicio = false
+    this.iniciarTexto();
+  }
+
+
   iniciarTexto() {
+    this.textoAnimacion = 'Cargando ...'
     this.idTextoAnimacion = 0;
     this.intervalTextoAnimacion = setInterval(() => {
       if(this.idTextoAnimacion === this.textoAnimacionList.length) {
@@ -48,7 +58,7 @@ export class InterpretacionesComponent implements OnInit {
       }
       this.textoAnimacion = this.textoAnimacionList[this.idTextoAnimacion];
       this.idTextoAnimacion = this.idTextoAnimacion + 1;
-    }, 3500);
+    }, 4000);
   }
 
   cerrarAnimacion() {

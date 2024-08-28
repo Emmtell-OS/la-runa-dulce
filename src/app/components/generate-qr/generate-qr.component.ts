@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { SelectionModel } from '@angular/cdk/collections';
 import { HistorialTableModel } from '../../models/HistorialTableModel';
+import { environment } from '../../../environments/environment';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
@@ -31,6 +32,8 @@ export class GenerateQrComponent {
   mostarQR = false;
   is24 = true;
   generarActive = true;
+  paginasCreadas = 0;
+  pathBase = environment.pathInterp;
 
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
 
@@ -95,9 +98,14 @@ export class GenerateQrComponent {
   }
 
   private crearQRS() {
+
+    /**
+     * Esta lógica es temporal, se dbe crear flujo dinamico de ordenamiendo en qr
+     * basado en el total de empaques según el tipo de paquete
+     */
+
     let limiteQR = this.codiModelList.length - 1;
     let totalPaginas = Math.ceil(this.codiModelList.length / 48);
-    let paginasCreadas = 0;
     let DATA: any;
     const doc = new jsPDF('p', 'pt', 'a4');
     const options = {
@@ -108,14 +116,17 @@ export class GenerateQrComponent {
 
     let intervalo = setInterval(() => {
 
-      if (paginasCreadas <= totalPaginas) {
+      if(this.paginasCreadas === totalPaginas) {
+        doc.save(`la-runa-dulce-${moment().format('DD-MM-YYYY')}.pdf`);
+      }
 
-        if(paginasCreadas === totalPaginas) {
-          doc.save(`la-runa-dulce-${moment().format('DD-MM-YYYY')}.pdf`);
-        }
+      this.qrList = [];
+
+      if (this.paginasCreadas < totalPaginas) {
   
-        if (paginasCreadas > 0 && totalPaginas > 1) {
+        if (this.paginasCreadas > 0 && totalPaginas > 1) {
           doc.addPage();
+          this.codiModelList.splice(0, 48);
         }
   
         this.qrList = this.codiModelList.slice(0, 48);
@@ -147,8 +158,7 @@ export class GenerateQrComponent {
               );
               return doc;
             });
-            paginasCreadas = paginasCreadas + 1;
-            this.qrList.splice(0, this.qrList.length);
+            this.paginasCreadas = this.paginasCreadas + 1;
             //.then((docResult) => {
             //docResult.save(`la-runa-dulce-${moment().format('DD-MM-YYYY')}.pdf`);
             //});
@@ -160,7 +170,7 @@ export class GenerateQrComponent {
         clearInterval(intervalo);
       }
 
-    }, 1500)
+    }, 2020)
 
   }
 
