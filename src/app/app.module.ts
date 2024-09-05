@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {APP_BASE_HREF} from '@angular/common';
+import { APP_BASE_HREF } from '@angular/common';
 import {
   BrowserModule,
   provideClientHydration,
@@ -28,6 +28,12 @@ import { AdminInterpComponent } from './components/admin-interp/admin-interp.com
 import { ConfigComponent } from './components/config/config.component';
 import { GenerateQrComponent } from './components/generate-qr/generate-qr.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { getMessaging, provideMessaging } from '@angular/fire/messaging';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -53,9 +59,28 @@ import { QRCodeModule } from 'angularx-qrcode';
     MatDialogModule,
     MatDividerModule,
     MatGridListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
-  providers: [{provide: APP_BASE_HREF, useValue: '/la-runa-dulce'},provideClientHydration(), provideAnimationsAsync()],
+  providers: [
+    { provide: APP_BASE_HREF, useValue: '/la-runa-dulce' },
+    provideClientHydration(),
+    provideAnimationsAsync(),
+    provideFirebaseApp(() =>
+      initializeApp({
+        projectId: 'la-runa-dulce',
+        appId: '1:1055313754780:web:83bcc851b3823347ec8b59',
+        storageBucket: 'la-runa-dulce.appspot.com',
+        apiKey: 'AIzaSyDgs2akf2FgZ_mA_XUUPKvWg2MD_LAl3LY',
+        authDomain: 'la-runa-dulce.firebaseapp.com',
+        messagingSenderId: '1055313754780',
+      })
+    ),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideDatabase(() => getDatabase()),
+    provideMessaging(() => getMessaging()),
+    provideStorage(() => getStorage()),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

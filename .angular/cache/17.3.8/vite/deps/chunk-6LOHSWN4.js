@@ -25,12 +25,12 @@ import {
   popNumber,
   popResultSelector,
   popScheduler
-} from "./chunk-EDKTM5FI.js";
+} from "./chunk-Q5YSENK6.js";
 import {
   __async,
   __spreadProps,
   __spreadValues
-} from "./chunk-PZQZAEDH.js";
+} from "./chunk-FTQ24RAU.js";
 
 // node_modules/@angular/core/fesm2022/primitives/signals.mjs
 function defaultEquals(a, b) {
@@ -21688,6 +21688,7 @@ if (typeof ngDevMode !== "undefined" && ngDevMode) {
 
 export {
   asapScheduler,
+  queueScheduler,
   animationFrameScheduler,
   isObservable,
   defer,
@@ -22190,4 +22191,4 @@ export {
    * found in the LICENSE file at https://angular.io/license
    *)
 */
-//# sourceMappingURL=chunk-32NTA26X.js.map
+//# sourceMappingURL=chunk-6LOHSWN4.js.map

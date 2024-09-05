@@ -34,6 +34,9 @@ export class InterpretacionesComponent implements OnInit {
     this.mostrarInterpretacion = false;
     this.textoAnimacionList = ['Abriendo bolsa ...', 'Revolviendo ...', 'Escogiendo runa ...', 'Continuar ->'];
     //this.iniciarTexto();
+    let x = 5;
+    
+    
   }
 
   ngOnInit(): void {
