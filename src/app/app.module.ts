@@ -4,6 +4,7 @@ import {
   BrowserModule,
   provideClientHydration,
 } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -34,6 +35,9 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -47,6 +51,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     QRCodeModule,
     AppRoutingModule,
     HttpClientModule,
@@ -60,27 +65,10 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
     MatDividerModule,
     MatGridListModule,
     MatCheckboxModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule
   ],
-  providers: [
-    { provide: APP_BASE_HREF, useValue: '/la-runa-dulce' },
-    provideClientHydration(),
-    provideAnimationsAsync(),
-    provideFirebaseApp(() =>
-      initializeApp({
-        projectId: 'la-runa-dulce',
-        appId: '1:1055313754780:web:83bcc851b3823347ec8b59',
-        storageBucket: 'la-runa-dulce.appspot.com',
-        apiKey: 'AIzaSyDgs2akf2FgZ_mA_XUUPKvWg2MD_LAl3LY',
-        authDomain: 'la-runa-dulce.firebaseapp.com',
-        messagingSenderId: '1055313754780',
-      })
-    ),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
-    provideDatabase(() => getDatabase()),
-    provideMessaging(() => getMessaging()),
-    provideStorage(() => getStorage()),
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

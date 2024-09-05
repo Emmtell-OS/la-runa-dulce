@@ -3,6 +3,8 @@ import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogData } from '../../models/DialogData';
 import moment from 'moment';
+import { ProcessLotesService } from '../../service/process-lotes.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-detalles-lote',
@@ -13,39 +15,61 @@ export class DetallesLoteComponent {
   readonly dialogRef = inject(MatDialogRef<DetallesLoteComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
+  dataJsonLP = [];
   tipoPaquete: string;
-  creacion: string;
+  creacion: any; //string
   activo: string;
-  lote: string;
+  lote = this.data.lote;
   paquete: string;
   numPaquete = this.data.idPaquete;
   runas: SemaforoModel[] = [];
 
-  constructor() {
+  constructor(private service: ProcessLotesService) {
+    this.getRegistroLotes();
+  }
+
+  public async getRegistroLotes() {
+    /**conexión y consumo de Firebase */
+    await this.obtenerFirebaseData().then((data: []) => {
+      this.dataJsonLP.push(...data);
+    });
     this.setValues();
+  }
+
+  obtenerFirebaseData() {
+    return new Promise((resolve, reject) => {
+      this.service.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
   }
 
   public setValues() {
 
-    this.paquete = this.numPaquete;
-    this.lote = this.data.lote['lote'];
+    //this.paquete = this.numPaquete;
+    //this.lote = this.data.lote['lote'];
 
-    this.data.lote['paquetes'].find((paq) => {
-      if (paq['codigo'] === this.numPaquete) {
-        this.tipoPaquete = paq['tipoPaquete'];
-        this.creacion = moment(paq['creacion']).format('DD-MM-YYYY');
-        this.activo = paq['activo'] ? 'En uso' : 'Inactivo';
-        paq['consultados'].map(r => {
-          this.runas.push({
-            url: '/assets/img/' + Object.keys(r)[0].slice(0,2) + '.png',
-            codr: Object.keys(r)[0],
-            consultas: r['consultas'],
-            semaforo: this.getSemaforoClas(r[Object.keys(r)[0]]),
-            inver: (Object.keys(r)[0].slice(-2) === '00') ? 'invertida' : ''
-          });
+    this.dataJsonLP.find((lot) => {
+      if(lot['lote'] === this.lote) {
+        lot['paquetes'].find((paq) => {
+          if (paq['codigo'] === this.numPaquete) {
+            this.tipoPaquete = paq['tipoPaquete'];
+            this.creacion = moment(paq['creacion']).format("DD/MM/YYYY");
+            this.activo = paq['activo'] ? 'En uso' : 'Inactivo';
+            paq['consultados'].map(r => {
+              this.runas.push({
+                url: '/assets/img/' + Object.keys(r)[0].slice(0,2) + '.png',
+                codr: Object.keys(r)[0],
+                consultas: r['consultas'],
+                semaforo: this.getSemaforoClas(r[Object.keys(r)[0]]),
+                inver: (Object.keys(r)[0].slice(-2) === '00') ? 'invertida' : ''
+              });
+            });
+          }
         });
       }
     });
+
   }
 
   public getSemaforoClas(creacion: string): string {
@@ -57,11 +81,11 @@ export class DetallesLoteComponent {
     let diasRestantes = moment().diff(moment(creacion), 'days');
 
     switch(true) {
-      case (diasRestantes < 19): //4
+      case (diasRestantes < 4): //4
         return 'son';
-      case (diasRestantes < 24): //7
+      case (diasRestantes < 7): //7
         return 'swarn';
-      case (diasRestantes < 31): //8
+      case (diasRestantes < 8): //8
         return 'sdan';
       default:
         return 'sout';          

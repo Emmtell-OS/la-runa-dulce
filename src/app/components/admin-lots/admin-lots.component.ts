@@ -20,6 +20,7 @@ import { ProduccionModel } from '../../models/ProduccionModel';
 import moment from 'moment';
 import {MatDividerModule} from '@angular/material/divider';
 import { GenerateQrComponent } from '../generate-qr/generate-qr.component';
+import { rejects } from 'assert';
 
 @Component({
   selector: 'app-admin-lots',
@@ -56,41 +57,58 @@ export class AdminLotsComponent implements OnInit {
   @ViewChild(MatTable) tableProduccion!: MatTable<ProduccionModel>;
 
   constructor(private service: ProcessLotesService) {
+    this.getRegistroLotes();
     this.formularioRegistro = new FormGroup({
       lote: new FormControl(''),
       tipoPaquete: new FormControl('', Validators.required),
       cantidad: new FormControl('', [Validators.required, Validators.max(100)])
     });
-    this.getRegistroLotes();
   }
 
   ngOnInit(): void {
+    
+    
+    
+  }
+
+  public async getRegistroLotes() {
+    /**conexión y consumo de Firebase */
+    await this.obtenerFirebaseData().then((data: []) => {
+      this.dataJsonLP.push(...data);
+    });
+    const arr = this.dataJsonLP.map((stg) => stg.lote);
+    this.idsLotesBase.push(...arr);
+    
+    this.cargarFoliosLotes();
+    this.loadHistorialTable(true);
+    this.loadProduccion(true);
+  }
+
+  obtenerFirebaseData() {
+    return new Promise((resolve, reject) => {
+      this.service.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
+  }
+
+  cargarFoliosLotes() {
     this.idsLotesList.push(...this.idsLotesBase);
     this.filteredLotes = this.lotesFilterControl.valueChanges
     .pipe(
       startWith(''),
       map(lote => lote ? this.filterLotes(lote) : this.idsLotesList.slice())
     );
-    this.loadHistorialTable(true);
-    this.loadProduccion(true);
   }
 
   filterLotes(name: string) {
     return this.idsLotesList.filter(lot => lot.toUpperCase().includes(name.toUpperCase()));
   }
 
-  public getRegistroLotes() {
-    /**conexión y consumo de Firebase */
-    let fireb = '[{"lote":"RA34l0H0Nu","activo":true,"creacion":"2024-08-15T16:42:58.286Z","paquetes":[{"codigo":"FlF6zWzyMw","activo":true,"creacion":"2024-08-15T16:42:58.286Z","estatusProduccion":"T","tipoPaquete":"Tira","consultados":[{"SW01":"","consultas":0,"inter":3},{"JE01":"","consultas":0,"inter":2},{"NA00":"","consultas":0,"inter":2},{"TE00":"","consultas":0,"inter":0},{"DA01":"","consultas":0,"inter":1},{"MA01":"","consultas":0,"inter":1},{"UR00":"","consultas":0,"inter":1},{"EI01":"","consultas":0,"inter":1},{"AL01":"","consultas":0,"inter":0},{"LA00":"","consultas":0,"inter":3},{"EH01":"","consultas":0,"inter":0},{"NA01":"","consultas":0,"inter":1}]},{"codigo":"v658BCdrTw","activo":true,"creacion":"2024-08-15T16:42:58.286Z","estatusProduccion":"T","tipoPaquete":"Tira","consultados":[{"DA01":"","consultas":0,"inter":0},{"AS00":"","consultas":0,"inter":3},{"BE00":"","consultas":0,"inter":3},{"NG01":"","consultas":0,"inter":0},{"KA01":"","consultas":0,"inter":2},{"AL00":"","consultas":0,"inter":1},{"TH00":"","consultas":0,"inter":0},{"EI01":"","consultas":0,"inter":0},{"GE01":"","consultas":0,"inter":1},{"TE00":"","consultas":0,"inter":0},{"AL01":"","consultas":0,"inter":1},{"OD01":"","consultas":0,"inter":1}]},{"codigo":"ZTTrljeqtD","activo":true,"creacion":"2024-08-15T16:43:21.650Z","estatusProduccion":"P","tipoPaquete":"Caja","consultados":[{"HA01":"","consultas":0,"inter":3},{"BE01":"","consultas":0,"inter":1},{"GE01":"","consultas":0,"inter":2},{"PE01":"","consultas":0,"inter":0},{"TE01":"","consultas":0,"inter":0},{"BE00":"","consultas":0,"inter":3},{"NG01":"","consultas":0,"inter":0},{"RA01":"","consultas":0,"inter":0},{"LA01":"","consultas":0,"inter":1},{"OT01":"","consultas":0,"inter":2},{"NA00":"","consultas":0,"inter":3},{"IS01":"","consultas":0,"inter":3}]}]}]';
-    //let fireb = '[]';
-    this.dataJsonLP = JSON.parse(fireb);
-    const arr = this.dataJsonLP.map((stg) => stg.lote);
-    this.idsLotesBase.push(...arr);
-  }
-
   public loadHistorialTable(ft: boolean) {
-
+    
     this.historialProductos.splice(0, this.historialProductos.length);
+    this.dataSourceHistorial = new MatTableDataSource();
     this.dataJsonLP.forEach((lote) => {
       let folioLote = lote['lote']
       lote['paquetes'].forEach(paq => {  
@@ -109,7 +127,7 @@ export class AdminLotsComponent implements OnInit {
 
     this.dataSourceHistorial = new MatTableDataSource(this.historialProductos);
     if(!ft) {
-      this.tableHistorial.renderRows();
+      //this.tableHistorial.renderRows();
     }
   }
 
@@ -130,10 +148,11 @@ export class AdminLotsComponent implements OnInit {
         }
       });
     });
-
+    
     this.datasourceProduccion = new MatTableDataSource(this.produccionProductos);
     if(!ft) {
-      this.tableProduccion.renderRows();
+      //this.tableProduccion.renderRows();
+
     }
   }
 
@@ -150,7 +169,7 @@ export class AdminLotsComponent implements OnInit {
     }
   }
 
-  public listarLote(ctrl: FormControl) {
+  public agregarPreregistro(ctrl: FormControl) {
     if(this.autoCompleteInputValue === undefined ||
       this.autoCompleteInputValue.toLowerCase() === 'nuevo lote' ||
       this.autoCompleteInputValue === '') {
@@ -166,7 +185,7 @@ export class AdminLotsComponent implements OnInit {
 
     this.dataSource = new MatTableDataSource(this.stashLoteList);
     this.formularioRegistro.reset();
-    this.table.renderRows();
+    //this.table.renderRows();
   }
 
   public validForm() {
@@ -203,23 +222,32 @@ export class AdminLotsComponent implements OnInit {
     this.produccionProductos[index]['produccion'] = this.getEstatusProd('EP');
     this.datasourceProduccion = this.produccionProductos;
     this.isPaqProduccion = true;
-    this.tableProduccion.renderRows();    
+    //this.tableProduccion.renderRows();    
     this.btnProduction.splice(index, 1, false);    
 
   }
 
   public completarProduccion(element: any, index: number) {
+    let isSaveValid = false;
     this.dataJsonLP.find((lote => {
       if(lote['lote'] === element['lote']) {
         lote['paquetes'].find(paq => {
           if(paq['codigo'] === element['paquete']) {
             paq['estatusProduccion'] = 'T';
+            isSaveValid = true;
           }
         });
       }
     }));
-    this.loadProduccion(false);
-    this.loadHistorialTable(false);
+
+    if(isSaveValid) {
+      let loteToSave = this.dataJsonLP.find(lote => lote['lote'] === element['lote'] );
+      this.service.update(element['lote'], loteToSave);
+      //this.loadProduccion(false);
+      //this.loadHistorialTable(false);
+      this.getRegistroLotes()
+    }
+    
   }
 
   public eliminarPaquete(index: any, element: any) {
@@ -243,15 +271,14 @@ export class AdminLotsComponent implements OnInit {
     let loteObj = this.dataJsonLP.find(folio => folio['lote'] === element['lote']);
 
     const dialogRef = this.dialog.open(DetallesLoteComponent, {
-      data: {idPaquete: element['paquete'], lote: loteObj },
+      data: {idPaquete: element['paquete'], lote: element['lote'] },
       width: '1000px',
       height:'98%'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result !== undefined) {
-        console.log("some");
+        //hacer algo al cerrar el dialogo
       }
     });
 
@@ -260,12 +287,15 @@ export class AdminLotsComponent implements OnInit {
   public registrarPedido() {
 
     this.createJsonLP();
+    this.getRegistroLotes();
     this.getIdLoteList();
     this.limpiarTablaStash();
 
   }
 
   public createJsonLP() {
+
+    let dJsonLP;
 
     this.stashLoteList.forEach(element => {
 
@@ -274,7 +304,7 @@ export class AdminLotsComponent implements OnInit {
         let paqueteModel: PaqueteModel = {
           codigo: this.generateFolio().toString(),
           activo: true,
-          creacion: moment(),
+          creacion: moment().format(),
           estatusProduccion: 'P',
           tipoPaquete: element['tipoPaquete'],
           consultados: this.createConsultados(),
@@ -293,12 +323,13 @@ export class AdminLotsComponent implements OnInit {
 
       if (!existLote) {
         this.idsLotesBase.push(element['lote']);
-        this.dataJsonLP.push({
+        dJsonLP = {
           lote: element['lote'],
           activo: true,
-          creacion: moment(),
+          creacion: moment().format(),
           paquetes: paqueteList,
-        });
+        };
+        this.service.create(element['lote'], dJsonLP);
       }
 
     });

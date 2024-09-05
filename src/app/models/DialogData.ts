@@ -1,4 +1,4 @@
 export interface DialogData {
     idPaquete: string;
-    lote: any;
+    lote: string;
 }

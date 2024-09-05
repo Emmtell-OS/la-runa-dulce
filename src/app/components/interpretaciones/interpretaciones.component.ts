@@ -2,6 +2,8 @@ import { map, timeout } from 'rxjs/operators';
 import { Component, inject, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
+import { ProcessLotesService } from '../../service/process-lotes.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-interpretaciones',
@@ -27,7 +29,8 @@ export class InterpretacionesComponent implements OnInit {
   intervalTextoAnimacion: any;
   iniciar;
 
-  constructor(private activateRoute: ActivatedRoute) {
+  constructor(private activateRoute: ActivatedRoute, private service: ProcessLotesService) {
+    
     this.mostrarInicio = true;
     this.mostrarReintento = false;
     this.mostrarCaducado = false;
@@ -42,7 +45,6 @@ export class InterpretacionesComponent implements OnInit {
   ngOnInit(): void {
     this.getRegistroLotes();
     this.getValores();
-    this.showInterpretacion();
   }
 
   btnIniciar() {
@@ -69,16 +71,24 @@ export class InterpretacionesComponent implements OnInit {
     clearInterval(this.intervalTextoAnimacion);
   }
 
-  private getRegistroLotes() {
+  private async getRegistroLotes() {
     /**conexión y consumo de Firebase */
     try {
-      let fireb =
-        '[{"lote":"RA34l0H0Nu","activo":true,"creacion":"2024-08-15T16:42:58.286Z","paquetes":[{"codigo":"FlF6zWzyMw","activo":true,"creacion":"2024-08-15T16:42:58.286Z","estatusProduccion":"T","tipoPaquete":"Tira","consultados":[{"SW01":"","consultas":0,"inter":3},{"JE01":"","consultas":0,"inter":2},{"NA00":"","consultas":0,"inter":2},{"TE00":"","consultas":0,"inter":0},{"DA01":"","consultas":0,"inter":1},{"MA01":"","consultas":0,"inter":1},{"UR00":"","consultas":0,"inter":1},{"EI01":"","consultas":0,"inter":1},{"AL01":"","consultas":0,"inter":0},{"LA00":"","consultas":0,"inter":3},{"EH01":"","consultas":0,"inter":0},{"NA01":"","consultas":0,"inter":1}]},{"codigo":"v658BCdrTw","activo":true,"creacion":"2024-08-15T16:42:58.286Z","estatusProduccion":"T","tipoPaquete":"Tira","consultados":[{"DA01":"","consultas":0,"inter":0},{"AS00":"","consultas":0,"inter":3},{"BE00":"","consultas":0,"inter":3},{"NG01":"","consultas":0,"inter":0},{"KA01":"","consultas":0,"inter":2},{"AL00":"","consultas":0,"inter":1},{"TH00":"","consultas":0,"inter":0},{"EI01":"","consultas":0,"inter":0},{"GE01":"","consultas":0,"inter":1},{"TE00":"","consultas":0,"inter":0},{"AL01":"","consultas":0,"inter":1},{"OD01":"","consultas":0,"inter":1}]},{"codigo":"ZTTrljeqtD","activo":true,"creacion":"2024-08-15T16:43:21.650Z","estatusProduccion":"P","tipoPaquete":"Caja","consultados":[{"HA01":"","consultas":0,"inter":3},{"BE01":"","consultas":0,"inter":1},{"GE01":"","consultas":0,"inter":2},{"PE01":"","consultas":0,"inter":0},{"TE01":"","consultas":0,"inter":0},{"BE00":"","consultas":0,"inter":3},{"NG01":"","consultas":0,"inter":0},{"RA01":"","consultas":0,"inter":0},{"LA01":"","consultas":0,"inter":1},{"OT01":"","consultas":0,"inter":2},{"NA00":"","consultas":0,"inter":3},{"IS01":"","consultas":0,"inter":3}]}]}]';
-      this.dataJsonLP = JSON.parse(fireb);
-      console.log(this.dataJsonLP);
+      await this.obtenerFirebaseData().then((data: []) => {
+        this.dataJsonLP = data;
+      });
+      this.showInterpretacion();
     } catch (error) {
       this.mostrarReintento = true;
     }
+  }
+
+  obtenerFirebaseData() {
+    return new Promise((resolve, reject) => {
+      this.service.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
   }
 
   private getValores(): any {
@@ -92,10 +102,8 @@ export class InterpretacionesComponent implements OnInit {
     let valid = this.isValid();
 
     if (valid) {
-      //this.mostrarAnimacion = false;
       this.mostrarInterpretacion = true;
     } else {
-      //this.mostrarAnimacion = false;
       this.mostrarCaducado = true;
     }
   }
@@ -114,19 +122,16 @@ export class InterpretacionesComponent implements OnInit {
               if (paq['consultados'][indexEmp][this.valueE] !== '') {
                 if (
                   moment().diff(
-                    moment(paq['consultados'][indexEmp][this.valueE]),
+                    moment(paq['consultados'][indexEmp][this.valueE], false),
                     'days'
                   ) < this.limiteDias
                 ) {
-                  this.obtenerInterpretacion(
-                    paq['consultados'][indexEmp]['inter']
-                  );
-                  paq['consultados'][indexEmp]['consultas'] =
-                    paq['consultados'][indexEmp]['consultas']['consultas'] + 1;
+                  this.obtenerInterpretacion(paq['consultados'][indexEmp]['inter']);
+                  paq['consultados'][indexEmp]['consultas'] = (paq['consultados'][indexEmp]['consultas']) + 0.5;
                   valid = true;
                 }
               } else {
-                paq['consultados'][indexEmp][this.valueE] = moment();
+                paq['consultados'][indexEmp][this.valueE] = moment().format();
                 paq['consultados'][indexEmp]['consultas'] = 1;
                 this.obtenerInterpretacion(
                   paq['consultados'][indexEmp]['inter']
@@ -139,8 +144,11 @@ export class InterpretacionesComponent implements OnInit {
       }
     });
 
-    //save json
-    console.log(this.dataJsonLP);
+    if(valid) {
+      let loteToSave = this.dataJsonLP.find((lote) => lote['lote'] === this.valueL && lote['activo'])
+      this.service.update(this.valueL.toString(), loteToSave);
+    }
+
     return valid;
   }
 
@@ -149,6 +157,6 @@ export class InterpretacionesComponent implements OnInit {
     //obtener el numero de interpretacion de la runa
     //asignarlo a inter
     this.textInterp = 'Esta es la interpretacion';
-    console.log(this.textInterp);
+    //console.log(this.textInterp);
   }
 }

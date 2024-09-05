@@ -14,6 +14,7 @@ import { environment } from '../../../environments/environment';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
+import { ProcessLotesService } from '../../service/process-lotes.service';
 
 @Component({
   selector: 'app-generate-qr',
@@ -37,21 +38,31 @@ export class GenerateQrComponent {
 
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
 
-  constructor() {
+  constructor(private service: ProcessLotesService) {
     this.getRegistroLotes();
-    this.cargarDatos();
   }
 
-  private getRegistroLotes() {
+  private async getRegistroLotes() {
     /**conexión y consumo de Firebase */
     try {
-      let fireb =
-        '[{"lote":"QFvW99yh0T","activo":true,"creacion":"2024-08-19T22:55:11.158Z","paquetes":[{"codigo":"br61tK8kNi","activo":true,"creacion":"2024-08-19T22:55:11.158Z","estatusProduccion":"T","tipoPaquete":"Tira","consultados":[{"FE01":"","consultas":0,"inter":3},{"UR00":"","consultas":0,"inter":2},{"DA01":"","consultas":0,"inter":0},{"RA01":"","consultas":0,"inter":0},{"TE00":"","consultas":0,"inter":0},{"PE00":"","consultas":0,"inter":0},{"EI01":"","consultas":0,"inter":1},{"NA00":"","consultas":0,"inter":0},{"BE01":"","consultas":0,"inter":3},{"LA00":"","consultas":0,"inter":3},{"KA01":"","consultas":0,"inter":0},{"JE01":"","consultas":0,"inter":3}]},{"codigo":"QpMGpGR0d0","activo":true,"creacion":"2024-08-19T22:55:11.158Z","estatusProduccion":"T","tipoPaquete":"Tira","consultados":[{"FE01":"","consultas":0,"inter":0},{"UR00":"","consultas":0,"inter":1},{"GE01":"","consultas":0,"inter":3},{"MA00":"","consultas":0,"inter":3},{"EI01":"","consultas":0,"inter":3},{"SW01":"","consultas":0,"inter":2},{"BE00":"","consultas":0,"inter":0},{"OD01":"","consultas":0,"inter":1},{"FE00":"","consultas":0,"inter":2},{"KA00":"","consultas":0,"inter":3},{"LA00":"","consultas":0,"inter":3},{"KA01":"","consultas":0,"inter":0}]},{"codigo":"WpLbzP0yIq","activo":true,"creacion":"2024-08-19T22:55:11.158Z","estatusProduccion":"T","tipoPaquete":"Tira","consultados":[{"SW01":"","consultas":0,"inter":3},{"TH01":"","consultas":0,"inter":3},{"AL01":"","consultas":0,"inter":1},{"NG01":"","consultas":0,"inter":0},{"LA00":"","consultas":0,"inter":2},{"OT01":"","consultas":0,"inter":3},{"AS00":"","consultas":0,"inter":0},{"TE00":"","consultas":0,"inter":3},{"PE01":"","consultas":0,"inter":2},{"KA01":"","consultas":0,"inter":2},{"RA00":"","consultas":0,"inter":1},{"JE01":"","consultas":0,"inter":3}]}]},{"lote":"2zmn55favz","activo":true,"creacion":"2024-08-19T22:55:11.158Z","paquetes":[{"codigo":"NaZiwdbiC9","activo":true,"creacion":"2024-08-19T22:55:11.158Z","estatusProduccion":"T","tipoPaquete":"Tira","consultados":[{"TE00":"","consultas":0,"inter":1},{"SW01":"","consultas":0,"inter":0},{"OD01":"","consultas":0,"inter":1},{"NA00":"","consultas":0,"inter":3},{"NA01":"","consultas":0,"inter":1},{"TE01":"","consultas":0,"inter":3},{"EH01":"","consultas":0,"inter":2},{"JE01":"","consultas":0,"inter":2},{"FE01":"","consultas":0,"inter":3},{"OT00":"","consultas":0,"inter":0},{"OT01":"","consultas":0,"inter":3},{"GE01":"","consultas":0,"inter":3}]},{"codigo":"7RBJB4caai","activo":true,"creacion":"2024-08-19T22:55:11.158Z","estatusProduccion":"T","tipoPaquete":"Tira","consultados":[{"GE01":"","consultas":0,"inter":3},{"JE01":"","consultas":0,"inter":1},{"PE01":"","consultas":0,"inter":0},{"OD01":"","consultas":0,"inter":1},{"BE00":"","consultas":0,"inter":0},{"KA00":"","consultas":0,"inter":1},{"TE00":"","consultas":0,"inter":0},{"KA01":"","consultas":0,"inter":0},{"TE01":"","consultas":0,"inter":3},{"WU00":"","consultas":0,"inter":1},{"OT01":"","consultas":0,"inter":0},{"RA01":"","consultas":0,"inter":1}]}]},{"lote":"42x5ErAWdZ","activo":true,"creacion":"2024-08-19T22:55:11.159Z","paquetes":[{"codigo":"61KPxRFuvS","activo":true,"creacion":"2024-08-19T22:55:11.159Z","estatusProduccion":"P","tipoPaquete":"Tira","consultados":[{"IS01":"","consultas":0,"inter":1},{"OT00":"","consultas":0,"inter":1},{"EH00":"","consultas":0,"inter":2},{"AS00":"","consultas":0,"inter":0},{"BE01":"","consultas":0,"inter":1},{"SW01":"","consultas":0,"inter":1},{"TE00":"","consultas":0,"inter":0},{"NG01":"","consultas":0,"inter":0},{"JE01":"","consultas":0,"inter":2},{"WU01":"","consultas":0,"inter":3},{"UR00":"","consultas":0,"inter":2},{"NA00":"","consultas":0,"inter":0}]}]}]';
-      this.dataJsonLP = JSON.parse(fireb);
+      await this.obtenerFirebaseData().then((data: []) => {
+        this.dataJsonLP = data;
+      });
+      
+      console.log(this.dataJsonLP);
+      this.cargarDatos();
       //console.log(this.dataJsonLP);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  obtenerFirebaseData() {
+    return new Promise((resolve, reject) => {
+      this.service.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
   }
 
   private cargarDatos() {

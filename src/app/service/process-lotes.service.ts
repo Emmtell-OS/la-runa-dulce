@@ -1,22 +1,30 @@
 import { Injectable } from '@angular/core';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProcessLotesService {
 
-  private pathFile = 'assets/';
-  private fileName = 'lotes.json';
-  private defaultType = 'application/JSON';
-  constructor() { }
+  private dbPath = '/dataJsonLP';
+  dataLP: AngularFireList<any>;
+  //dataLP: any;
+
+  constructor(private db: AngularFireDatabase) {
+    this.dataLP = db.list(this.dbPath);
+  }
 
 
-  public async getFile() {
-    const response = await fetch(this.pathFile);
-    const data = await response.blob();
-    return new File([data], this.fileName, {
-    type: data.type || this.defaultType,
-  });
+  getAll(): AngularFireList<any> {
+    return this.dataLP;
+  }
+
+  create(idLote:string, lote: any): any {
+    return this.dataLP.set(idLote, lote);
+  }
+
+  update(idLote:string, lote: any): any {
+    return this.dataLP.set(idLote, lote);
   }
 
 }
