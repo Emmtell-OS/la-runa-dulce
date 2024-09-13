@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 import { ProcessLotesService } from '../../service/process-lotes.service';
 import { log } from 'console';
+import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
 
 @Component({
   selector: 'app-interpretaciones',
@@ -12,6 +13,7 @@ import { log } from 'console';
 })
 export class InterpretacionesComponent implements OnInit {
   dataJsonLP = [];
+  catInterpretaciones = [];
   valueL: string;
   valueE: string;
   valueP: string;
@@ -29,7 +31,9 @@ export class InterpretacionesComponent implements OnInit {
   intervalTextoAnimacion: any;
   iniciar;
 
-  constructor(private activateRoute: ActivatedRoute, private service: ProcessLotesService) {
+  constructor(private activateRoute: ActivatedRoute, 
+              private service: ProcessLotesService,
+              private interpretacionesService: InterpretacionesServiceService) {
     
     this.mostrarInicio = true;
     this.mostrarReintento = false;
@@ -77,7 +81,7 @@ export class InterpretacionesComponent implements OnInit {
       await this.obtenerFirebaseData().then((data: []) => {
         this.dataJsonLP = data;
       });
-      this.showInterpretacion();
+      this.getRegistroInterpretaciones();      
     } catch (error) {
       this.mostrarReintento = true;
     }
@@ -126,7 +130,7 @@ export class InterpretacionesComponent implements OnInit {
                     'days'
                   ) < this.limiteDias
                 ) {
-                  this.obtenerInterpretacion(paq['consultados'][indexEmp]['inter']);
+                  this.obtenerInterpretacion(paq['consultados'][indexEmp]['inter'], this.valueE);
                   paq['consultados'][indexEmp]['consultas'] = (paq['consultados'][indexEmp]['consultas']) + 0.5;
                   valid = true;
                 }
@@ -134,7 +138,8 @@ export class InterpretacionesComponent implements OnInit {
                 paq['consultados'][indexEmp][this.valueE] = moment().format();
                 paq['consultados'][indexEmp]['consultas'] = 1;
                 this.obtenerInterpretacion(
-                  paq['consultados'][indexEmp]['inter']
+                  paq['consultados'][indexEmp]['inter'],
+                  this.valueE
                 );
                 valid = true;
               }
@@ -152,11 +157,25 @@ export class InterpretacionesComponent implements OnInit {
     return valid;
   }
 
-  private obtenerInterpretacion(id: number) {
-    //conectarse a firebase
-    //obtener el numero de interpretacion de la runa
-    //asignarlo a inter
-    this.textInterp = 'Esta es la interpretacion';
-    //console.log(this.textInterp);
+  private obtenerInterpretacion(id: number, runaCode: string) {
+    let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
+    this.textInterp = filtrado[runaCode][id];
+  }
+
+  public async getRegistroInterpretaciones() {
+    this.catInterpretaciones.splice(0, this.catInterpretaciones.length)
+    /**conexión y consumo de Firebase */
+    await this.obtenerFirebaseDataInterp().then((data: []) => {
+      this.catInterpretaciones = data;
+    });
+    this.showInterpretacion();
+  }
+
+  obtenerFirebaseDataInterp() {
+    return new Promise((resolve, reject) => {
+      this.interpretacionesService.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
   }
 }

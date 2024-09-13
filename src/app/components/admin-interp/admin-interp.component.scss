@@ -1,0 +1,19 @@
+.d-descripcion-i {
+    //background-color: aqua;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.descripcion-i {
+    width: 1200px;
+    height: 550px;
+}
+
+.descripcion {
+    width: 1200px;
+    text-align: justify;
+    font-size: 18px;
+}

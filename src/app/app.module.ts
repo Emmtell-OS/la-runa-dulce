@@ -24,9 +24,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AdminInterpComponent } from './components/admin-interp/admin-interp.component';
-import { ConfigComponent } from './components/config/config.component';
+import { ConfigComponent } from './components/configs/config.component';
 import { GenerateQrComponent } from './components/generate-qr/generate-qr.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -38,6 +39,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
+import { AdminConfigComponent } from './components/admin-config/admin-config.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -48,6 +51,7 @@ import { environment } from '../environments/environment';
     AdminInterpComponent,
     ConfigComponent,
     GenerateQrComponent,
+    AdminConfigComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,7 +68,9 @@ import { environment } from '../environments/environment';
     MatDialogModule,
     MatDividerModule,
     MatGridListModule,
+    MatTabsModule,
     MatCheckboxModule,
+    MatSnackBarModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule
   ],

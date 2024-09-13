@@ -21,6 +21,9 @@ import moment from 'moment';
 import {MatDividerModule} from '@angular/material/divider';
 import { GenerateQrComponent } from '../generate-qr/generate-qr.component';
 import { rejects } from 'assert';
+import { TipoPaquetesServiceService } from '../../service/tipo-paquetes-service.service';
+import { log } from 'console';
+import { TiposPaqueteModel } from '../../models/TiposPaqueteModel';
 
 @Component({
   selector: 'app-admin-lots',
@@ -37,7 +40,8 @@ export class AdminLotsComponent implements OnInit {
 
   idsLotesList = [];
   idsLotesBase = ["Nuevo lote"];
-  tiposPaquete = ["Tira", "Caja"];
+  tiposPaquete = [];
+  listaTP = [];
   autoCompleteInputValue: any;
   stashLoteList: TableModel[] = [];
   displayedColumns: string[] = ['lote', 'tipoPaquete', 'cantidad', 'action'];
@@ -56,8 +60,9 @@ export class AdminLotsComponent implements OnInit {
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
   @ViewChild(MatTable) tableProduccion!: MatTable<ProduccionModel>;
 
-  constructor(private service: ProcessLotesService) {
+  constructor(private service: ProcessLotesService, private tpService: TipoPaquetesServiceService) {
     this.getRegistroLotes();
+    this.getRegistroTiposPaquete();
     this.formularioRegistro = new FormGroup({
       lote: new FormControl(''),
       tipoPaquete: new FormControl('', Validators.required),
@@ -65,11 +70,7 @@ export class AdminLotsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    
-    
-    
-  }
+  ngOnInit(): void { }
 
   public async getRegistroLotes() {
     /**conexión y consumo de Firebase */
@@ -87,6 +88,47 @@ export class AdminLotsComponent implements OnInit {
   obtenerFirebaseData() {
     return new Promise((resolve, reject) => {
       this.service.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
+  }
+
+  public async getRegistroTiposPaquete() {
+    /**conexión y consumo de Firebase */
+    this.listaTP = this.listaTP.slice(0, this.listaTP.length);
+    await this.obtenerFirebaseTPData().then((data: []) => {
+      this.listaTP.push(...data);
+    });
+    this.listaTP.map((tp) => {
+      this.tiposPaquete.push(tp['tipoPaquete']);
+    })
+  }
+
+  obtenerFirebaseTPData() {
+    return new Promise((resolve, reject) => {
+      this.tpService.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
+  }
+
+  public async getRegistroTiposPaqueteByTipo(tipo: string) {
+    let listaTP: TiposPaqueteModel;
+    /**conexión y consumo de Firebase */
+    await this.obtenerFirebaseTPByTipoData(tipo).then((data: TiposPaqueteModel) => {
+      listaTP = data;
+    });
+    console.log(listaTP);
+    
+    return listaTP;
+    /*listaTP.map((tp) => {
+      this.tipoPaqueteFiltrado.push(tp['tipoPaquete']);
+    })*/
+  }
+
+  obtenerFirebaseTPByTipoData(tipo: string) {
+    return new Promise((resolve, reject) => {
+      this.tpService.getTipo(tipo).valueChanges().subscribe(val => {
         resolve(val);
       })
     });
@@ -286,6 +328,7 @@ export class AdminLotsComponent implements OnInit {
 
   public registrarPedido() {
 
+    this.getRegistroTiposPaquete();
     this.createJsonLP();
     this.getRegistroLotes();
     this.getIdLoteList();
@@ -307,7 +350,7 @@ export class AdminLotsComponent implements OnInit {
           creacion: moment().format(),
           estatusProduccion: 'P',
           tipoPaquete: element['tipoPaquete'],
-          consultados: this.createConsultados(),
+          consultados: this.createConsultados(element['tipoPaquete']),
         };
         paqueteList.push(paqueteModel);
       }
@@ -338,70 +381,48 @@ export class AdminLotsComponent implements OnInit {
     
   }
 
-  public createLote(numeroLotes: number, numeroPaquetes: number, tipoPaquete: string) {
-    const paqueteList = [];
-    let loteModel = new Object();
+  private createConsultados(tipoPaquete: string): any {
+    let tipoPaq: TiposPaqueteModel = this.listaTP.find((tp) => tipoPaquete === tp['tipoPaquete']);
+    let runas = ['GE', 'EI', 'NG', 'JE', 'HA', 
+    'SW', 'IS', 'DA', 'OD', 'UR', 
+    'OT', 'AS', 'MA', 'AL', 'NA', 
+    'PE', 'TE', 'KA', 'WU', 'FE', 
+    'RA', 'LA', 'EH', 'BE', 'TH'];
+    let consultadosList = [];
+    let runasIdList = [];
+    let limiteRunas = tipoPaq.totalEmpaques;
+    let existRuna = false;
 
-    for (let i = 0; i < numeroPaquetes; i++) {
-      let paqueteModel: PaqueteModel = {
-        codigo: this.generateFolio().toString(),
-        activo: false,
-        creacion: '',
-        estatusProduccion: 'P',
-        tipoPaquete: tipoPaquete,
-        consultados: this.createConsultados(),
-      };
-
-      paqueteList.push(paqueteModel);
-    }
-
-    for (let i = 0; i < numeroLotes; i++) {
-      loteModel = {
-        lote: this.generateFolio().toString(),
-        activo: false,
-        creacion: new Date().toLocaleString(),
-        paquetes: paqueteList,
-      };
-    }
-
-  }
-
-  private createConsultados():any {
-   let runas = ['GE', 'EI', 'NG', 'JE', 'HA', 
-   'SW', 'IS', 'DA', 'OD', 'UR', 
-   'OT', 'AS', 'MA', 'AL', 'NA', 
-   'PE', 'TE', 'KA', 'WU', 'FE', 
-   'RA', 'LA', 'EH', 'BE', 'TH'];
-   let consultadosList = [];
-   let runasIdList = [];
-   let limiteRunas = 12;
-   let existRuna = false;
-
-   while(runasIdList.length < limiteRunas) {
-    let indexR = this.getRand(24, 0);
-    let runa = '';
-    let invertido = '01';
-    if (indexR > 8) {
-      if(this.getRand(100, 1) % 2 != 0) {
-        invertido = '00';
+    while(runasIdList.length < limiteRunas) {
+      let indexR = this.getRand(24, 0);
+      let runa = '';
+      let invertido = '01';
+      if (indexR > 8) {
+        if(this.getRand(100, 1) % 2 != 0) {
+          invertido = '00';
+        }
+      }
+      runa = runas[indexR] + invertido;
+      if(limiteRunas > 41 && runasIdList.length >= 41) {          
+        if(runasIdList.filter((rdl) => rdl === runa).length < Math.ceil(limiteRunas/41)) {
+          runasIdList.push(runa);
+        }
+      } else {
+        if (!runasIdList.includes(runa)) {
+          runasIdList.push(runa);
+        }
       }
     }
-    runa = runas[indexR] + invertido;
 
-    if (!runasIdList.includes(runa)) {
-      runasIdList.push(runa);
-    }
-   }
-
-   runasIdList.map((r) => {
+    runasIdList.map((r) => {
       let consultadosObject = new Object();
       consultadosObject[r] = '';
       consultadosObject['consultas'] = 0;
       consultadosObject['inter'] = this.getRand(3, 0);
       consultadosList.push(consultadosObject);
-   });
+    });
 
-   return consultadosList;
+    return consultadosList;
   }
 
   private generateFolio(): String {

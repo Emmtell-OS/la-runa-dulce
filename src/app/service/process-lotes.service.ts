@@ -8,7 +8,6 @@ export class ProcessLotesService {
 
   private dbPath = '/dataJsonLP';
   dataLP: AngularFireList<any>;
-  //dataLP: any;
 
   constructor(private db: AngularFireDatabase) {
     this.dataLP = db.list(this.dbPath);
