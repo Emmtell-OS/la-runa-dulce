@@ -5,6 +5,7 @@ import moment from 'moment';
 import { ProcessLotesService } from '../../service/process-lotes.service';
 import { log } from 'console';
 import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
+import Utils from '../../utilities/utils';
 
 @Component({
   selector: 'app-interpretaciones',
@@ -131,7 +132,7 @@ export class InterpretacionesComponent implements OnInit {
                   ) < this.limiteDias
                 ) {
                   this.obtenerInterpretacion(paq['consultados'][indexEmp]['inter'], this.valueE);
-                  paq['consultados'][indexEmp]['consultas'] = (paq['consultados'][indexEmp]['consultas']) + 0.5;
+                  paq['consultados'][indexEmp]['consultas'] = paq['consultados'][indexEmp]['consultas'] + 0.5;
                   valid = true;
                 }
               } else {
@@ -159,7 +160,12 @@ export class InterpretacionesComponent implements OnInit {
 
   private obtenerInterpretacion(id: number, runaCode: string) {
     let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
-    this.textInterp = filtrado[runaCode][id];
+    if (filtrado !== undefined) {
+      this.textInterp = filtrado[runaCode][id];
+    } else {
+      let interpretacion = Utils.elegirInterpretacion(runaCode, this.catInterpretaciones);      
+      this.textInterp = (interpretacion === null) ? 'Reintenta mas tarde...' : filtrado[runaCode][interpretacion];
+    }        
   }
 
   public async getRegistroInterpretaciones() {

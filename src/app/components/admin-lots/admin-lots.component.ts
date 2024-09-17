@@ -24,6 +24,8 @@ import { rejects } from 'assert';
 import { TipoPaquetesServiceService } from '../../service/tipo-paquetes-service.service';
 import { log } from 'console';
 import { TiposPaqueteModel } from '../../models/TiposPaqueteModel';
+import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
+import Utils from '../../utilities/utils';
 
 @Component({
   selector: 'app-admin-lots',
@@ -42,6 +44,7 @@ export class AdminLotsComponent implements OnInit {
   idsLotesBase = ["Nuevo lote"];
   tiposPaquete = [];
   listaTP = [];
+  catInterpretaciones = [];
   autoCompleteInputValue: any;
   stashLoteList: TableModel[] = [];
   displayedColumns: string[] = ['lote', 'tipoPaquete', 'cantidad', 'action'];
@@ -60,7 +63,9 @@ export class AdminLotsComponent implements OnInit {
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
   @ViewChild(MatTable) tableProduccion!: MatTable<ProduccionModel>;
 
-  constructor(private service: ProcessLotesService, private tpService: TipoPaquetesServiceService) {
+  constructor(private service: ProcessLotesService, 
+              private tpService: TipoPaquetesServiceService,
+              private interpretacionervice: InterpretacionesServiceService) {
     this.getRegistroLotes();
     this.getRegistroTiposPaquete();
     this.formularioRegistro = new FormGroup({
@@ -107,6 +112,23 @@ export class AdminLotsComponent implements OnInit {
   obtenerFirebaseTPData() {
     return new Promise((resolve, reject) => {
       this.tpService.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
+  }
+
+  public async getRegistroInterpretaciones() {
+    this.catInterpretaciones.splice(0, this.catInterpretaciones.length)
+    /**conexión y consumo de Firebase */
+    await this.obtenerFirebaseDataInterp().then((data: []) => {
+      this.catInterpretaciones = data;
+    });
+
+  }
+
+  obtenerFirebaseDataInterp () {
+    return new Promise((resolve, reject) => {
+      this.service.getAll().valueChanges().subscribe(val => {
         resolve(val);
       })
     });
@@ -394,11 +416,11 @@ export class AdminLotsComponent implements OnInit {
     let existRuna = false;
 
     while(runasIdList.length < limiteRunas) {
-      let indexR = this.getRand(24, 0);
+      let indexR = Utils.getRand(0, 24); //this.getRand(24, 0);
       let runa = '';
       let invertido = '01';
       if (indexR > 8) {
-        if(this.getRand(100, 1) % 2 != 0) {
+        if(Utils.getRand(1, 100) % 2 != 0) {
           invertido = '00';
         }
       }
@@ -415,10 +437,11 @@ export class AdminLotsComponent implements OnInit {
     }
 
     runasIdList.map((r) => {
+      let interpretacion = Utils.elegirInterpretacion(r, this.catInterpretaciones);
       let consultadosObject = new Object();
       consultadosObject[r] = '';
       consultadosObject['consultas'] = 0;
-      consultadosObject['inter'] = this.getRand(3, 0);
+      consultadosObject['inter'] = (interpretacion === null) ? 1 : interpretacion;
       consultadosList.push(consultadosObject);
     });
 
@@ -429,9 +452,9 @@ export class AdminLotsComponent implements OnInit {
     let indice: string = '';
 
     for (let i = 1; i <= 10; i++) {
-      let rand = this.getRand(122, 48);
+      let rand = Utils.getRand(48, 122); //this.getRand(122, 48);
       while ((rand > 90 && rand < 97) || (rand > 57 && rand < 65)) {
-        rand = this.getRand(122, 48);
+        rand = Utils.getRand(48, 122); //this.getRand(122, 48);
       }
       indice = indice + String.fromCharCode(rand);
     }
