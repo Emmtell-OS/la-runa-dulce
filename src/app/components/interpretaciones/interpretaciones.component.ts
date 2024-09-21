@@ -132,7 +132,8 @@ export class InterpretacionesComponent implements OnInit {
                   ) < this.limiteDias
                 ) {
                   this.obtenerInterpretacion(paq['consultados'][indexEmp]['inter'], this.valueE);
-                  paq['consultados'][indexEmp]['consultas'] = paq['consultados'][indexEmp]['consultas'] + 0.5;
+                  let contadorConsultas = paq['consultados'][indexEmp]['consultas'];
+                  paq['consultados'][indexEmp]['consultas'] = contadorConsultas++;
                   valid = true;
                 }
               } else {

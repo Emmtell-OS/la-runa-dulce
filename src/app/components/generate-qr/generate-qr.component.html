@@ -13,11 +13,12 @@
       />
     </mat-form-field>
 
-    <button mat-stroked-button (click)="generar()" [disabled]="generarActive">
+    <button mat-stroked-button (click)="ordenarSeleccionados()" [disabled]="generarActive">
       Generar
     </button>
+    <span *ngIf= "generarActive">{{progress}}</span>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
       <!-- Checkbox Column -->
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
@@ -33,19 +34,25 @@
             (change)="$event ? selection.toggle(row) : null"
             [checked]="selection.isSelected(row)"
             [aria-label]="checkboxLabel(row)"
+
           >
           </mat-checkbox>
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="lote">
-        <th mat-header-cell *matHeaderCellDef>Lote</th>
-        <td mat-cell *matCellDef="let element">{{ element.lote }}</td>
+      <ng-container matColumnDef="tipoPaquete">
+        <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
+        <td mat-cell *matCellDef="let element">{{ element.tipoPaquete }}</td>
       </ng-container>
 
       <ng-container matColumnDef="paquete">
         <th mat-header-cell *matHeaderCellDef>Paquete</th>
         <td mat-cell *matCellDef="let element">{{ element.paquete }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lote">
+        <th mat-header-cell *matHeaderCellDef>Lote</th>
+        <td mat-cell *matCellDef="let element">{{ element.lote }}</td>
       </ng-container>
 
       <ng-container matColumnDef="creacion">
@@ -63,11 +70,11 @@
   </mat-card-content>
 </mat-card>
 
-{{ pathBase }}
-
 <!-- QR images -->
-<div id="contentToConvert" class="qrcodeImage">
-  <mat-grid-list cols="6" rowHeight="170px" [gutterSize]="'5px'">
+<div id="contentToConvert" class="qrcodeImage" *ngIf="visibleQR">
+  <div class="{{borde}}">
+    <span>{{tp}}</span>
+  <mat-grid-list cols="{{colGrid}}" rowHeight="155px" [gutterSize]="'5px'">
     <mat-grid-tile class="gridItem" *ngFor="let qr of qrList">
     <qrcode
       [qrdata]="pathBase + qr['codi']"
@@ -78,14 +85,15 @@
       [colorLight]="'#FFF'"
       [elementType]="'canvas'"
       [errorCorrectionLevel]="'M'"
-      [imageSrc]="'./assets/img/' + qr['img'] + '.png'"
-      [imageHeight]="75"
-      [imageWidth]="75"
+      [imageSrc]="qr['img']"
+      [imageHeight]="70"
+      [imageWidth]="70"
       [margin]="4"
       [scale]="1"
       [title]="qr['codi']"
-      [width]="170"
+      [width]="160"
     ></qrcode>
   </mat-grid-tile>
   </mat-grid-list>
+</div>
 </div>

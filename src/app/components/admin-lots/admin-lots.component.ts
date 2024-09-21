@@ -191,7 +191,7 @@ export class AdminLotsComponent implements OnInit {
 
     this.dataSourceHistorial = new MatTableDataSource(this.historialProductos);
     if(!ft) {
-      //this.tableHistorial.renderRows();
+      this.tableHistorial.renderRows();
     }
   }
 
@@ -215,7 +215,7 @@ export class AdminLotsComponent implements OnInit {
     
     this.datasourceProduccion = new MatTableDataSource(this.produccionProductos);
     if(!ft) {
-      //this.tableProduccion.renderRows();
+      this.tableProduccion.renderRows();
 
     }
   }
@@ -286,7 +286,7 @@ export class AdminLotsComponent implements OnInit {
     this.produccionProductos[index]['produccion'] = this.getEstatusProd('EP');
     this.datasourceProduccion = this.produccionProductos;
     this.isPaqProduccion = true;
-    //this.tableProduccion.renderRows();    
+    this.tableProduccion.renderRows();    
     this.btnProduction.splice(index, 1, false);    
 
   }

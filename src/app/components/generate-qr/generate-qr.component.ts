@@ -11,10 +11,15 @@ import { MatDividerModule } from '@angular/material/divider';
 import { SelectionModel } from '@angular/cdk/collections';
 import { HistorialTableModel } from '../../models/HistorialTableModel';
 import { environment } from '../../../environments/environment';
-import { jsPDF } from 'jspdf';
+import { Html2CanvasOptions, RGBAData, jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
 import { ProcessLotesService } from '../../service/process-lotes.service';
+import { TipoPaquetesServiceService } from '../../service/tipo-paquetes-service.service';
+import { TiposPaqueteModel } from '../../models/TiposPaqueteModel';
+import { log } from 'console';
+import { resolve } from 'path';
+import { rejects } from 'assert';
 
 @Component({
   selector: 'app-generate-qr',
@@ -22,23 +27,38 @@ import { ProcessLotesService } from '../../service/process-lotes.service';
   styleUrl: './generate-qr.component.scss',
 })
 export class GenerateQrComponent {
-  displayedColumns: string[] = ['select', 'lote', 'paquete', 'creacion'];
+  displayedColumns: string[] = [
+    'select',
+    'tipoPaquete',
+    'paquete',
+    'lote',
+    'creacion',
+  ];
   dataJsonLP: any;
   dataSource: any;
-  selection: any;
+  selection = new SelectionModel<HistorialTableModel>(true, []);
   dataTable: HistorialTableModel[] = [];
   preseleccionados: HistorialTableModel[] = [];
+  seleccionadosList: HistorialTableModel[] = [];
   codiModelList: CodiModel[] = [];
   qrList: CodiModel[] = [];
-  mostarQR = false;
-  is24 = true;
   generarActive = true;
-  paginasCreadas = 0;
   pathBase = environment.pathInterp;
+  hojasPDFList = [];
+  catTipoPaquete: TiposPaqueteModel[] = [];
+  colGrid: any;
+  borde = 'sinBorde';
+  tp = '';
+  visibleQR = false;
+  progress = '';
+  _PROCESANDO = 'PROCESANDO... ';
 
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
 
-  constructor(private service: ProcessLotesService) {
+  constructor(
+    private service: ProcessLotesService,
+    private tpService: TipoPaquetesServiceService
+  ) {
     this.getRegistroLotes();
   }
 
@@ -48,10 +68,8 @@ export class GenerateQrComponent {
       await this.obtenerFirebaseData().then((data: []) => {
         this.dataJsonLP = data;
       });
-      
-      console.log(this.dataJsonLP);
       this.cargarDatos();
-      //console.log(this.dataJsonLP);
+      this.getRegistroTiposPaquete();
     } catch (error) {
       console.log(error);
     }
@@ -59,9 +77,31 @@ export class GenerateQrComponent {
 
   obtenerFirebaseData() {
     return new Promise((resolve, reject) => {
-      this.service.getAll().valueChanges().subscribe(val => {
-        resolve(val);
-      })
+      this.service
+        .getAll()
+        .valueChanges()
+        .subscribe((val) => {
+          resolve(val);
+        });
+    });
+  }
+
+  public async getRegistroTiposPaquete() {
+    this.catTipoPaquete.splice(0, this.catTipoPaquete.length);
+    /**conexión y consumo de Firebase */
+    await this.obtenerFirebaseDataTP().then((data: []) => {
+      this.catTipoPaquete.push(...data);
+    });
+  }
+
+  obtenerFirebaseDataTP() {
+    return new Promise((resolve, reject) => {
+      this.tpService
+        .getAll()
+        .valueChanges()
+        .subscribe((val) => {
+          resolve(val);
+        });
     });
   }
 
@@ -73,7 +113,7 @@ export class GenerateQrComponent {
         this.dataTable.push({
           lote: lote['lote'],
           paquete: paquete['codigo'],
-          tipoPaquete: '',
+          tipoPaquete: paquete['tipoPaquete'],
           activo: '',
           creacion: moment(paquete['creacion']).format('DD-MM-YYYY'),
           consultados: runaCod,
@@ -84,120 +124,211 @@ export class GenerateQrComponent {
     this.dataSource = new MatTableDataSource<HistorialTableModel>(
       this.dataTable
     );
-    this.selection = new SelectionModel<HistorialTableModel>(true, []);
   }
 
-  public generar() {
-    this.codiModelList.splice(0, this.codiModelList.length);
-    this.generarCodiList();
-    this.crearQRS();
+  public async ordenarSeleccionados() {
+    this.visibleQR = true;
+    this.generarActive = true;
+    await this.ordenarPromise();
+    this.generarQR();
   }
 
-  private generarCodiList() {
-    this.preseleccionados.map((ps) => {
-      let indexDT = this.dataTable.findIndex(
-        (dt) => dt['lote'] === ps['lote'] && dt['paquete'] === ps['paquete']
-      );
-      this.dataTable[indexDT]['consultados'].map((cns: any) => {
-        this.codiModelList.push({
-          codi: ps['lote'] + cns + ps['paquete'],
-          img: cns.slice(0, 2),
-          folio: ps['lote'] + ps['paquete'],
-        });
+  private ordenarPromise() {
+    return new Promise((resolve, reject) => {
+      this.progress = this._PROCESANDO + '25%';
+      this.preseleccionados.map((ps) => {
+        let tipoPaquete: TiposPaqueteModel = this.catTipoPaquete.find(
+          (tp) =>
+            ps.tipoPaquete.toLowerCase() === tp['tipoPaquete'].toLowerCase()
+        );
+        ps.consultados = tipoPaquete.rowGrid;
+        this.seleccionadosList.push(ps);
       });
+
+      this.seleccionadosList.sort((a, b) => b.consultados - a.consultados);
+      resolve(this.seleccionadosList);
     });
   }
 
-  private crearQRS() {
-
-    /**
-     * Esta lógica es temporal, se dbe crear flujo dinamico de ordenamiendo en qr
-     * basado en el total de empaques según el tipo de paquete
-     */
-
-    let limiteQR = this.codiModelList.length - 1;
-    let totalPaginas = Math.ceil(this.codiModelList.length / 48);
-    let DATA: any;
-    const doc = new jsPDF('p', 'pt', 'a4');
-    const options = {
-      background: 'white',
-      scale: 3,
-    };
-    this.qrList = [];
-
-    let intervalo = setInterval(() => {
-
-      if(this.paginasCreadas === totalPaginas) {
-        doc.save(`la-runa-dulce-${moment().format('DD-MM-YYYY')}.pdf`);
-      }
-
+  private async generarQR() {
+    let contadorFilas = 0;
+    let itemsHoja = [];
+    for await (const [
+      index,
+      seleccionado,
+    ] of this.seleccionadosList.entries()) {
+      this.progress = this._PROCESANDO + '50%';
       this.qrList = [];
+      if (contadorFilas > 0) {
+        this.borde = 'conBorde';
+      }
+      let tipoPaquete: TiposPaqueteModel = this.catTipoPaquete.find(
+        (tp) =>
+          seleccionado.tipoPaquete.toLowerCase() ===
+          tp['tipoPaquete'].toLowerCase()
+      );
 
-      if (this.paginasCreadas < totalPaginas) {
-  
-        if (this.paginasCreadas > 0 && totalPaginas > 1) {
-          doc.addPage();
-          this.codiModelList.splice(0, 48);
+      this.tp = tipoPaquete.tipoPaquete;
+
+      if (
+        8 - contadorFilas < tipoPaquete.rowGrid &&
+        itemsHoja.length > 0 &&
+        tipoPaquete.rowGrid < 8
+      ) {
+        if (itemsHoja.length > 0) {
+          this.hojasPDFList.push(itemsHoja);
         }
-  
-        this.qrList = this.codiModelList.slice(0, 48);
-  
-        this.mostarQR = true;
-  
-        setTimeout(() => {
-          DATA = document.getElementById('contentToConvert');
-  
-          try {
-            html2canvas(DATA, options).then((canvas) => {
-              const img = canvas.toDataURL('image/PNG');
-  
-              // Add image Canvas to PDF
-              const bufferX = 15;
-              const bufferY = 15;
-              const imgProps = (doc as any).getImageProperties(img);
-              const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
-              const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-              doc.addImage(
-                img,
-                'PNG',
-                bufferX,
-                bufferY,
-                pdfWidth,
-                pdfHeight,
-                undefined,
-                'FAST'
-              );
-              return doc;
-            });
-            this.paginasCreadas = this.paginasCreadas + 1;
-            //.then((docResult) => {
-            //docResult.save(`la-runa-dulce-${moment().format('DD-MM-YYYY')}.pdf`);
-            //});
-          } catch (error) {
-            console.error(error);
-          }
-        }, 300);
-      } else {
-        clearInterval(intervalo);
+        itemsHoja = [];
+        this.borde = 'sinBorde';
+        contadorFilas = 0;
       }
 
-    }, 2020)
+      this.colGrid = tipoPaquete.columnGrid;
+      let paquetes = this.dataJsonLP.find((lotes) => lotes['lote'] === seleccionado['lote'])['paquetes'];
+      let consultados =  paquetes.find((paq) => paq['codigo'] === seleccionado['paquete'])['consultados'];
 
+      if (tipoPaquete.rowGrid > 8) {
+        let renglonesRestantes = Math.floor(tipoPaquete.rowGrid % 8);
+        let calcularRenglonesRestantes = false;
+        for await (const consultado of consultados) {
+          
+          this.qrList = [];
+          let qrPorHoja = 0;
+          if (contadorFilas === 0) {
+            qrPorHoja = tipoPaquete.columnGrid * 8;
+          } else {
+            calcularRenglonesRestantes = true;
+            qrPorHoja = tipoPaquete.columnGrid * (8 - contadorFilas);
+          }
+
+          let provisional = consultados.slice(0, qrPorHoja);
+          await this.printQRS(provisional, seleccionado, 200).then();
+          await this.getElement(500).then((element: any) => {
+            itemsHoja.push(element);
+            if (qrPorHoja === provisional.length) {
+              this.hojasPDFList.push(itemsHoja);
+              itemsHoja = [];
+              contadorFilas = 0;
+              this.borde = 'sinBorde';
+            }
+          });
+          consultados.splice(0, qrPorHoja);
+          if (calcularRenglonesRestantes) {
+            renglonesRestantes = provisional.length / tipoPaquete.columnGrid;
+          }
+        }
+        contadorFilas = renglonesRestantes === 8 ? 0 : renglonesRestantes;
+        this.tp = '';
+      } else {
+        await this.printQRS(consultados, seleccionado, 200).then();
+        await this.getElement(200).then((element: any) =>
+          itemsHoja.push(element)
+        );
+        contadorFilas += tipoPaquete.rowGrid;
+      }
+
+      if (contadorFilas === 8 || index === this.seleccionadosList.length - 1) {
+        this.hojasPDFList.push(itemsHoja);
+        itemsHoja = [];
+        this.borde = 'sinBorde';
+        contadorFilas = 0;
+      }
+    }
+    this.crearPDF();
+  }
+
+  private printQRS(
+    consultados: [],
+    seleccionado: HistorialTableModel,
+    time: number
+  ) {
+    return new Promise((resolve, rejects) => {
+      setTimeout(() => {
+        consultados.map((consultado: {}) => {
+          let runaCode = Object.keys(consultado)[0];
+          this.qrList.push({
+            codi: seleccionado.lote + runaCode + seleccionado.paquete,
+            img: './assets/img/' + runaCode.slice(0, 2) + '.png',
+            folio: seleccionado.lote + seleccionado.paquete,
+          });
+        });
+        resolve(this.qrList);
+      }, time);
+    });
+  }
+
+  private getElement(time: number): any {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.getCanvas(document.getElementById('contentToConvert')));
+      }, time);
+    });
+  }
+
+  private getCanvas(img: any) {
+    return html2canvas(img).then((canvas) => canvas.toDataURL('image/PNG'));
+  }
+
+  private async crearPDF() {
+    const doc = new jsPDF('p', 'pt', 'a4');
+    let bufferY = 15;
+
+    for await (const [index, hoja] of this.hojasPDFList.entries()) {
+      
+      if(((this.hojasPDFList.length - 1) - index) === 1) {
+        this.progress = this._PROCESANDO + '100%';
+      }
+      if (index > 0 && index < this.hojasPDFList.length) {
+        doc.addPage();
+        bufferY = 15;
+      }
+      for await (let img of hoja) {
+        this.progress = this._PROCESANDO + '75%';
+        const bufferX = 2;
+        const imgProps = (doc as any).getImageProperties(img);
+        const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        doc.addImage(
+          img,
+          'PNG',
+          bufferX,
+          bufferY,
+          pdfWidth,
+          pdfHeight,
+          undefined,
+          'NONE'
+        );
+
+        bufferY += pdfHeight + 5;
+      }
+    }
+
+    this.progress = 'DESCARGANDO...';
+    doc.save(`la-runa-dulce-${moment().format('DD-MM-YYYY')}.pdf`);
+    this.qrList = [];
+    this.tp = '';
+    this.preseleccionados = [];
+    this.seleccionadosList = [];
+    this.hojasPDFList = [];
+    this.visibleQR = false;
+    this.selection.clear();
+    this.progress = '';
   }
 
   mapearSeleccionado(row?: HistorialTableModel) {
     if (this.selection.isSelected(row)) {
-      //agreagar de preseleccionados
+      //agreagar a preseleccionados
       this.preseleccionados.push({
         lote: row['lote'],
         paquete: row['paquete'],
-        tipoPaquete: '',
+        tipoPaquete: row['tipoPaquete'],
         activo: '',
         creacion: '',
         consultados: 0,
       });
+      this.selection.select(this.dataSource);
     } else {
-      //eliminar a preseleccionados
+      //eliminar de preseleccionados
       let index = this.preseleccionados.findIndex(
         (r) => r['lote'] === row['lote'] && r['paquete'] === row['paquete']
       );
