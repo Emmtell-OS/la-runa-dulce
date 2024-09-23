@@ -4,3 +4,5 @@ node_modules
 .firebase
 *-debug.log
 .runtimeconfig.json
+.angular/
+package.lock.json
