@@ -6,8 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:la-runa-dulce": "node dist/la-runa-dulce/server/server.mjs"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -23,7 +22,6 @@
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/platform-server": "^17.0.0",
     "@angular/router": "^17.0.0",
-    "@angular/ssr": "^17.0.8",
     "ang-jsoneditor": "^3.1.1",
     "angular-moment": "^1.3.0",
     "angularx-qrcode": "^17.0.1",
@@ -32,6 +30,7 @@
     "firebase": "^10.13.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.0.0",
+    "qr-code-styling-node": "^1.5.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

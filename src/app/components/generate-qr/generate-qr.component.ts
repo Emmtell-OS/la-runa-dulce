@@ -1,6 +1,6 @@
 import { CodiModel } from './../../models/CodiModel';
 import { map } from 'rxjs/operators';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {
   MatTable,
   MatTableDataSource,
@@ -17,7 +17,6 @@ import moment from 'moment';
 import { ProcessLotesService } from '../../service/process-lotes.service';
 import { TipoPaquetesServiceService } from '../../service/tipo-paquetes-service.service';
 import { TiposPaqueteModel } from '../../models/TiposPaqueteModel';
-import { log } from 'console';
 import { resolve } from 'path';
 import { rejects } from 'assert';
 
@@ -26,7 +25,7 @@ import { rejects } from 'assert';
   templateUrl: './generate-qr.component.html',
   styleUrl: './generate-qr.component.scss',
 })
-export class GenerateQrComponent {
+export class GenerateQrComponent implements OnInit {
   displayedColumns: string[] = [
     'select',
     'tipoPaquete',
@@ -41,7 +40,8 @@ export class GenerateQrComponent {
   preseleccionados: HistorialTableModel[] = [];
   seleccionadosList: HistorialTableModel[] = [];
   codiModelList: CodiModel[] = [];
-  qrList: CodiModel[] = [];
+  //qrList: CodiModel[] = [];
+  qrList = [];
   generarActive = true;
   pathBase = environment.pathInterp;
   hojasPDFList = [];
@@ -53,6 +53,8 @@ export class GenerateQrComponent {
   progress = '';
   _PROCESANDO = 'PROCESANDO... ';
 
+  qrCode = null;
+
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
 
   constructor(
@@ -60,6 +62,11 @@ export class GenerateQrComponent {
     private tpService: TipoPaquetesServiceService
   ) {
     this.getRegistroLotes();
+  }
+
+  ngOnInit(): void {
+    
+    
   }
 
   private async getRegistroLotes() {
@@ -203,7 +210,7 @@ export class GenerateQrComponent {
 
           let provisional = consultados.slice(0, qrPorHoja);
           await this.printQRS(provisional, seleccionado, 200).then();
-          await this.getElement(500).then((element: any) => {
+          await this.getElement(1500).then((element: any) => {
             itemsHoja.push(element);
             if (qrPorHoja === provisional.length) {
               this.hojasPDFList.push(itemsHoja);
@@ -221,7 +228,7 @@ export class GenerateQrComponent {
         this.tp = '';
       } else {
         await this.printQRS(consultados, seleccionado, 200).then();
-        await this.getElement(200).then((element: any) =>
+        await this.getElement(2100).then((element: any) =>
           itemsHoja.push(element)
         );
         contadorFilas += tipoPaquete.rowGrid;

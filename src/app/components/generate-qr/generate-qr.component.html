@@ -76,23 +76,7 @@
     <span>{{tp}}</span>
   <mat-grid-list cols="{{colGrid}}" rowHeight="155px" [gutterSize]="'5px'">
     <mat-grid-tile class="gridItem" *ngFor="let qr of qrList">
-    <qrcode
-      [qrdata]="pathBase + qr['codi']"
-      [allowEmptyString]="true"
-      [ariaLabel]="'QR Code image with the following content...'"
-      [cssClass]="'center'"
-      [colorDark]="'#000'"
-      [colorLight]="'#FFF'"
-      [elementType]="'canvas'"
-      [errorCorrectionLevel]="'M'"
-      [imageSrc]="qr['img']"
-      [imageHeight]="70"
-      [imageWidth]="70"
-      [margin]="4"
-      [scale]="1"
-      [title]="qr['codi']"
-      [width]="160"
-    ></qrcode>
+    <qr-styles [path]="pathBase + qr['codi']" [img]="qr['img']"></qr-styles>
   </mat-grid-tile>
   </mat-grid-list>
 </div>

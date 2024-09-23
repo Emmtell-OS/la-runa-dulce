@@ -41,6 +41,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { AdminConfigComponent } from './components/admin-config/admin-config.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
+import { QrComponent } from './components/qr/qr.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     ConfigComponent,
     GenerateQrComponent,
     AdminConfigComponent,
+    QrComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +74,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTabsModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    NgxQrcodeStylingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule
   ],
