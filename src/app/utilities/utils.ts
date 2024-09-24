@@ -5,7 +5,7 @@ export default class Utils {
         if (filtrado === undefined) {
             return null;
         } else {
-            return this.getRand(filtrado[runaCode].length, 0);
+            return this.getRand(0, filtrado[runaCode].length -1);
         }
     }
 

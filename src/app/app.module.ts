@@ -44,6 +44,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 import { QrComponent } from './components/qr/qr.component';
 import { QrDotComponent } from './components/qr-dot/qr-dot.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { QrDotComponent } from './components/qr-dot/qr-dot.component';
     MatCheckboxModule,
     MatSnackBarModule,
     NgxQrcodeStylingModule,
+    MatIconModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule
   ],

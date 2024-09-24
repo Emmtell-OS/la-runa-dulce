@@ -157,8 +157,10 @@ export class AdminConfigComponent {
     } else {
       result = this.formularioTiposPaquetes.value['totalEmpaques'];
     }
+    let tipoP = this.formularioTiposPaquetes.value['tipoPaquete'];
+    tipoP = tipoP.trimStart().trimEnd()
     this.formularioTiposPaquetes.setValue({
-      tipoPaquete: this.formularioTiposPaquetes.value['tipoPaquete'],
+      tipoPaquete: tipoP,
       totalEmpaques: result
     });
     

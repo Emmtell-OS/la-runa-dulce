@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import { TableModel } from './../../models/TableModel';
 import { LoteModel } from './../../models/LotelModel';
 import { ProcessLotesService } from './../../service/process-lotes.service';
@@ -55,7 +56,6 @@ export class AdminLotsComponent implements OnInit {
   displayedProduccionColumns: string[] = ['lote', 'paquete', 'tipoPaquete', 'produccion', 'action'];
   datasourceProduccion: any;
   produccionProductos: ProduccionModel[] = [];
-  isPaqProduccion = false;
   btnActive = true;
   btnProduction = [];
   
@@ -79,10 +79,13 @@ export class AdminLotsComponent implements OnInit {
 
   public async getRegistroLotes() {
     /**conexión y consumo de Firebase */
+    this.dataJsonLP.splice(0, this.dataJsonLP.length);
+    this.idsLotesBase = [];
     await this.obtenerFirebaseData().then((data: []) => {
       this.dataJsonLP.push(...data);
     });
     const arr = this.dataJsonLP.map((stg) => stg.lote);
+    this.idsLotesBase.push('Nuevo lote');
     this.idsLotesBase.push(...arr);
     
     this.cargarFoliosLotes();
@@ -100,11 +103,12 @@ export class AdminLotsComponent implements OnInit {
 
   public async getRegistroTiposPaquete() {
     /**conexión y consumo de Firebase */
-    this.listaTP = this.listaTP.slice(0, this.listaTP.length);
-    await this.obtenerFirebaseTPData().then((data: []) => {
-      this.listaTP.push(...data);
-    });
-    this.listaTP.map((tp) => {
+      this.tiposPaquete = [];
+      this.listaTP = [];
+      await this.obtenerFirebaseTPData().then((data: []) => {
+        this.listaTP.push(...data);
+      });
+      this.listaTP.map((tp) => {
       this.tiposPaquete.push(tp['tipoPaquete']);
     })
   }
@@ -157,6 +161,7 @@ export class AdminLotsComponent implements OnInit {
   }
 
   cargarFoliosLotes() {
+    this.idsLotesList.splice(0, this.idsLotesList.length);
     this.idsLotesList.push(...this.idsLotesBase);
     this.filteredLotes = this.lotesFilterControl.valueChanges
     .pipe(
@@ -201,14 +206,18 @@ export class AdminLotsComponent implements OnInit {
     this.dataJsonLP.forEach((lote) => {
       let folioLote = lote['lote']
       lote['paquetes'].forEach(paq => {  
-        if (paq['estatusProduccion'] != 'T') {
+        if (paq['estatusProduccion'] !== 'T') {
           this.produccionProductos.push({
             "lote": folioLote,
             "paquete": paq['codigo'],
             "tipoPaquete": paq['tipoPaquete'],
             "produccion": this.getEstatusProd(paq['estatusProduccion']),
           });
-          this.btnProduction.push(true);
+          if(paq['estatusProduccion'] === 'P') {
+            this.btnProduction.push(true);
+          } else if(paq['estatusProduccion'] === 'EP') {
+            this.btnProduction.push(false);
+          }
         }
       });
     });
@@ -281,13 +290,29 @@ export class AdminLotsComponent implements OnInit {
 
   /***************Crear lote json******************** */
 
-  public iniciarProduccion(index: number) {
-
+  public iniciarProduccion(index: number, element: any) {
     this.produccionProductos[index]['produccion'] = this.getEstatusProd('EP');
     this.datasourceProduccion = this.produccionProductos;
-    this.isPaqProduccion = true;
-    this.tableProduccion.renderRows();    
-    this.btnProduction.splice(index, 1, false);    
+    //this.tableProduccion.renderRows();    
+    this.btnProduction.splice(index, 1, false);   
+    
+    let isSaveValid = false;
+    this.dataJsonLP.find((lote => {
+      if(lote['lote'] === element['lote']) {
+        lote['paquetes'].find(paq => {
+          if(paq['codigo'] === element['paquete']) {
+            paq['estatusProduccion'] = 'EP';
+            isSaveValid = true;
+          }
+        });
+      }
+    }));
+
+    if(isSaveValid) {
+      let loteToSave = this.dataJsonLP.find(lote => lote['lote'] === element['lote'] );
+      this.service.update(element['lote'], loteToSave);
+      this.getRegistroLotes()
+    }
 
   }
 
@@ -307,20 +332,9 @@ export class AdminLotsComponent implements OnInit {
     if(isSaveValid) {
       let loteToSave = this.dataJsonLP.find(lote => lote['lote'] === element['lote'] );
       this.service.update(element['lote'], loteToSave);
-      //this.loadProduccion(false);
-      //this.loadHistorialTable(false);
       this.getRegistroLotes()
     }
     
-  }
-
-  public eliminarPaquete(index: any, element: any) {
-    this.dataJsonLP.find((lote => {
-      if(lote['lote'] === element['lote']) {
-        lote['paquetes'].splice(index,1);
-      }
-    }));
-    this.loadHistorialTable(false);
   }
 
   public mostrarGenerarQR() {
@@ -348,14 +362,10 @@ export class AdminLotsComponent implements OnInit {
 
   }
 
-  public registrarPedido() {
-
-    this.getRegistroTiposPaquete();
+  public async registrarPedido() {
     this.createJsonLP();
     this.getRegistroLotes();
-    this.getIdLoteList();
     this.limpiarTablaStash();
-
   }
 
   public createJsonLP() {
@@ -378,22 +388,26 @@ export class AdminLotsComponent implements OnInit {
       }
 
       let existLote = false;
-      
+
       this.dataJsonLP.find((pedido) => {
         if(pedido['lote'] === element['lote']) {
           pedido['paquetes'].push(...paqueteList);
           existLote = true;
         }
       });
+      let jsonActualizar = this.dataJsonLP.find((pedido) => pedido['lote'] === element['lote']);
+      if (jsonActualizar !== undefined && jsonActualizar !== '') {
+        this.service.create(element['lote'], jsonActualizar);
+      }
 
-      if (!existLote) {
-        this.idsLotesBase.push(element['lote']);
+      if (!existLote) { 
         dJsonLP = {
           lote: element['lote'],
           activo: true,
           creacion: moment().format(),
           paquetes: paqueteList,
         };
+        this.dataJsonLP.push(dJsonLP);
         this.service.create(element['lote'], dJsonLP);
       }
 
@@ -460,6 +474,27 @@ export class AdminLotsComponent implements OnInit {
     }
 
     return indice;
+  }
+
+  public soloNumeros(val: any) {
+    let specialKeys = ['', 'Shift', 'Alt', 'Control', 'AltGraph']
+    let regex = /^\d+$/
+    let result = val['key']
+    if(!regex.test(val['key'])) {
+      if(this.formularioRegistro.value['cantidad'].length > 0) {
+        result = this.formularioRegistro.value['cantidad'].replace(val['key'], '');
+      } else {
+        result = ''
+      }
+    } else {
+      result = this.formularioRegistro.value['cantidad'];
+    }
+    this.formularioRegistro.setValue({
+      lote: this.formularioRegistro.value['lote'],
+      tipoPaquete: this.formularioRegistro.value['tipoPaquete'],
+      cantidad: result
+    });
+    
   }
 
   private getRand(MAX:number, MIN:number): number {

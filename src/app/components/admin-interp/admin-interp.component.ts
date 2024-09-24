@@ -31,7 +31,10 @@ export class AdminInterpComponent {
   txtRegistrar = 'Registrar';
   txtbtn = '';
   descripcionParrafo = 'descripción...';
-  error = false;
+  mostrarMensaje = false;
+  mensaje = null;
+  _REGISTRADO = 'Se ha registrado la interpretación con éxito para ';
+  _ERROR = 'La descripción no puede estar vacía y debe tener más de 10 caracteres';
 
   constructor(private service: InterpretacionesServiceService) {
     this.getRegistroInterpretaciones();
@@ -102,7 +105,6 @@ export class AdminInterpComponent {
   }
 
   registrarInterpretacion() {
-    
     let descripcion = this.formularioInterpretaciones.value['descripcion'];
     let descripcionValida = this.validarDescripcion(descripcion);
     let runaCode = this.runasBase.find((r) => r['runa'] === this.formularioInterpretaciones.value['runa'])['codigo'];
@@ -111,34 +113,29 @@ export class AdminInterpComponent {
       let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
       
       if (filtrado === undefined) {
-        console.log('nueva runa');
-        
+        //console.log('nueva runa');
         let req = new Object();
         req[runaCode] = [descripcion];
         this.service.create(this.formularioInterpretaciones.value['runa'], req);
       } else {
-        console.log('nueva interpretacion');
+        //console.log('nueva interpretacion');
         filtrado[runaCode].push(descripcion);
         this.service.create(this.formularioInterpretaciones.value['runa'], filtrado);
       }
 
-      this.reiniciar();
+      this.reiniciar(this.formularioInterpretaciones.value['runa']);
+      return;
     }
   
     if(!descripcionValida) {
-      this.error = true;
-      setInterval(() => {
-        this.error = false;
-      }, 5000);
+      this.pintarMensaje(null);
     } else {
       //Actualizar
       let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
       filtrado[runaCode].splice([this.formularioInterpretaciones.value['interpretacion'] -1], 1, descripcion)
       this.service.create(this.formularioInterpretaciones.value['runa'], filtrado);
-      this.reiniciar();
+      this.reiniciar(this.formularioInterpretaciones.value['runa']);
     }
-    
-    //console.log(this.formularioInterpretaciones.value);
     
   }
 
@@ -167,13 +164,23 @@ export class AdminInterpComponent {
     return false
   }
 
-  reiniciar() {
-    this.formularioInterpretaciones.reset()
+  reiniciar(runa: string) {
+    this.formularioInterpretaciones.reset();
     this.btnCreate = false;
     this.btnEditar = false;
     this.selectInterp = false;
     this.descripcionInput = false;
-    this.getRegistroInterpretaciones()
+    this.pintarMensaje(runa);
+    this.getRegistroInterpretaciones();
+  }
+
+  pintarMensaje(msj: string) {
+    this.mensaje = (msj !== null) ? this._REGISTRADO + msj : this._ERROR;
+    this.mostrarMensaje = true;
+    setTimeout(() => {
+      this.mostrarMensaje = false;
+      this.mensaje = '';
+    }, 8000);
   }
 
   llenarInterpretaciones(runa: any) {

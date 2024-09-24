@@ -2,15 +2,22 @@
   <mat-card appearance="outlined">
     <mat-card-header>
       <mat-card-title>
-        <p>Paquete: {{ paquete }}</p>
+        <p>Paquete: {{ numPaquete }}</p>
       </mat-card-title>
       <mat-card-subtitle>
         <p>Lote: {{ lote }}</p>
         </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+      <div>
+        <button (click)="refrescar()">
+          <span class="material-icons">
+            refresh
+          </span>
+        </button>
+      </div>
       <div class="desc">
-        <p class="">Tipo de paquete: {{ tipoPaquete }}</p>
+        <p class="">Tipo Paquete: {{ tipoPaquete }}</p>
         <p class="">Creado: {{ creacion }}</p>
         <p class="">Estatus: {{ activo }}</p>
       </div>

@@ -20,7 +20,6 @@ export class DetallesLoteComponent {
   creacion: any; //string
   activo: string;
   lote = this.data.lote;
-  paquete: string;
   numPaquete = this.data.idPaquete;
   runas: SemaforoModel[] = [];
 
@@ -44,10 +43,13 @@ export class DetallesLoteComponent {
     });
   }
 
-  public setValues() {
+  refrescar() {
+    this.dataJsonLP.splice(0, this.dataJsonLP.length);
+    this.runas = [];
+    this.getRegistroLotes();
+  }
 
-    //this.paquete = this.numPaquete;
-    //this.lote = this.data.lote['lote'];
+  public setValues() {
 
     this.dataJsonLP.find((lot) => {
       if(lot['lote'] === this.lote) {
