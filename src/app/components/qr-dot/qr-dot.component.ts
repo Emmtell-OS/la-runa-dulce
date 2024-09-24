@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import QRCodeStyling  from 'qr-code-styling';
-import Utils from '../../utilities/utils';
 
 @Component({
-  selector: 'qr-styles',
-  templateUrl: './qr.component.html',
-  styleUrl: './qr.component.scss',
+  selector: 'qr-styles-dot',
+  templateUrl: './qr-dot.component.html',
+  styleUrl: './qr-dot.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class QrComponent implements OnInit {
+export class QrDotComponent implements OnInit{
 
   qrCode = null;
 
@@ -38,7 +37,7 @@ export class QrComponent implements OnInit {
         imageSize: 10,
       },
       dotsOptions: {
-        type: 'extra-rounded',
+        type: 'dots',
         color: "#2E2B2B",
       },
       cornersSquareOptions: {
@@ -56,4 +55,5 @@ export class QrComponent implements OnInit {
     this.qrCode.append(this.canvas.nativeElement);
 
   }
+
 }

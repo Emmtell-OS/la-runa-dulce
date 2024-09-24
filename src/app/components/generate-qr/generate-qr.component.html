@@ -16,7 +16,6 @@
     <button mat-stroked-button (click)="ordenarSeleccionados()" [disabled]="generarActive">
       Generar
     </button>
-    <span *ngIf= "generarActive">{{progress}}</span>
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
       <!-- Checkbox Column -->
@@ -76,8 +75,11 @@
     <span>{{tp}}</span>
   <mat-grid-list cols="{{colGrid}}" rowHeight="155px" [gutterSize]="'5px'">
     <mat-grid-tile class="gridItem" *ngFor="let qr of qrList">
-    <qr-styles [path]="pathBase + qr['codi']" [img]="qr['img']"></qr-styles>
-  </mat-grid-tile>
+      <qr-styles [path]="qr['codi']" [img]="qr['img']" ></qr-styles>
+    </mat-grid-tile>
+    <mat-grid-tile class="gridItem" *ngFor="let qr2 of qrList2">
+      <qr-styles-dot [path]="qr2['codi']" [img]="qr2['img']" ></qr-styles-dot>
+    </mat-grid-tile>
   </mat-grid-list>
 </div>
 </div>

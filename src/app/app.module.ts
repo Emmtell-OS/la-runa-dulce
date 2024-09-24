@@ -43,6 +43,7 @@ import { AdminConfigComponent } from './components/admin-config/admin-config.com
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 import { QrComponent } from './components/qr/qr.component';
+import { QrDotComponent } from './components/qr-dot/qr-dot.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { QrComponent } from './components/qr/qr.component';
     GenerateQrComponent,
     AdminConfigComponent,
     QrComponent,
+    QrDotComponent,
   ],
   imports: [
     BrowserModule,

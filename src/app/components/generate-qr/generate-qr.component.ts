@@ -19,6 +19,8 @@ import { TipoPaquetesServiceService } from '../../service/tipo-paquetes-service.
 import { TiposPaqueteModel } from '../../models/TiposPaqueteModel';
 import { resolve } from 'path';
 import { rejects } from 'assert';
+import { log } from 'console';
+import Utils from '../../utilities/utils';
 
 @Component({
   selector: 'app-generate-qr',
@@ -40,8 +42,9 @@ export class GenerateQrComponent implements OnInit {
   preseleccionados: HistorialTableModel[] = [];
   seleccionadosList: HistorialTableModel[] = [];
   codiModelList: CodiModel[] = [];
-  //qrList: CodiModel[] = [];
-  qrList = [];
+  qrList: CodiModel[] = [];
+  qrList2: CodiModel[] = [];
+  //qrList = [];
   generarActive = true;
   pathBase = environment.pathInterp;
   hojasPDFList = [];
@@ -50,10 +53,8 @@ export class GenerateQrComponent implements OnInit {
   borde = 'sinBorde';
   tp = '';
   visibleQR = false;
-  progress = '';
-  _PROCESANDO = 'PROCESANDO... ';
-
   qrCode = null;
+  qrStyle: any;
 
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
 
@@ -113,6 +114,7 @@ export class GenerateQrComponent implements OnInit {
   }
 
   private cargarDatos() {
+    this.dataTable = [];
     this.dataJsonLP.map((lote) => {
       lote['paquetes'].map((paquete) => {
         let runaCod = [];
@@ -142,7 +144,6 @@ export class GenerateQrComponent implements OnInit {
 
   private ordenarPromise() {
     return new Promise((resolve, reject) => {
-      this.progress = this._PROCESANDO + '25%';
       this.preseleccionados.map((ps) => {
         let tipoPaquete: TiposPaqueteModel = this.catTipoPaquete.find(
           (tp) =>
@@ -164,8 +165,9 @@ export class GenerateQrComponent implements OnInit {
       index,
       seleccionado,
     ] of this.seleccionadosList.entries()) {
-      this.progress = this._PROCESANDO + '50%';
       this.qrList = [];
+      this.qrList2 = [];
+      this.qrStyle = Utils.getRand(0,1);
       if (contadorFilas > 0) {
         this.borde = 'conBorde';
       }
@@ -193,6 +195,7 @@ export class GenerateQrComponent implements OnInit {
       this.colGrid = tipoPaquete.columnGrid;
       let paquetes = this.dataJsonLP.find((lotes) => lotes['lote'] === seleccionado['lote'])['paquetes'];
       let consultados =  paquetes.find((paq) => paq['codigo'] === seleccionado['paquete'])['consultados'];
+      
 
       if (tipoPaquete.rowGrid > 8) {
         let renglonesRestantes = Math.floor(tipoPaquete.rowGrid % 8);
@@ -200,6 +203,7 @@ export class GenerateQrComponent implements OnInit {
         for await (const consultado of consultados) {
           
           this.qrList = [];
+          this.qrList2 = [];
           let qrPorHoja = 0;
           if (contadorFilas === 0) {
             qrPorHoja = tipoPaquete.columnGrid * 8;
@@ -228,7 +232,7 @@ export class GenerateQrComponent implements OnInit {
         this.tp = '';
       } else {
         await this.printQRS(consultados, seleccionado, 200).then();
-        await this.getElement(2100).then((element: any) =>
+        await this.getElement(1200).then((element: any) =>
           itemsHoja.push(element)
         );
         contadorFilas += tipoPaquete.rowGrid;
@@ -253,11 +257,19 @@ export class GenerateQrComponent implements OnInit {
       setTimeout(() => {
         consultados.map((consultado: {}) => {
           let runaCode = Object.keys(consultado)[0];
-          this.qrList.push({
-            codi: seleccionado.lote + runaCode + seleccionado.paquete,
-            img: './assets/img/' + runaCode.slice(0, 2) + '.png',
-            folio: seleccionado.lote + seleccionado.paquete,
-          });
+          if(this.qrStyle === 1) {
+            this.qrList.push({
+              codi: this.pathBase + seleccionado.lote + runaCode + seleccionado.paquete,
+              img: './assets/img/' + runaCode.slice(0, 2) + '.png',
+              folio: ''
+            });
+          } else {
+            this.qrList2.push({
+              codi: this.pathBase + seleccionado.lote + runaCode + seleccionado.paquete,
+              img: './assets/img/' + runaCode.slice(0, 2) + '.png',
+              folio: ''
+            });
+          }
         });
         resolve(this.qrList);
       }, time);
@@ -282,15 +294,11 @@ export class GenerateQrComponent implements OnInit {
 
     for await (const [index, hoja] of this.hojasPDFList.entries()) {
       
-      if(((this.hojasPDFList.length - 1) - index) === 1) {
-        this.progress = this._PROCESANDO + '100%';
-      }
       if (index > 0 && index < this.hojasPDFList.length) {
         doc.addPage();
         bufferY = 15;
       }
       for await (let img of hoja) {
-        this.progress = this._PROCESANDO + '75%';
         const bufferX = 2;
         const imgProps = (doc as any).getImageProperties(img);
         const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
@@ -310,16 +318,18 @@ export class GenerateQrComponent implements OnInit {
       }
     }
 
-    this.progress = 'DESCARGANDO...';
     doc.save(`la-runa-dulce-${moment().format('DD-MM-YYYY')}.pdf`);
     this.qrList = [];
+    this.qrList2 = [];
     this.tp = '';
     this.preseleccionados = [];
     this.seleccionadosList = [];
     this.hojasPDFList = [];
     this.visibleQR = false;
     this.selection.clear();
-    this.progress = '';
+    this.dataJsonLP.splice(0, this.dataJsonLP.length);
+    this.getRegistroLotes()
+    
   }
 
   mapearSeleccionado(row?: HistorialTableModel) {
