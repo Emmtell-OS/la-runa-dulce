@@ -45,6 +45,8 @@ import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 import { QrComponent } from './components/qr/qr.component';
 import { QrDotComponent } from './components/qr-dot/qr-dot.component';
 import { MatIconModule } from '@angular/material/icon';
+import { CodiDetailesComponent } from './components/codi-detailes/codi-detailes.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +60,8 @@ import { MatIconModule } from '@angular/material/icon';
     AdminConfigComponent,
     QrComponent,
     QrDotComponent,
+    CodiDetailesComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

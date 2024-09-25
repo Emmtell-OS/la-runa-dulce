@@ -1,0 +1,29 @@
+<div class="cntn">
+  <mat-card appearance="outlined" class="mtc">
+    <mat-card-header>
+      <mat-card-title>
+        <p>Detalles QR</p>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="center" >
+            <div *ngFor="let qr of qrList" >
+                <qr-styles-dot [path]="qr['codi']" [img]="qr['img']" class="qrc"></qr-styles-dot>
+            </div>
+            <div >
+                <ul>
+                    <li>Runa Code: <span>{{runaCode}}</span> </li>
+                    <li>Tipo Paquete: <span>{{tipoPaquete}}</span></li>
+                    <li>Paquete: <span>{{paquete}}</span></li>
+                    <li>Lote: <span>{{lote}}</span></li>
+                    <li>Consultados: <span>{{consultados}}</span></li>
+                    <li>Estatus: <span>{{estatus}}</span></li>
+                </ul>
+            </div>
+            <div >
+                <button (click)="reiniciarConsultados()"><p>Reiniciar Consultados</p></button>
+            </div>
+        </div>
+    </mat-card-content>
+  </mat-card>
+</div>
