@@ -174,6 +174,11 @@ export class AdminLotsComponent implements OnInit {
     return this.idsLotesList.filter(lot => lot.toUpperCase().includes(name.toUpperCase()));
   }
 
+  applyFilterHistorial(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceHistorial.filter = filterValue.trim().toLowerCase();
+  }
+
   public loadHistorialTable(ft: boolean) {
     
     this.historialProductos.splice(0, this.historialProductos.length);

@@ -168,6 +168,15 @@
       <mat-card-title>Historial</mat-card-title>
     </mat-card-header>
     <mat-card-content>
+      <mat-form-field>
+        <mat-label>Filtrar</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilterHistorial($event)"
+          placeholder="QFvW99yh0T..."
+          #input
+        />
+      </mat-form-field>
       <div>
         <table mat-table [dataSource]="dataSourceHistorial" #tableHistorial>
           <ng-container matColumnDef="lote">
