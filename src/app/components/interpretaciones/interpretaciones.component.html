@@ -1,15 +1,14 @@
-<!--<div *ngIf="mostrarAnimacion"> Animacion </div>
-<div *ngIf="mostrarInterpretacion"> {{textInterp}} </div>
-<p *ngIf="mostrarCaducado">Caducado</p>
-<p *ngIf="mostrarReintento">Reintento</p>-->
-
 <div class="pad">
-    <div class="base inicio" *ngIf="mostrarInicio">
-    <div class="btnIniciar" (click)="btnIniciar()">Iniciar</div>
+  <!-- Boton iniciar -->
+  <div class="base {{ tema }}" *ngIf="mostrarInicio">
+    <div class="btnIniciar" (click)="btnIniciar()">
+      <p class="">Iniciar</p>
+    </div>
   </div>
 
+  <!-- Animación Mezclar -->
   <div
-    class="base animation"
+    class="base {{ tema }}"
     *ngIf="mostrarAnimacion && !mostrarInicio"
     (click)="cerrarAnimacion()"
   >
@@ -22,9 +21,34 @@
     <p class="anim">{{ iniciar }}</p>
   </div>
 
-  <div class="base interpretation" *ngIf="!mostrarAnimacion">
-    <p *ngIf="mostrarInterpretacion">{{ textInterp }}</p>
-    <p *ngIf="mostrarCaducado">Ha caducado</p>
-    <p *ngIf="mostrarReintento">Reintenta mas tade</p>
+  <!-- Interpretacion -->
+  <div class="base {{ tema }}" *ngIf="!mostrarAnimacion">
+    <!-- Contenido Interpretacion -->
+    <div *ngIf="mostrarInterpretacion" class="p-interp">
+      <div>
+        <img [src]="imagen" alt="" />
+      </div>
+      <div>
+        <p class="txtInterp">{{ textInterp }}</p>
+      </div>
+      <div></div>
+    </div>
+
+    <!-- Contenido Caducado -->
+    <div *ngIf="mostrarCaducado">
+      <div>
+        <p>Ha caducado</p>
+      </div>
+    </div>
+
+    <!-- Contenido Reintento -->
+    <div *ngIf="mostrarReintento">
+      <div>
+        <p>Reintenta mas tade</p>
+      </div>
+    </div>
+
+    
+    
   </div>
 </div>

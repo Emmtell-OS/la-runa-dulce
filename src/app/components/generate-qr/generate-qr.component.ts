@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 import { CodiModel } from './../../models/CodiModel';
 import { map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
@@ -57,6 +58,7 @@ export class GenerateQrComponent implements OnInit {
   qrStyle: any;
 
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
+  @ViewChild('inputt') inputt: ElementRef;
 
   constructor(
     private service: ProcessLotesService,
@@ -130,6 +132,7 @@ export class GenerateQrComponent implements OnInit {
       });
     });
 
+    this.dataTable.sort((a, b) => new Date(b.creacion).getTime() - new Date(a.creacion).getTime());
     this.dataSource = new MatTableDataSource<HistorialTableModel>(
       this.dataTable
     );
@@ -328,7 +331,8 @@ export class GenerateQrComponent implements OnInit {
     this.visibleQR = false;
     this.selection.clear();
     this.dataJsonLP.splice(0, this.dataJsonLP.length);
-    this.getRegistroLotes()
+    this.getRegistroLotes();
+    this.inputt.nativeElement.value = '';
     
   }
 

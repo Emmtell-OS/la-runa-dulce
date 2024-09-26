@@ -33,7 +33,7 @@ export class AdminInterpComponent {
   descripcionParrafo = 'descripción...';
   mostrarMensaje = false;
   mensaje = null;
-  _REGISTRADO = 'Se ha registrado la interpretación con éxito para ';
+  _REGISTRADO = 'Se ha registrado la interpretación para ';
   _ERROR = 'La descripción no puede estar vacía y debe tener más de 10 caracteres';
 
   constructor(private service: InterpretacionesServiceService) {

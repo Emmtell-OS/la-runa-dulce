@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TiposPaqueteModel } from '../../models/TiposPaqueteModel';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { TipoPaquetesServiceService } from '../../service/tipo-paquetes-service.service';
 import { log } from 'console';
+import { TemaService } from '../../service/tema.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EliminarComponent } from '../modals/eliminar/eliminar.component';
 
 @Component({
   selector: 'app-admin-config',
@@ -21,12 +24,33 @@ export class AdminConfigComponent {
   _rowGridValue = 0;
   modificar = false;
   tipoPaqueteUpdate = ''
+  temasList = ['base1', 'base2', 'base3'];
+  temaControl: FormControl = new FormControl('', Validators.required);
+  isActualizarTema = false;
+  readonly dialog = inject(MatDialog);
 
-  constructor(private tpService: TipoPaquetesServiceService) {
+  constructor(private tpService: TipoPaquetesServiceService,
+              private temaService: TemaService) {
     this.getRegistroTiposPaquete();
+    this.getRegistroTema();
     this.formularioTiposPaquetes = new FormGroup({
       tipoPaquete: new FormControl('', Validators.required),
       totalEmpaques: new FormControl('', [Validators.required, Validators.min(4)])
+    });
+  }
+
+  public async getRegistroTema() {
+    /**conexión y consumo de Firebase */
+    await this.obtenerFirebaseDataTema().then((data: any) => {
+      this.temaControl.setValue(data[0]); 
+    });
+  }
+
+  obtenerFirebaseDataTema() {
+    return new Promise((resolve, reject) => {
+      this.temaService.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
     });
   }
 
@@ -134,14 +158,33 @@ export class AdminConfigComponent {
     });
     this.modificar = true;
     this.tipoPaqueteUpdate = element['tipoPaquete'];
-    this.eliminar(element, true);
+    this.eliminarTipoPaquete(element, true);
   }
 
-  public eliminar(element: any, isEditar: boolean) {    
+  private eliminarTipoPaquete(element: any, isEditar: boolean) {    
     this.tpService.delete(this._TIPOS_PAQUETE + '/' + element['tipoPaquete']);
     if(!isEditar) {
       this.getRegistroTiposPaquete();
     }
+  }
+
+  actualizarTema() {
+    this.isActualizarTema = false;
+    this.temaService.create(this.temaControl.value);
+  }
+
+  public mostrarEliminar(element: any, isEditar: boolean) {
+    const dialogRef = this.dialog.open(EliminarComponent, {
+      data: {seccion: 'tipoPaquete', values: element},
+      width: '300px',
+      height:'170px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.eliminarTipoPaquete(element, isEditar);
+      }
+    });
   }
 
   public soloNumeros(val: any) {
@@ -166,3 +209,4 @@ export class AdminConfigComponent {
     
   }
 }
+

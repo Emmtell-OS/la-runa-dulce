@@ -6,6 +6,7 @@ import { ProcessLotesService } from '../../service/process-lotes.service';
 import { log } from 'console';
 import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
 import Utils from '../../utilities/utils';
+import { TemaService } from '../../service/tema.service';
 
 @Component({
   selector: 'app-interpretaciones',
@@ -32,10 +33,14 @@ export class InterpretacionesComponent implements OnInit {
   intervalTextoAnimacion: any;
   iniciar;
   _UNO = 1;
+  imagen = './assets/img/';
+  tema = '';
+  bkgInterpretacion = '';
 
   constructor(private activateRoute: ActivatedRoute, 
               private service: ProcessLotesService,
-              private interpretacionesService: InterpretacionesServiceService) {
+              private interpretacionesService: InterpretacionesServiceService,
+              private temaService: TemaService) {
     
     this.mostrarInicio = true;
     this.mostrarReintento = false;
@@ -50,6 +55,7 @@ export class InterpretacionesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRegistroLotes();
+    this.getRegistroTema();
     this.getValores();
   }
 
@@ -171,6 +177,8 @@ export class InterpretacionesComponent implements OnInit {
     }
     let interpretacion = Utils.elegirInterpretacion(runaCode, this.catInterpretaciones);      
     this.textInterp = (interpretacion === null) ? 'Reintenta mas tarde...' : filtrado[runaCode][interpretacion];
+
+    this.imagen = this.imagen + runaCode.slice(0,2) + '.png'
   }
 
   public async getRegistroInterpretaciones() {
@@ -185,6 +193,22 @@ export class InterpretacionesComponent implements OnInit {
   obtenerFirebaseDataInterp() {
     return new Promise((resolve, reject) => {
       this.interpretacionesService.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
+  }
+
+  public async getRegistroTema() {
+    /**conexión y consumo de Firebase */
+    await this.obtenerFirebaseDataTema().then((data: any) => {
+      this.tema = data[0];
+      this.bkgInterpretacion = './assets/bkg-interpretacion/' + data[0] + '.gif';
+    });
+  }
+
+  obtenerFirebaseDataTema() {
+    return new Promise((resolve, reject) => {
+      this.temaService.getAll().valueChanges().subscribe(val => {
         resolve(val);
       })
     });

@@ -8,7 +8,7 @@
     <mat-card-content>
         <div class="center" >
             <div *ngFor="let qr of qrList" >
-                <qr-styles-dot [path]="qr['codi']" [img]="qr['img']" class="qrc"></qr-styles-dot>
+                <qr-styles-dot [path]="qr['codi']" [img]="qr['img']" [width]="180" [height]="180" [imgSize]="10"></qr-styles-dot>
             </div>
             <div >
                 <ul>
@@ -21,7 +21,7 @@
                 </ul>
             </div>
             <div >
-                <button (click)="reiniciarConsultados()"><p>Reiniciar Consultados</p></button>
+                <button (click)="reiniciarConsultados()">Reiniciar Consultados</button>
             </div>
         </div>
     </mat-card-content>

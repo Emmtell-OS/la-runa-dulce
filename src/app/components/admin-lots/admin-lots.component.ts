@@ -27,6 +27,8 @@ import { log } from 'console';
 import { TiposPaqueteModel } from '../../models/TiposPaqueteModel';
 import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
 import Utils from '../../utilities/utils';
+import { CodiModel } from '../../models/CodiModel';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin-lots',
@@ -58,6 +60,9 @@ export class AdminLotsComponent implements OnInit {
   produccionProductos: ProduccionModel[] = [];
   btnActive = true;
   btnProduction = [];
+  qrList: CodiModel[] = [];
+  qrList2: CodiModel[] = [];
+  pathBase = environment.path;
   
   @ViewChild(MatTable) table!: MatTable<TableModel>;
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
@@ -73,6 +78,7 @@ export class AdminLotsComponent implements OnInit {
       tipoPaquete: new FormControl('', Validators.required),
       cantidad: new FormControl('', [Validators.required, Validators.max(100)])
     });
+    this.qrLogo();
   }
 
   ngOnInit(): void { }
@@ -99,6 +105,22 @@ export class AdminLotsComponent implements OnInit {
         resolve(val);
       })
     });
+  }
+
+  private qrLogo() {
+    if(Utils.getRand(0,1) === 1) {
+      this.qrList.push({
+        codi: this.pathBase,
+        img: './assets/img/OD.png',
+        folio: ''
+      });
+    } else {
+      this.qrList2.push({
+        codi: this.pathBase,
+        img: './assets/img/SW.png',
+        folio: ''
+      });
+    }
   }
 
   public async getRegistroTiposPaquete() {
@@ -198,7 +220,7 @@ export class AdminLotsComponent implements OnInit {
         }
       });
     });
-
+    this.historialProductos.sort((a, b) => new Date(b.creacion).getTime() - new Date(a.creacion).getTime());
     this.dataSourceHistorial = new MatTableDataSource(this.historialProductos);
     if(!ft) {
       this.tableHistorial.renderRows();

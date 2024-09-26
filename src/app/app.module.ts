@@ -25,6 +25,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 import { AdminInterpComponent } from './components/admin-interp/admin-interp.component';
 import { ConfigComponent } from './components/configs/config.component';
@@ -47,6 +48,8 @@ import { QrDotComponent } from './components/qr-dot/qr-dot.component';
 import { MatIconModule } from '@angular/material/icon';
 import { CodiDetailesComponent } from './components/codi-detailes/codi-detailes.component';
 import { HomeComponent } from './components/home/home.component';
+import { EliminarComponent } from './components/modals/eliminar/eliminar.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -62,6 +65,7 @@ import { HomeComponent } from './components/home/home.component';
     QrDotComponent,
     CodiDetailesComponent,
     HomeComponent,
+    EliminarComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,9 +82,11 @@ import { HomeComponent } from './components/home/home.component';
     MatDialogModule,
     MatDividerModule,
     MatGridListModule,
+    MatButtonModule,
     MatTabsModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatProgressBarModule,
     NgxQrcodeStylingModule,
     MatIconModule,
     AngularFireModule.initializeApp(environment.firebase),

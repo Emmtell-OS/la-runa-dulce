@@ -1,21 +1,23 @@
 <mat-card appearance="outlined">
   <mat-card-header>
-    <mat-card-title> Generar QR </mat-card-title>
+    <mat-card-title> Generar PDF-QR </mat-card-title>
   </mat-card-header>
   <mat-card-content >
-    <mat-form-field>
+    <mat-form-field class="filtro">
       <mat-label>Filtrar</mat-label>
       <input
         matInput
         (keyup)="applyFilter($event)"
-        placeholder="QFvW99yh0T..."
-        #input
+        placeholder="Filtra por cualquier campo"
+        #inputt
       />
     </mat-form-field>
 
     <button mat-stroked-button (click)="ordenarSeleccionados()" [disabled]="generarActive">
       Generar
     </button>
+
+    <mat-progress-bar mode="indeterminate" *ngIf="visibleQR"></mat-progress-bar>
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
       <!-- Checkbox Column -->
@@ -41,22 +43,22 @@
 
       <ng-container matColumnDef="tipoPaquete">
         <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
-        <td mat-cell *matCellDef="let element">{{ element.tipoPaquete }}</td>
+        <td mat-cell *matCellDef="let element" (click)="selection.toggle(element)">{{ element.tipoPaquete }}</td>
       </ng-container>
 
       <ng-container matColumnDef="paquete">
         <th mat-header-cell *matHeaderCellDef>Paquete</th>
-        <td mat-cell *matCellDef="let element">{{ element.paquete }}</td>
+        <td mat-cell *matCellDef="let element" (click)="selection.toggle(element)">{{ element.paquete }}</td>
       </ng-container>
 
       <ng-container matColumnDef="lote">
         <th mat-header-cell *matHeaderCellDef>Lote</th>
-        <td mat-cell *matCellDef="let element">{{ element.lote }}</td>
+        <td mat-cell *matCellDef="let element" (click)="selection.toggle(element)">{{ element.lote }}</td>
       </ng-container>
 
       <ng-container matColumnDef="creacion">
         <th mat-header-cell *matHeaderCellDef>Creación paquete</th>
-        <td mat-cell *matCellDef="let element">{{ element.creacion }}</td>
+        <td mat-cell *matCellDef="let element" (click)="selection.toggle(element)">{{ element.creacion }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -94,10 +96,10 @@
     ></qrcode>
     </mat-grid-tile> -->
     <mat-grid-tile class="gridItem" *ngFor="let qr of qrList">
-      <qr-styles [path]="qr['codi']" [img]="qr['img']" ></qr-styles>
+      <qr-styles [path]="qr['codi']" [img]="qr['img']" [width]="160" [height]="160" [imgSize]="10" ></qr-styles>
     </mat-grid-tile>
     <mat-grid-tile class="gridItem" *ngFor="let qr2 of qrList2">
-      <qr-styles-dot [path]="qr2['codi']" [img]="qr2['img']" ></qr-styles-dot>
+      <qr-styles-dot [path]="qr2['codi']" [img]="qr2['img']" [width]="160" [height]="160" [imgSize]="10" ></qr-styles-dot>
     </mat-grid-tile>
   </mat-grid-list>
 </div>

@@ -1,0 +1,16 @@
+<mat-card class="card">
+    <mat-card-header>
+        <mat-card-title>Cuidado</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p>{{ mensaje }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="cerrar()" class="btnCancelar">
+            Cancelar <span class="material-icons">cancel</span>
+        </button>
+        <button mat-button [mat-dialog-close]="true" class="btnAceptar">
+            Eliminar <span class="material-icons">delete</span>
+        </button>
+    </mat-card-actions>
+</mat-card>

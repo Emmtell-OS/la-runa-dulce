@@ -6,7 +6,7 @@
     <form [formGroup]="formularioInterpretaciones">
 
       <!--autocomplete-->
-      <mat-form-field>
+      <mat-form-field class="mff">
         <mat-label>Escribre una runa</mat-label>
         <input
           type="text"
@@ -29,7 +29,7 @@
 
       <!--interpretacion-->
 
-      <mat-form-field *ngIf = "selectInterp">
+      <mat-form-field *ngIf = "selectInterp" class="mff">
         <mat-label *ngIf = "selectInterp" >Interpretación</mat-label>
 
         <mat-select formControlName="interpretacion" (closed)="obtenerValorInterpretacion()" *ngIf = "selectInterp">

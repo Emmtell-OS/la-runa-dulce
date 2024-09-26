@@ -1,6 +1,7 @@
 export const environment = {
     production: true,
     pathInterp: 'http://192.168.0.159/consultas/interpretacion/',
+    path: 'https://larunadulce.com.mx',
     firebase: {
         apiKey: 'AIzaSyDgs2akf2FgZ_mA_XUUPKvWg2MD_LAl3LY',
         authDomain: 'la-runa-dulce.firebaseapp.com',

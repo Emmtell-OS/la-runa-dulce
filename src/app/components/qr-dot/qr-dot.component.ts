@@ -13,6 +13,9 @@ export class QrDotComponent implements OnInit{
 
   @Input() path: string;
   @Input() img: string;
+  @Input() width: number;
+  @Input() height: number;
+  @Input() imgSize: number;
   @ViewChild('canvas', { static: true }) canvas: ElementRef;
 
   constructor() {
@@ -21,8 +24,8 @@ export class QrDotComponent implements OnInit{
   ngOnInit(): void {
 
     this.qrCode = new QRCodeStyling({
-      width: 160,
-      height: 160,
+      width: this.width,//160,
+      height: this.height,//160,
       type: 'canvas',
       data: this.path,
       image: this.img,
@@ -34,7 +37,7 @@ export class QrDotComponent implements OnInit{
       },
       imageOptions: {
         hideBackgroundDots: false,
-        imageSize: 10,
+        imageSize: this.imgSize,//10,
       },
       dotsOptions: {
         type: 'dots',

@@ -1,12 +1,18 @@
 <mat-card appearance="outlined">
-  <div class="flotante" (click)="mostrarGenerarQR()"><p>QR</p></div>
+  <div class="flotante" (click)="mostrarGenerarQR()" *ngFor="let qr of qrList">
+    <qr-styles [path]="qr['codi']" [img]="qr['img']" [width]="90" [height]="90" [imgSize]="9"></qr-styles>
+  </div>
+  <div class="flotante" (click)="mostrarGenerarQR()" *ngFor="let qr of qrList2">
+    <qr-styles-dot [path]="qr['codi']" [img]="qr['img']" [width]="90" [height]="90" [imgSize]="9"></qr-styles-dot>
+  </div>
   <mat-card-header>
     <mat-card-title> Registro de Lotes y Paquetes</mat-card-title>
   </mat-card-header>
   <mat-card-content>
+    <div class="formg">
     <form [formGroup]="formularioRegistro">
       <!--Autocomplete Lotes-->
-      <mat-form-field>
+      <mat-form-field class="mff">
         <mat-label>Inserta Lote</mat-label>
         <input
           type="text"
@@ -30,7 +36,7 @@
       </mat-form-field>
 
       <!--Select tipos Paquete-->
-      <mat-form-field>
+      <mat-form-field class="mff">
         <mat-label>Tipo de Paquete</mat-label>
 
         <mat-select formControlName="tipoPaquete">
@@ -41,7 +47,7 @@
       </mat-form-field>
 
       <!--Input Cantidad paquetes-->
-      <mat-form-field>
+      <mat-form-field class="mff">
         <mat-label>Cantidad de paquetes</mat-label>
         <input matInput type="text" 
         (keyup)="soloNumeros($event)"
@@ -66,12 +72,8 @@
       >
         Registrar
       </button>
-
-      <!--<p *ngIf="formularioRegistro.get('cantidad').dirty || formularioRegistro.get('cantidad').errors">
-        Ingrresa un número menor a mil</p>
-      <p *ngIf="formularioRegistro.get('tipoPaquete').dirty || formularioRegistro.get('tipoPaquete').errors">
-        Selecciona un tipo de paquete</p>-->
     </form>
+    </div>
 
     <!--Tabla de preregistro-->
 
@@ -168,12 +170,12 @@
       <mat-card-title>Historial</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-form-field>
+      <mat-form-field class= "filtro">
         <mat-label>Filtrar</mat-label>
         <input
           matInput
           (keyup)="applyFilterHistorial($event)"
-          placeholder="QFvW99yh0T..."
+          placeholder="Filtra por cualquier campo"
           #input
         />
       </mat-form-field>

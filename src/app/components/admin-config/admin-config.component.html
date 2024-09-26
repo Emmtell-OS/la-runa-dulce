@@ -1,17 +1,41 @@
 <mat-card>
     <mat-card-header>
+        <mat-card-title>
+            Tema Interpretaciones
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field class="mff">
+            <mat-label >Selecciona un tema</mat-label>
+    
+            <mat-select [formControl]="temaControl" (closed)=" isActualizarTema = true" >
+                <mat-option
+                    *ngFor="let temas of temasList"
+                    [value]="temas"
+                    >
+                    {{ temas }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button (click)="actualizarTema()" *ngIf="isActualizarTema" >Cambiar</button>
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-header>
         <mat-card-title>Catálogo Tipos Paquete</mat-card-title>
     </mat-card-header>
     <mat-card-content>
     <form [formGroup]="formularioTiposPaquetes">
-        <mat-form-field>
+        <mat-form-field class="mff">
             <mat-label>Tipo Paquete</mat-label>
             <input
             type="text"
             matInput
             formControlName="tipoPaquete"/>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field class="mff">
             <mat-label>Numero de Empaques</mat-label>
             <input
             type="text"
@@ -62,7 +86,7 @@
                 </button>
                 <button
                     mat-stroked-button
-                    (click)="eliminar(element, false)">
+                    (click)="mostrarEliminar(element, false)">
                 Eliminar
                 </button>
             </td>
