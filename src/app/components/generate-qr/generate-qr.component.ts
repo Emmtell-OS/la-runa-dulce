@@ -126,13 +126,13 @@ export class GenerateQrComponent implements OnInit {
           paquete: paquete['codigo'],
           tipoPaquete: paquete['tipoPaquete'],
           activo: '',
-          creacion: moment(paquete['creacion']).format('DD-MM-YYYY'),
+          creacion: paquete['creacion'],
           consultados: runaCod,
         });
       });
     });
-
     this.dataTable.sort((a, b) => new Date(b.creacion).getTime() - new Date(a.creacion).getTime());
+    this.dataTable.map((data) => data.creacion = moment(data.creacion).format('DD-MM-YYYY hh:mm'));
     this.dataSource = new MatTableDataSource<HistorialTableModel>(
       this.dataTable
     );
