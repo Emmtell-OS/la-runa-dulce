@@ -237,11 +237,7 @@ export class AdminConfigComponent {
       }
       this.temaService.create(this.formularioTemas.value['tema'].toUpperCase(), temaBody);
       this.getRegistroTema();
-      this.formularioTemas.setValue({
-        tema: '',
-        color: '#000000',
-        imagen: ''
-      });
+      this.formularioTemas.reset();
       this.modificarTema = false;
     }
   }
@@ -282,8 +278,10 @@ export class AdminConfigComponent {
 
   asignarTema(element: any) {
     let temaAnterior = this.catTemas.find((t) => t.asignado === true);
-    temaAnterior['asignado'] = false;
-    this.temaService.create(temaAnterior.tema, temaAnterior);
+    if(temaAnterior!== undefined && temaAnterior !== null) {
+      temaAnterior['asignado'] = false;
+      this.temaService.create(temaAnterior.tema, temaAnterior);
+    }
     let tema = this.catTemas.find((t) => element['tema'].toUpperCase() === t.tema.toUpperCase());
     tema['asignado'] = true;
     this.temaService.create(tema.tema, tema);

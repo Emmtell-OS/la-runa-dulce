@@ -16,9 +16,9 @@
             <mat-form-field class="mff">
                 <mat-label>Color</mat-label>
                 <input
-                type="color"
                 matInput
-                value="#00000"
+                type="color"
+                value= "#ffffff"
                 formControlName="color"/>
             </mat-form-field>
             <mat-form-field class="mff">
@@ -44,7 +44,11 @@
     
             <ng-container matColumnDef="color">
                 <th mat-header-cell *matHeaderCellDef>Color</th>
-                <td mat-cell *matCellDef="let element">{{ element.color }}</td>
+                <td mat-cell *matCellDef="let element">
+                    <div [ngStyle]="{'background-color': '#'+element.color}" class="barraColor">
+                        #{{ element.color }}
+                    </div>
+                </td>
             </ng-container>
     
             <ng-container matColumnDef="imagen">

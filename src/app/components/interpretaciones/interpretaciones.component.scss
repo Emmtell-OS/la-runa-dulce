@@ -15,42 +15,18 @@
   align-items: center;
 }
 
-.base1 {
-  background-color: aqua;
-}
-
-.base2 {
-  background-color: springgreen;
-}
-
-.base3 {
-  background-color: chocolate;
-}
-
-.animation {
-  background-color: bisque;
-  /*display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;*/
-}
-
-.interpretation {
-  background-color: bisque;
-}
-
-.inicio {
-  /*display: flex;
-  justify-content: center;
-  align-items: center;*/
-  background-color: bisque;
+.fondo {
+  width: 80%;
+  height: 70%;
+  background-color: #4c4c4c;
+  opacity: 1;
 }
 
 .btnIniciar {
   border-radius: 100%;
-  border: solid 1px rgb(0, 0, 0);
+  border: solid 1px #ffffff;
   background-color: rgb(165, 0, 0);
-  box-shadow: 4px 4px 70px rgb(3, 2, 2);
+  box-shadow: 4px 4px 70px #ffffff /*rgb(3, 2, 2)*/;
   width: 130px;
   height: 130px;
   display: flex;
@@ -105,22 +81,35 @@
 img {
   width: 140px;
   height: 140px;
-  margin: 20px;
+  margin: 5px;
 }
 
 .p-interp, div {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
+.p-interp {
+  width: 90%;
+  height: 90%;
+}
+
 .txtInterp {
-  width: 75%;
+  width: 100%;
   text-align: center;
-  margin: 35px;
-  font-size: 18px;
-  color: #4c4c4c;
+  //margin: 5px; //espacio entre la interpretacion y la imagen
+  font-size: 20px;
+  line-height: 1.5;
+  //opacity: .9;
+  background: rgba(76, 76, 76, 0.8);
+  color: #d1a020;
+}
+
+mark {
+  background-color: #4c4c4c;
+  opacity: .9;
+  color: #fff;
 }
 
 @media only screen and (max-width: 435px) {

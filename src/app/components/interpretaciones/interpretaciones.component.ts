@@ -7,6 +7,7 @@ import { log } from 'console';
 import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
 import Utils from '../../utilities/utils';
 import { TemaService } from '../../service/tema.service';
+import { TemasModel } from '../../models/TemasModel';
 
 @Component({
   selector: 'app-interpretaciones',
@@ -34,7 +35,9 @@ export class InterpretacionesComponent implements OnInit {
   iniciar;
   _UNO = 1;
   imagen = './assets/img/';
-  tema = '';
+  catTemas: TemasModel;
+  TEMACOLOR: any;
+  TEMAIMG: any;
   bkgInterpretacion = '';
 
   constructor(private activateRoute: ActivatedRoute, 
@@ -198,12 +201,13 @@ export class InterpretacionesComponent implements OnInit {
     });
   }
 
+  /*-------------------------------------TEMAS---------------------------------------------------------------*/
   public async getRegistroTema() {
     /**conexión y consumo de Firebase */
     await this.obtenerFirebaseDataTema().then((data: any) => {
-      this.tema = data[0];
-      this.bkgInterpretacion = './assets/bkg-interpretacion/' + data[0] + '.gif';
+      this.catTemas = data.find((t) => t.asignado === true);
     });
+    this.asignarTema();
   }
 
   obtenerFirebaseDataTema() {
@@ -212,5 +216,18 @@ export class InterpretacionesComponent implements OnInit {
         resolve(val);
       })
     });
+  }
+
+  private asignarTema() {
+    let color = '#' + this.catTemas.color;
+    this.TEMACOLOR = {
+      'background-color': color
+    }
+    this.TEMAIMG = {
+      'background-image': `url('./assets/bkg-interpretacion/${this.catTemas.imagen}')`,
+      'background-size': 'cover',
+      'background-color': color,
+      'opacity': '1.5'
+    }
   }
 }

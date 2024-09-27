@@ -1,6 +1,6 @@
-<div class="pad">
+<div class="pad" [ngStyle]="TEMACOLOR">
   <!-- Boton iniciar -->
-  <div class="base {{ tema }}" *ngIf="mostrarInicio">
+  <div [ngStyle]="TEMACOLOR" class="base" *ngIf="mostrarInicio">
     <div class="btnIniciar" (click)="btnIniciar()">
       <p class="">Iniciar</p>
     </div>
@@ -8,7 +8,8 @@
 
   <!-- Animación Mezclar -->
   <div
-    class="base {{ tema }}"
+    [ngStyle]="TEMACOLOR"
+    class="base"
     *ngIf="mostrarAnimacion && !mostrarInicio"
     (click)="cerrarAnimacion()"
   >
@@ -22,16 +23,18 @@
   </div>
 
   <!-- Interpretacion -->
-  <div class="base {{ tema }}" *ngIf="!mostrarAnimacion">
+  <div [ngStyle]="TEMAIMG" class="base" *ngIf="!mostrarAnimacion">
     <!-- Contenido Interpretacion -->
     <div *ngIf="mostrarInterpretacion" class="p-interp">
-      <div>
-        <img [src]="imagen" alt="" />
-      </div>
-      <div>
-        <p class="txtInterp">{{ textInterp }}</p>
-      </div>
-      <div></div>
+      
+        <div>
+          <img [src]="imagen" alt="" />
+        </div>
+        <div>
+          <p class="txtInterp">{{ textInterp }}</p>
+        </div>
+        <div></div>
+        
     </div>
 
     <!-- Contenido Caducado -->
