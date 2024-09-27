@@ -5,20 +5,82 @@
         </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <mat-form-field class="mff">
-            <mat-label >Selecciona un tema</mat-label>
-    
-            <mat-select [formControl]="temaControl" (closed)=" isActualizarTema = true" >
-                <mat-option
-                    *ngFor="let temas of temasList"
-                    [value]="temas"
-                    >
-                    {{ temas }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+        <form [formGroup]="formularioTemas">
+            <mat-form-field class="mff">
+                <mat-label>Tema</mat-label>
+                <input
+                type="text"
+                matInput
+                formControlName="tema"/>
+            </mat-form-field>
+            <mat-form-field class="mff">
+                <mat-label>Color</mat-label>
+                <input
+                type="color"
+                matInput
+                value="#00000"
+                formControlName="color"/>
+            </mat-form-field>
+            <mat-form-field class="mff">
+                <mat-label>Imagen</mat-label>
+                <input
+                type="text"
+                matInput
+                formControlName="imagen"/>
+            </mat-form-field>
 
-        <button (click)="actualizarTema()" *ngIf="isActualizarTema" >Cambiar</button>
+            <button 
+            mat-stroked-button 
+            [disabled]="formularioTemas.invalid"
+            (click)="crearTema()">Crear</button>
+
+        </form>
+
+        <table mat-table [dataSource]="datasourceTemas" #table>
+            <ng-container matColumnDef="tema">
+              <th mat-header-cell *matHeaderCellDef>Tema</th>
+              <td mat-cell *matCellDef="let element">{{ element.tema }}</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="color">
+                <th mat-header-cell *matHeaderCellDef>Color</th>
+                <td mat-cell *matCellDef="let element">{{ element.color }}</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="imagen">
+                <th mat-header-cell *matHeaderCellDef>Imagen</th>
+                <td mat-cell *matCellDef="let element">{{ element.imagen }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element; let index = index">
+                    <span *ngIf="element.asignado" class="txtTema"> TEMA ASIGNADO</span>
+                    <button
+                        mat-stroked-button
+                        *ngIf="!element.asignado"
+                        (click)="asignarTema(element)">
+                    Asignar
+                    </button>
+                    <button
+                        mat-stroked-button
+                        *ngIf="!element.asignado"
+                        (click)="editarTema(element)">
+                    Editar
+                    </button>
+                    <button
+                        mat-stroked-button
+                        *ngIf="!element.asignado"
+                        (click)="mostrarEliminarTema(element, false)">
+                    Eliminar
+                    </button>
+                </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedTemasColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedTemasColumns"></tr>
+        </table>
+
     </mat-card-content>
 </mat-card>
 

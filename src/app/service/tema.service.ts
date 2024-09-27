@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { TemasModel } from '../models/TemasModel';
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +19,15 @@ export class TemaService {
     return this.db.list(this.dbPath);
   }
 
-  create(tema: string): any {
-    return this.dataConfig.set('tema', tema);
+  create(idTema: string, tema: TemasModel): any {
+    return this.dataConfig.set(idTema, tema);
   }
 
   update(idConf:string, lote: any): any {
     return this.dataConfig.set(idConf, lote);
   }
 
-  delete(idConf:string): any {
-    return this.db.list(this.dbPath).remove(idConf);
+  delete(idTema:string): any {
+    return this.db.list(this.dbPath).remove(idTema);
   }
 }

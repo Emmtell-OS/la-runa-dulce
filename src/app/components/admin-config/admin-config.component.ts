@@ -7,6 +7,7 @@ import { log } from 'console';
 import { TemaService } from '../../service/tema.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EliminarComponent } from '../modals/eliminar/eliminar.component';
+import { TemasModel } from '../../models/TemasModel';
 
 @Component({
   selector: 'app-admin-config',
@@ -17,17 +18,21 @@ export class AdminConfigComponent {
 
   _TIPOS_PAQUETE = "tipoPaquetes";
   formularioTiposPaquetes: FormGroup;
+  formularioTemas: FormGroup;
   displayedTiposPaquetesColumns = ['tipoPaquete', 'totalEmpaques', 'columnGrid', 'rowGrid', 'actions'];
   datasourceTP: any;
   catTipoPaquete: TiposPaqueteModel[] = [];
   _columnGridValue = 0;
   _rowGridValue = 0;
   modificar = false;
+  modificarTema = false;
   tipoPaqueteUpdate = ''
-  temasList = ['base1', 'base2', 'base3'];
-  temaControl: FormControl = new FormControl('', Validators.required);
-  isActualizarTema = false;
   readonly dialog = inject(MatDialog);
+  displayedTemasColumns = ['tema', 'color', 'imagen', 'actions'];
+  datasourceTemas: any;
+  catTemas: TemasModel[] = [];
+  temaUpdate = ''
+  
 
   constructor(private tpService: TipoPaquetesServiceService,
               private temaService: TemaService) {
@@ -37,20 +42,10 @@ export class AdminConfigComponent {
       tipoPaquete: new FormControl('', Validators.required),
       totalEmpaques: new FormControl('', [Validators.required, Validators.min(4)])
     });
-  }
-
-  public async getRegistroTema() {
-    /**conexión y consumo de Firebase */
-    await this.obtenerFirebaseDataTema().then((data: any) => {
-      this.temaControl.setValue(data[0]); 
-    });
-  }
-
-  obtenerFirebaseDataTema() {
-    return new Promise((resolve, reject) => {
-      this.temaService.getAll().valueChanges().subscribe(val => {
-        resolve(val);
-      })
+    this.formularioTemas = new FormGroup({
+      tema: new FormControl('', Validators.required),
+      color: new FormControl('', Validators.required),
+      imagen: new FormControl('', Validators.required)
     });
   }
 
@@ -133,6 +128,11 @@ export class AdminConfigComponent {
     let ftp = this.formularioTiposPaquetes.value['tipoPaquete'].toUpperCase().trimStart().trimEnd();
     let existe = this.catTipoPaquete.filter((tp) =>  tp.tipoPaquete === ftp);
     if (existe.length === 0 || this.modificar) {
+      if (this.modificar) {
+        console.log(this.tipoPaqueteUpdate);
+        
+        this.eliminarTipoPaquete(this.tipoPaqueteUpdate, true);
+      }
       let tiposPaquetesModel: TiposPaqueteModel = {
         tipoPaquete: ftp,
         totalEmpaques: this.formularioTiposPaquetes.value['totalEmpaques'],
@@ -142,8 +142,6 @@ export class AdminConfigComponent {
       this.tpService.create(this._TIPOS_PAQUETE + '/' + tiposPaquetesModel['tipoPaquete'], tiposPaquetesModel);
       this.getRegistroTiposPaquete();
       this.formularioTiposPaquetes.reset();
-    } else {
-      //tool tip ya existe el tipo paquete
     }
   }
 
@@ -158,19 +156,14 @@ export class AdminConfigComponent {
     });
     this.modificar = true;
     this.tipoPaqueteUpdate = element['tipoPaquete'];
-    this.eliminarTipoPaquete(element, true);
+    //this.eliminarTipoPaquete(element, true);
   }
 
-  private eliminarTipoPaquete(element: any, isEditar: boolean) {    
-    this.tpService.delete(this._TIPOS_PAQUETE + '/' + element['tipoPaquete']);
+  private eliminarTipoPaquete(tipoPaquete: any, isEditar: boolean) {    
+    this.tpService.delete(this._TIPOS_PAQUETE + '/' + tipoPaquete);
     if(!isEditar) {
       this.getRegistroTiposPaquete();
     }
-  }
-
-  actualizarTema() {
-    this.isActualizarTema = false;
-    this.temaService.create(this.temaControl.value);
   }
 
   public mostrarEliminar(element: any, isEditar: boolean) {
@@ -182,7 +175,7 @@ export class AdminConfigComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.eliminarTipoPaquete(element, isEditar);
+        this.eliminarTipoPaquete(element['tipoPaquete'], isEditar);
       }
     });
   }
@@ -207,6 +200,94 @@ export class AdminConfigComponent {
       totalEmpaques: result
     });
     
+  }
+
+  /*-----------------------------------METODOS TEMAS---------------------------------------------*/
+  public async getRegistroTema() {
+    /**conexión y consumo de Firebase */
+    this.catTemas.splice(0, this.catTemas.length);
+    this.datasourceTemas = [];
+    await this.obtenerFirebaseDataTema().then((data: any) => {
+      this.catTemas = data;
+    });
+    this.datasourceTemas = this.catTemas;
+  }
+
+  obtenerFirebaseDataTema() {
+    return new Promise((resolve, reject) => {
+      this.temaService.getAll().valueChanges().subscribe(val => {
+        resolve(val);
+      })
+    });
+  }
+
+
+  crearTema() {
+    let color = this.formularioTemas.value['color'];
+    let existeTema = this.catTemas.filter((t) => this.formularioTemas.value['tema'].toUpperCase() === t.tema.toUpperCase());
+    if(existeTema.length === 0 || this.modificarTema){
+      if (this.modificarTema) {
+        this.eliminarTema(this.temaUpdate, true);
+      }
+      let temaBody: TemasModel = {
+        tema: this.formularioTemas.value['tema'].toUpperCase(),
+        color: color.slice(1, 7),
+        imagen: this.formularioTemas.value['imagen'],
+        asignado: false,
+      }
+      this.temaService.create(this.formularioTemas.value['tema'].toUpperCase(), temaBody);
+      this.getRegistroTema();
+      this.formularioTemas.setValue({
+        tema: '',
+        color: '#000000',
+        imagen: ''
+      });
+      this.modificarTema = false;
+    }
+  }
+
+  editarTema(elemet: any) {
+    let colorHex = '#' + elemet['color'];
+    this.formularioTemas.setValue({
+      tema: elemet['tema'],
+      color: colorHex,
+      imagen: elemet['imagen']
+    });
+    this.modificarTema = true;
+    this.temaUpdate = elemet.tema;
+  }
+
+  private eliminarTema(tema: any, isEditar: boolean) {
+    this.temaService.delete(tema);
+    if(!isEditar) {
+      this.getRegistroTema();
+    }
+  }
+
+  public mostrarEliminarTema(element: any) {
+    const dialogRef = this.dialog.open(EliminarComponent, {
+      data: {seccion: 'tema', values: element},
+      width: '380px',
+      height:'190px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(element.tema);
+        
+        this.eliminarTema(element.tema, false);
+      }
+    });
+  }
+
+  asignarTema(element: any) {
+    let temaAnterior = this.catTemas.find((t) => t.asignado === true);
+    temaAnterior['asignado'] = false;
+    this.temaService.create(temaAnterior.tema, temaAnterior);
+    let tema = this.catTemas.find((t) => element['tema'].toUpperCase() === t.tema.toUpperCase());
+    tema['asignado'] = true;
+    this.temaService.create(tema.tema, tema);
+    this.getRegistroTema();
   }
 }
 

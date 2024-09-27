@@ -23,6 +23,9 @@ export class EliminarComponent {
     switch(this.data.seccion) {
       case 'tipoPaquete':
         this.mensaje = `¿Deseas eliminar el tipo de paquete ${this.data.values['tipoPaquete']}?`;
+        break;
+      case 'tema':
+        this.mensaje = `¿Quieres eliminar de forma permanente el tema ${this.data.values['tema']}?`
     }
   }
 
