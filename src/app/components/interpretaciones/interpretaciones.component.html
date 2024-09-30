@@ -1,7 +1,7 @@
 <div class="pad" [ngStyle]="TEMACOLOR">
   <!-- Boton iniciar -->
   <div [ngStyle]="TEMACOLOR" class="base" *ngIf="mostrarInicio">
-    <div class="btnIniciar" (click)="btnIniciar()">
+    <div class="btnIniciar" (click)="btnIniciar(); mostrarAnimacion = true">
       <p class="">Iniciar</p>
     </div>
   </div>
@@ -23,7 +23,8 @@
   </div>
 
   <!-- Interpretacion -->
-  <div [ngStyle]="TEMAIMG" class="base" *ngIf="!mostrarAnimacion">
+  <div [ngStyle]="TEMAIMG" class="base" *ngIf="!mostrarAnimacion && !mostrarInicio">
+
     <!-- Contenido Interpretacion -->
     <div *ngIf="mostrarInterpretacion" class="p-interp">
       

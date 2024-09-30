@@ -20,12 +20,15 @@ export class InterpretacionesComponent implements OnInit {
   valueL: string;
   valueE: string;
   valueP: string;
-  mostrarAnimacion: boolean = true;
+  mostrarAnimacion: boolean;
   mostrarInterpretacion: boolean;
   mostrarReintento: boolean;
   mostrarCaducado: boolean;
   mostrarInicio: boolean;
   mostrarTexto: boolean;
+  mostraraInterpretacion: boolean;
+  mostraraReintento: boolean;
+  mostraraCaducado: boolean;
   limiteDias = 7;
   textInterp = '';
   textoAnimacionList: any;
@@ -44,8 +47,7 @@ export class InterpretacionesComponent implements OnInit {
               private service: ProcessLotesService,
               private interpretacionesService: InterpretacionesServiceService,
               private temaService: TemaService) {
-    
-    this.mostrarInicio = true;
+    this.mostrarAnimacion = false
     this.mostrarReintento = false;
     this.mostrarCaducado = false;
     this.mostrarInterpretacion = false;
@@ -81,6 +83,17 @@ export class InterpretacionesComponent implements OnInit {
   }
 
   cerrarAnimacion() {
+    if(this.mostraraReintento) {
+      this.mostrarReintento = true;
+      return
+    }
+    if (this.mostraraInterpretacion) {
+      this.mostrarInterpretacion = true;
+    } else if (this.mostraraCaducado) {
+      this.mostrarCaducado = true;
+    } else {
+      this.mostrarReintento = true;
+    }
     this.mostrarAnimacion = false;
     clearInterval(this.intervalTextoAnimacion);
   }
@@ -93,7 +106,7 @@ export class InterpretacionesComponent implements OnInit {
       });
       this.getRegistroInterpretaciones();      
     } catch (error) {
-      this.mostrarReintento = true;
+      this.mostraraReintento = true;
     }
   }
 
@@ -114,11 +127,10 @@ export class InterpretacionesComponent implements OnInit {
 
   showInterpretacion(): any {
     let valid = this.isValid();
-
     if (valid) {
-      this.mostrarInterpretacion = true;
+      this.mostraraInterpretacion = true;
     } else {
-      this.mostrarCaducado = true;
+      this.mostraraCaducado = true;
     }
   }
 
@@ -223,11 +235,14 @@ export class InterpretacionesComponent implements OnInit {
     this.TEMACOLOR = {
       'background-color': color
     }
-    this.TEMAIMG = {
-      'background-image': `url('./assets/bkg-interpretacion/${this.catTemas.imagen}')`,
-      'background-size': 'cover',
-      'background-color': color,
-      'opacity': '1.5'
-    }
+    setTimeout(() => {
+      this.mostrarInicio = true
+      this.TEMAIMG = {
+        'background-image': `url('./assets/bkg-interpretacion/${this.catTemas.imagen}')`,
+        'background-size': 'cover',
+        'background-color': color,
+        'opacity': '1.5'
+      }
+    }, 100);
   }
 }

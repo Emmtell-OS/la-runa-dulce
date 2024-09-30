@@ -92,7 +92,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule
   ],
-  providers: [],
+  providers: [{provide: APP_BASE_HREF, useValue: '/'}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
