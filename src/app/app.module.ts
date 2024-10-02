@@ -50,6 +50,8 @@ import { CodiDetailesComponent } from './components/codi-detailes/codi-detailes.
 import { HomeComponent } from './components/home/home.component';
 import { EliminarComponent } from './components/modals/eliminar/eliminar.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ReductorPipe } from './pipes/reductor.pipe';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     CodiDetailesComponent,
     HomeComponent,
     EliminarComponent,
+    ReductorPipe,
   ],
   imports: [
     BrowserModule,
@@ -89,6 +92,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatProgressBarModule,
     NgxQrcodeStylingModule,
     MatIconModule,
+    MatTooltipModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule
   ],

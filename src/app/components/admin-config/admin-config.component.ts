@@ -8,6 +8,8 @@ import { TemaService } from '../../service/tema.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EliminarComponent } from '../modals/eliminar/eliminar.component';
 import { TemasModel } from '../../models/TemasModel';
+import { Clipboard } from '@angular/cdk/clipboard'
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-admin-config',
@@ -35,7 +37,8 @@ export class AdminConfigComponent {
   
 
   constructor(private tpService: TipoPaquetesServiceService,
-              private temaService: TemaService) {
+              private temaService: TemaService,
+              private clipboard: Clipboard) {
     this.getRegistroTiposPaquete();
     this.getRegistroTema();
     this.formularioTiposPaquetes = new FormGroup({
@@ -200,6 +203,10 @@ export class AdminConfigComponent {
       totalEmpaques: result
     });
     
+  }
+
+  portaPapeles(textoCopiar: string) {
+    this.clipboard.copy(textoCopiar);
   }
 
   /*-----------------------------------METODOS TEMAS---------------------------------------------*/

@@ -238,7 +238,8 @@ export class InterpretacionesComponent implements OnInit {
     setTimeout(() => {
       this.mostrarInicio = true
       this.TEMAIMG = {
-        'background-image': `url('./assets/bkg-interpretacion/${this.catTemas.imagen}')`,
+        //'background-image': `url('./assets/bkg-interpretacion/${this.catTemas.imagen}')`,
+        'background-image': `url('${this.catTemas.imagen}')`,
         'background-size': 'cover',
         'background-color': color,
         'opacity': '1.5'
