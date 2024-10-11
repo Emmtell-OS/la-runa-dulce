@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title> Administrador de interpretaciones </mat-card-title>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content class="mbl">
     <form [formGroup]="formularioInterpretaciones">
 
       <!--autocomplete-->
@@ -66,13 +66,13 @@
             cdkTextareaAutosize
             #autosize="cdkTextareaAutosize"
             cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="15"
+            cdkAutosizeMaxRows="500"
             formControlName="descripcion"
           >
           </textarea>
         </mat-form-field>
 
-        <div *ngIf="mostrarMensaje">
+        <div *ngIf="mostrarMensaje" class="mbl">
           <p>{{mensaje}}</p>
         </div>
 

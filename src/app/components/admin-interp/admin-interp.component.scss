@@ -29,3 +29,45 @@ button {
     width: 90px;
     height: 30px;
 }
+
+@media only screen and (max-width: 435px) {
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .mbl {
+        width: 92%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .descripcion {
+        margin-top: 50px;
+        align-items: center;
+        width: 100%;
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    button {
+        margin-bottom: 50px;
+        width: 90%;
+        font-size: 18px;
+    }
+
+    .d-descripcion-i {
+        width: 100%;
+        height: 100%;
+    }
+
+    .descripcion-i {
+        width: 100%;
+        height: auto;
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+}
