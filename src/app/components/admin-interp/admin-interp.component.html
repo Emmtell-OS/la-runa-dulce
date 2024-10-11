@@ -28,7 +28,6 @@
       </mat-form-field>
 
       <!--interpretacion-->
-
       <mat-form-field *ngIf = "selectInterp" class="mff">
         <mat-label *ngIf = "selectInterp" >Interpretación</mat-label>
 
@@ -42,24 +41,33 @@
       </mat-form-field>
 
       <!--Buttons-->
-      <button
+        <button
         mat-stroked-button
         *ngIf="btnEditar"
         (click)="editarInterpretacion()"
-      >
-        Editar
-      </button>
+        >
+          <span>Editar</span>
+        </button>
 
-      <button
+        <button
+        mat-stroked-button
+        *ngIf="btnEditar"
+        (click)="mostrarEliminar()"
+        >
+          <span>Eliminar</span>
+        </button>
+
+        <button
         mat-stroked-button
         *ngIf="btnCreate"
         (click)="registrarInterpretacion()"
-      > {{ txtbtn }} </button>
+        > <span>{{ txtbtn }}</span> </button>
+      
 
       <!--Input descripcion-->
 
       <div  class="d-descripcion-i">
-        <mat-form-field *ngIf="descripcionInput" class="descripcion-i">
+        <mat-form-field *ngIf="descripcionInput" appearence="fill" class="descripcion-i">
           <mat-label>Descripción...</mat-label>
           <textarea
             matInput

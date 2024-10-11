@@ -14,6 +14,8 @@ export class EliminarComponent {
 
   mensaje = ''
   confirmacion = false;
+  isCerrar = true;
+  isEliminar = true;
 
   constructor() {
     this.setMensaje();
@@ -26,6 +28,16 @@ export class EliminarComponent {
         break;
       case 'tema':
         this.mensaje = `¿Quieres eliminar de forma permanente el tema ${this.data.values['tema']}?`
+        break;
+      case 'qr':
+        this.mensaje = `No existe el Tipo Paquete ${this.data.values} en catálogo. No se genera este QR`
+        this.isEliminar = false;
+        break;
+      case 'interpretacion':
+        this.mensaje = `¿Deseas eliminar la interpretación ${this.data.values['numero']} de ${this.data.values['runa']} ?`;
+        break;
+      default:
+        this.mensaje = 'mensaje de prueba'
     }
   }
 

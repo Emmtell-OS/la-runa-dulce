@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
 import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
 import { limit } from 'firebase/firestore';
 import { log } from 'console';
+import { EliminarComponent } from '../modals/eliminar/eliminar.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-admin-interp',
@@ -35,6 +37,8 @@ export class AdminInterpComponent {
   mensaje = null;
   _REGISTRADO = 'Se ha registrado la interpretación para ';
   _ERROR = 'La descripción no puede estar vacía y debe tener más de 10 caracteres';
+  readonly dialog = inject(MatDialog);
+  toDeleteObject: any;
 
   constructor(private service: InterpretacionesServiceService) {
     this.getRegistroInterpretaciones();
@@ -83,7 +87,11 @@ export class AdminInterpComponent {
   }
 
   obtenerValorInterpretacion() {
+    this.mostrarMensaje = false;
     let seleccionado = this.formularioInterpretaciones.value['interpretacion'];
+    if (seleccionado === null || seleccionado === undefined || seleccionado === '') {
+      return;
+    }
     let runa = this.formularioInterpretaciones.value['runa'];
     let runaCode = this.runasBase.find((r) => r['runa'] === runa)['codigo'];
     let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
@@ -100,7 +108,11 @@ export class AdminInterpComponent {
       this.descripcionP = true;
       this.btnEditar = true;
       this.descripcionParrafo = filtrado[runaCode][seleccionado - 1];
-      
+      this.toDeleteObject = {
+        'runaCode': runaCode,
+        'runa': runa,
+        'numero': seleccionado
+      };
     }
   }
 
@@ -170,17 +182,29 @@ export class AdminInterpComponent {
     this.btnEditar = false;
     this.selectInterp = false;
     this.descripcionInput = false;
+    this.descripcionP = false;
     this.pintarMensaje(runa);
     this.getRegistroInterpretaciones();
   }
 
   pintarMensaje(msj: string) {
-    this.mensaje = (msj !== null) ? this._REGISTRADO + msj : this._ERROR;
+    switch(msj) {
+      case null:
+        this.mensaje = this._ERROR;
+      break;
+      case 'eliminar':
+        this.mensaje = `Se ha eliminado la interpretación ${this.toDeleteObject['numero']} de ${this.toDeleteObject['runa']}`;
+      break
+      default:
+        this.mensaje = this._REGISTRADO + msj;
+      break
+    }
+    //this.mensaje = (msj !== null) ? this._REGISTRADO + msj : this._ERROR;
     this.mostrarMensaje = true;
     setTimeout(() => {
       this.mostrarMensaje = false;
       this.mensaje = '';
-    }, 8000);
+    }, 6000);
   }
 
   llenarInterpretaciones(runa: any) {
@@ -213,6 +237,28 @@ export class AdminInterpComponent {
 
   filterRunas(name: string) {
     return this.runasList.filter(run => run['runa'].toUpperCase().includes(name.toUpperCase()));
+  }
+
+  public mostrarEliminar() {
+    const dialogRef = this.dialog.open(EliminarComponent, {
+      data: {seccion: 'interpretacion', values: this.toDeleteObject},
+      width: '300px',
+      height:'170px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.eliminar(this.toDeleteObject['runaCode']);
+      }
+    });
+    
+  }
+
+  eliminar(runaCode: string) {
+    let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
+    filtrado[runaCode].splice([this.toDeleteObject['numero']-1], 1);
+    this.service.create(this.toDeleteObject['runa'], filtrado);
+    this.reiniciar('eliminar');
   }
 
   carga() {

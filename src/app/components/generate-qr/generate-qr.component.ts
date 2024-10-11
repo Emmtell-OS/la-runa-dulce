@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
 import { CodiModel } from './../../models/CodiModel';
 import { map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, inject } from '@angular/core';
 import {
   MatTable,
   MatTableDataSource,
@@ -22,6 +22,8 @@ import { resolve } from 'path';
 import { rejects } from 'assert';
 import { log } from 'console';
 import Utils from '../../utilities/utils';
+import { MatDialog } from '@angular/material/dialog';
+import { EliminarComponent } from '../modals/eliminar/eliminar.component';
 
 @Component({
   selector: 'app-generate-qr',
@@ -56,6 +58,7 @@ export class GenerateQrComponent implements OnInit {
   visibleQR = false;
   qrCode = null;
   qrStyle: any;
+  readonly dialog = inject(MatDialog);
 
   @ViewChild(MatTable) tableHistorial!: MatTable<HistorialTableModel>;
   @ViewChild('inputt') inputt: ElementRef;
@@ -142,7 +145,14 @@ export class GenerateQrComponent implements OnInit {
     this.visibleQR = true;
     this.generarActive = true;
     await this.ordenarPromise();
-    this.generarQR();
+    if ( this.seleccionadosList.length > 0) {
+      this.generarQR();
+    } else {
+      this.visibleQR = false;
+      this.selection.clear();
+      this.inputt.nativeElement.value = '';
+    }
+    
   }
 
   private ordenarPromise() {
@@ -152,8 +162,12 @@ export class GenerateQrComponent implements OnInit {
           (tp) =>
             ps.tipoPaquete.toLowerCase() === tp['tipoPaquete'].toLowerCase()
         );
-        ps.consultados = tipoPaquete.rowGrid;
-        this.seleccionadosList.push(ps);
+        if (tipoPaquete !== undefined) {
+          ps.consultados = tipoPaquete.rowGrid;
+          this.seleccionadosList.push(ps);
+        } else {
+          this.mostrarError(ps.tipoPaquete);
+        }
       });
 
       this.seleccionadosList.sort((a, b) => b.consultados - a.consultados);
@@ -179,7 +193,7 @@ export class GenerateQrComponent implements OnInit {
           seleccionado.tipoPaquete.toLowerCase() ===
           tp['tipoPaquete'].toLowerCase()
       );
-
+      
       this.tp = tipoPaquete.tipoPaquete;
 
       if (
@@ -334,6 +348,14 @@ export class GenerateQrComponent implements OnInit {
     this.getRegistroLotes();
     this.inputt.nativeElement.value = '';
     
+  }
+
+  private mostrarError(tp: string) {
+    const dialogRef = this.dialog.open(EliminarComponent, {
+      data: {seccion: 'qr', values: tp},
+      width: '500px',
+      height:'170px'
+    });
   }
 
   mapearSeleccionado(row?: HistorialTableModel) {
