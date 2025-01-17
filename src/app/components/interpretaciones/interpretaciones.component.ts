@@ -182,6 +182,8 @@ export class InterpretacionesComponent implements OnInit {
   }
 
   private obtenerInterpretacion(id: number, runaCode: string) {
+    
+    this.imagen = this.imagen + runaCode.slice(0,2) + '.png'
     let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
     
     if (filtrado !== undefined ) {
@@ -190,10 +192,10 @@ export class InterpretacionesComponent implements OnInit {
         return;
       }
     }
+
     let interpretacion = Utils.elegirInterpretacion(runaCode, this.catInterpretaciones);      
     this.textInterp = (interpretacion === null) ? 'Reintenta mas tarde...' : filtrado[runaCode][interpretacion];
 
-    this.imagen = this.imagen + runaCode.slice(0,2) + '.png'
   }
 
   public async getRegistroInterpretaciones() {
