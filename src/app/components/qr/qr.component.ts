@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import QRCodeStyling  from 'qr-code-styling';
+import QRCodeStyling  from 'qr-code-styling-node';
 import Utils from '../../utilities/utils';
 
 @Component({

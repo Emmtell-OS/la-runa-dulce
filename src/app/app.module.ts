@@ -42,7 +42,6 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { AdminConfigComponent } from './components/admin-config/admin-config.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 import { QrComponent } from './components/qr/qr.component';
 import { QrDotComponent } from './components/qr-dot/qr-dot.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -90,7 +89,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatCheckboxModule,
     MatSnackBarModule,
     MatProgressBarModule,
-    NgxQrcodeStylingModule,
     MatIconModule,
     MatTooltipModule,
     AngularFireModule.initializeApp(environment.firebase),
