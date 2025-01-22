@@ -26,4 +26,7 @@ export class ProcessLotesService {
     return this.dataLP.set(idLote, lote);
   }
 
+  delete(idLote:string): any {
+    return this.db.list(this.dbPath).remove(idLote);
+  }
 }

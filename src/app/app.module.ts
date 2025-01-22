@@ -55,6 +55,8 @@ import { DetallesLoteComponent } from './components/modals/detalles-lote/detalle
 import { LpConsoleComponent } from './components/lp-console/lp-console.component';
 import { PuntoVentaConsoleComponent } from './components/punto-venta-console/punto-venta-console.component';
 import { DetallesPuntoVentaComponent } from './components/modals/detalles-punto-venta/detalles-punto-venta.component';
+import { BooleanPipe } from './pipes/boolean.pipe';
+import { FormatDatePipe } from './pipes/format-date.pipe';
 
 @NgModule({
   declarations: [
@@ -75,6 +77,8 @@ import { DetallesPuntoVentaComponent } from './components/modals/detalles-punto-
     LpConsoleComponent,
     PuntoVentaConsoleComponent,
     DetallesPuntoVentaComponent,
+    BooleanPipe,
+    FormatDatePipe,
   ],
   imports: [
     BrowserModule,
