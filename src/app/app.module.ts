@@ -52,6 +52,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ReductorPipe } from './pipes/reductor.pipe';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { DetallesLoteComponent } from './components/modals/detalles-lote/detalles-lote.component';
+import { LpConsoleComponent } from './components/lp-console/lp-console.component';
+import { PuntoVentaConsoleComponent } from './components/punto-venta-console/punto-venta-console.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { DetallesLoteComponent } from './components/modals/detalles-lote/detalle
     HomeComponent,
     EliminarComponent,
     ReductorPipe,
+    LpConsoleComponent,
+    PuntoVentaConsoleComponent,
   ],
   imports: [
     BrowserModule,
