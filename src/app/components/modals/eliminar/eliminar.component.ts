@@ -36,6 +36,48 @@ export class EliminarComponent {
       case 'interpretacion':
         this.mensaje = `¿Deseas eliminar la interpretación ${this.data.values['numero']} de ${this.data.values['runa']} ?`;
         break;
+      case 'desLote':
+        this.mensaje = `¿Deseas desactivar el Lote ${this.data.values}?`
+        this.isEliminar = false;
+        this.confirmacion = true;
+        break;
+      case 'actLote':
+        this.mensaje = `¿Deseas activar el Lote ${this.data.values}?`
+        this.isEliminar = false;
+        this.confirmacion = true;
+        break;
+      case 'delLote':
+        this.mensaje = `¿Deseas eliminar de forma permanente el Lote ${this.data.values}?`
+        this.isEliminar = true
+        break;
+      case 'desPaq':
+        this.mensaje = `¿Deseas desactivar el Paquete ${this.data.values}?`
+        this.isEliminar = false;
+        this.confirmacion = true;
+        break;
+      case 'actPaq':
+        this.mensaje = `¿Deseas activar el Paquete ${this.data.values}?`
+        this.isEliminar = false;
+        this.confirmacion = true;
+        break;
+      case 'delPaq':
+        this.mensaje = `¿Deseas eliminar de forma permanente el Paquete ${this.data.values}?`
+        this.isEliminar = true;
+        break;
+      case 'desPV':
+        this.mensaje = `¿Deseas desactivar el Punto de Venta ${this.data.values}? NO se mostrará en el home`
+        this.isEliminar = false;
+        this.confirmacion = true;
+        break;
+      case 'actPV':
+        this.mensaje = `¿Deseas activar el Punto de Venta ${this.data.values}? SE MOSTRARÁ en el home`
+        this.isEliminar = false;
+        this.confirmacion = true;
+        break;
+      case 'delPV':
+        this.mensaje = `¿Deseas eliminar de forma permanente el Punto de Venta ${this.data.values}?`
+        this.isEliminar = true;
+        break;  
       default:
         this.mensaje = 'mensaje de prueba'
     }

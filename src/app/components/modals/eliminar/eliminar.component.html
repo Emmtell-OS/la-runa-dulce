@@ -12,5 +12,8 @@
         <button mat-button *ngIf="isEliminar" [mat-dialog-close]="true" class="btnAceptar">
             Eliminar <span class="material-icons">delete</span>
         </button>
+        <button mat-button *ngIf="confirmacion" [mat-dialog-close]="true" class="btnAceptar">
+            Aceptar <span class="material-icons">check</span>
+        </button>
     </mat-card-actions>
 </mat-card>
