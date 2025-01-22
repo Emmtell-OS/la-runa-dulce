@@ -126,6 +126,7 @@ export class GenerateQrComponent implements OnInit {
         paquete['consultados'].map((r: {}) => runaCod.push(Object.keys(r)[0]));
         this.dataTable.push({
           lote: lote['lote'],
+          loteActivo: '',
           paquete: paquete['codigo'],
           tipoPaquete: paquete['tipoPaquete'],
           activo: '',
@@ -363,6 +364,7 @@ export class GenerateQrComponent implements OnInit {
       //agreagar a preseleccionados
       this.preseleccionados.push({
         lote: row['lote'],
+        loteActivo: '',
         paquete: row['paquete'],
         tipoPaquete: row['tipoPaquete'],
         activo: '',

@@ -1,1 +1,127 @@
-<p>punto-venta-console works!</p>
+<form [formGroup]="formularioPuntoVenta" class="fm">
+    <mat-form-field class="mff med">
+        <mat-label>Nombre Comercial</mat-label>
+        <input
+        type="text"
+        matInput
+        formControlName="nombreComercial"/>
+    </mat-form-field>
+
+    <mat-form-field class="mff med">
+        <mat-label>Representante</mat-label>
+        <input
+        type="text"
+        matInput
+        formControlName="representante"/>
+    </mat-form-field>
+
+    <mat-form-field class="mff lrg">
+        <mat-label>Direccion</mat-label>
+        <input
+        type="text"
+        matInput
+        formControlName="direccion"/>
+    </mat-form-field>
+
+    <mat-form-field class="mff lrg">
+        <mat-label>URL Maps</mat-label>
+        <input
+        type="text"
+        matInput
+        formControlName="urlMaps"/>
+    </mat-form-field>
+
+    <mat-form-field class="mff">
+        <mat-label>Telefono</mat-label>
+        <input
+        type="text"
+        matInput
+        formControlName="telefono"/>
+    </mat-form-field>
+
+    <mat-form-field class="mff">
+        <mat-label>Negocio</mat-label>
+        <input
+        type="text"
+        matInput
+        formControlName="negocio"/>
+    </mat-form-field>
+
+    <mat-form-field class="mff">
+        <mat-label>Contacto</mat-label>
+        <input
+        type="text"
+        matInput
+        formControlName="contacto"/>
+    </mat-form-field>
+
+    <button 
+            mat-stroked-button 
+            [disabled]="formularioPuntoVenta.invalid"
+            (click)="registrar(false)"
+            *ngIf= "!isEdit">
+            Registrar <span class="material-icons">add</span>
+    </button>
+    <button 
+            mat-stroked-button 
+            [disabled]="formularioPuntoVenta.invalid"
+            (click)="registrar(true)"
+            *ngIf= "isEdit">
+            Actualizar <span class="material-icons">add_circle</span>
+    </button>
+</form>
+<div>
+    <table mat-table [dataSource]="datasourcePV" #tablePuntoVenta>
+
+        <ng-container matColumnDef="comercio">
+        <th mat-header-cell *matHeaderCellDef>Comercio</th>
+        <td mat-cell *matCellDef="let element">{{ element.nombreComercial }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="representante">
+        <th mat-header-cell *matHeaderCellDef>Representante</th>
+        <td mat-cell *matCellDef="let element">{{ element.representante }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="negocio">
+        <th mat-header-cell *matHeaderCellDef>Negocio</th>
+        <td mat-cell *matCellDef="let element">{{ element.negocio}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estatus">
+        <th mat-header-cell *matHeaderCellDef>Estatus</th>
+        <td mat-cell *matCellDef="let element">
+            <mat-slide-toggle
+            class="btn"
+            [checked]="element.activo"
+            [matTooltip]="(element.activo) ? 'Desactivar' : 'Activar'"
+            (change)="mostrarDesactivarPV(element)"
+            >
+            {{ element.activo | boolean}} 
+            </mat-slide-toggle>
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+  
+            <button mat-button class="btn" (click)="mostrarDetalles(element)" >
+                Detalles <span class="material-icons">info</span>
+            </button>
+
+            <button mat-button class="btn" (click)="editar(element)">
+                Editar <span class="material-icons">edit</span>
+            </button>
+
+            <button mat-button class="btn-d" (click)="mostrarEliminarPV(element)">
+                Eliminar <span class="material-icons">delete</span>
+            </button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedPVColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedPVColumns"></tr>
+    </table>
+  </div>

@@ -53,7 +53,7 @@ export class AdminLotsComponent implements OnInit {
   stashLoteList: TableModel[] = [];
   displayedColumns: string[] = ['lote', 'tipoPaquete', 'cantidad', 'action'];
   dataSource: any;
-  displayedHistorialColumns: string[] = ['lote', 'paquete', 'tipoPaquete', 'activo', 'consultados', 'action'];
+  displayedHistorialColumns: string[] = ['lote', 'loteActivo', 'paquete', 'tipoPaquete', 'activo', 'consultados', 'action'];
   dataSourceHistorial: any;
   historialProductos: HistorialTableModel[] = [];
   displayedProduccionColumns: string[] = ['lote', 'paquete', 'tipoPaquete', 'produccion', 'action'];
@@ -207,14 +207,16 @@ export class AdminLotsComponent implements OnInit {
     this.historialProductos.splice(0, this.historialProductos.length);
     this.dataSourceHistorial = new MatTableDataSource();
     this.dataJsonLP.forEach((lote) => {
-      let folioLote = lote['lote']
+      let folioLote = lote['lote'];
+      let loteActivo = lote['activo'];
       lote['paquetes'].forEach(paq => {  
         if (paq['estatusProduccion'] === 'T') {
           this.historialProductos.push({
             "lote": folioLote,
+            "loteActivo": loteActivo,
             "paquete": paq['codigo'],
             "tipoPaquete": paq['tipoPaquete'],
-            "activo": (paq['activo']) ? 'activo' : 'inactivo',
+            "activo": paq['activo'],
             "creacion": paq['creacion'],
             "consultados": paq['consultados'].filter(x => x['consultas'] > 0).length,
           });

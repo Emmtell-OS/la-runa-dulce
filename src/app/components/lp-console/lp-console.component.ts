@@ -142,7 +142,7 @@ export class LpConsoleComponent {
         seccion: 'delLote', 
         values: element['lote']
       },
-      width: '300px',
+      width: '400px',
       height:'170px'
     });
 
