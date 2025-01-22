@@ -19,13 +19,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
-//import { DetallesLoteComponent } from './components/detalles-lote/detalles-lote.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import { AdminInterpComponent } from './components/admin-interp/admin-interp.component';
 import { ConfigComponent } from './components/configs/config.component';
@@ -102,6 +102,7 @@ import { FormatDatePipe } from './pipes/format-date.pipe';
     MatProgressBarModule,
     MatIconModule,
     MatTooltipModule,
+    MatSlideToggleModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule
   ],

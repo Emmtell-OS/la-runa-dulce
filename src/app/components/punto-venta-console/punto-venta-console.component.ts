@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-punto-venta-console',
+  selector: 'punto-venta',
   templateUrl: './punto-venta-console.component.html',
   styleUrl: './punto-venta-console.component.scss'
 })
