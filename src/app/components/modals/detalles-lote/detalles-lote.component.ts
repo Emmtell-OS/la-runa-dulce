@@ -1,17 +1,17 @@
-import { SemaforoModel } from './../../models/SemaforoModel';
 import { Component, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DialogData } from '../../models/DialogData';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import moment from 'moment';
-import { ProcessLotesService } from '../../service/process-lotes.service';
-import { log } from 'console';
+import { DialogData } from '../../../models/DialogData';
+import { SemaforoModel } from '../../../models/SemaforoModel';
+import { ProcessLotesService } from '../../../service/process-lotes.service';
 
 @Component({
   selector: 'app-detalles-lote',
   templateUrl: './detalles-lote.component.html',
-  styleUrl: './detalles-lote.component.scss',
+  styleUrl: './detalles-lote.component.scss'
 })
 export class DetallesLoteComponent {
+
   readonly dialogRef = inject(MatDialogRef<DetallesLoteComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
@@ -94,4 +94,5 @@ export class DetallesLoteComponent {
     }
 
   }
+
 }

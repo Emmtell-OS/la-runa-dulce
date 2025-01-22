@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { HistorialTableModel } from '../../models/HistorialTableModel';
 import { MatDialog } from '@angular/material/dialog';
-import { DetallesLoteComponent } from '../detalles-lote/detalles-lote.component';
+
 import { ProduccionModel } from '../../models/ProduccionModel';
 import moment from 'moment';
 import {MatDividerModule} from '@angular/material/divider';
@@ -29,6 +29,7 @@ import { InterpretacionesServiceService } from '../../service/interpretaciones-s
 import Utils from '../../utilities/utils';
 import { CodiModel } from '../../models/CodiModel';
 import { environment } from '../../../environments/environment';
+import { DetallesLoteComponent } from '../modals/detalles-lote/detalles-lote.component';
 
 @Component({
   selector: 'app-admin-lots',

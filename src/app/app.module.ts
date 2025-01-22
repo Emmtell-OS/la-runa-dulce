@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
-import { DetallesLoteComponent } from './components/detalles-lote/detalles-lote.component';
+//import { DetallesLoteComponent } from './components/detalles-lote/detalles-lote.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -51,6 +51,7 @@ import { EliminarComponent } from './components/modals/eliminar/eliminar.compone
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ReductorPipe } from './pipes/reductor.pipe';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { DetallesLoteComponent } from './components/modals/detalles-lote/detalles-lote.component';
 
 @NgModule({
   declarations: [
