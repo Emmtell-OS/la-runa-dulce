@@ -14,11 +14,11 @@ import { EliminarComponent } from '../modals/eliminar/eliminar.component';
 export class LpConsoleComponent {
 
   dataJsonLP = [];
-  displayedLotesColumns: string[] = ['lote', 'paquetes', 'fecha', 'estatus'];
+  displayedLotesColumns: string[] = ['lote', 'paquetes', 'fecha', 'estatus', 'actions'];
   dataSourceHistorial: any;
   historialLotes: LotesConsoleModel[] = [];
 
-  displayedPaquetesColumns: string[] = ['paquete', 'tipoPaquete', 'lote', 'creacion', 'estatus'];
+  displayedPaquetesColumns: string[] = ['paquete', 'tipoPaquete', 'lote', 'creacion', 'estatus', 'actions'];
   dataSourceHistorialPaqs: any;
   historialPaqs: PaquetesConsoleModel[] = [];
   readonly dialog = inject(MatDialog);

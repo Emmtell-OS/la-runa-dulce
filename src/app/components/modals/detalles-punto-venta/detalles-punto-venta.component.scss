@@ -1,0 +1,33 @@
+.cont {
+    border: 2px solid #3d3b3b;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 5px 5px 7px #8e8c8c;
+    //float: left;
+}
+
+
+
+.desc {
+    margin-left: 15px;
+}
+
+.med {
+    width: 200px;
+}
+
+.med-d {
+    width: 320px;
+}
+
+.big {
+    width: 400px;
+}
+
+.hor {
+    display: flex;
+    justify-content: center;
+    justify-content: space-evenly;
+    overflow: hidden;
+}
