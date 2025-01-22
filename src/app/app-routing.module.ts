@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'consultas/interpretacion/:codi', component: InterpretacionesComponent  },
   { path: 'consultas/interpretacion/:codi/detailes', component: CodiDetailesComponent  },
   { path: 'admon-lots', component: ConfigComponent },
-  { path: '', component: ConfigComponent /*HomeComponent*/ } //descomentar home antes de liberar
+  { path: '', component: HomeComponent  /*ConfigComponent*/ } //descomentar home antes de liberar
 ];
 
 @NgModule({
