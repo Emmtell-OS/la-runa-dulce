@@ -54,6 +54,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { DetallesLoteComponent } from './components/modals/detalles-lote/detalles-lote.component';
 import { LpConsoleComponent } from './components/lp-console/lp-console.component';
 import { PuntoVentaConsoleComponent } from './components/punto-venta-console/punto-venta-console.component';
+import { DetallesPuntoVentaComponent } from './components/modals/detalles-punto-venta/detalles-punto-venta.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { PuntoVentaConsoleComponent } from './components/punto-venta-console/pun
     ReductorPipe,
     LpConsoleComponent,
     PuntoVentaConsoleComponent,
+    DetallesPuntoVentaComponent,
   ],
   imports: [
     BrowserModule,
