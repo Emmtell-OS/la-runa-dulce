@@ -120,8 +120,8 @@ export class GenerateQrComponent implements OnInit {
 
   private cargarDatos() {
     this.dataTable = [];
-    this.dataJsonLP.map((lote) => {
-      lote['paquetes'].map((paquete) => {
+    this.dataJsonLP.filter((lt) => lt['activo'] === true).map((lote) => {
+      lote['paquetes'].filter((lt) => lt['activo'] === true).map((paquete) => {
         let runaCod = [];
         paquete['consultados'].map((r: {}) => runaCod.push(Object.keys(r)[0]));
         this.dataTable.push({
