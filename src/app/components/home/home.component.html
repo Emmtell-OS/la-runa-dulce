@@ -1,56 +1,119 @@
 <div class="gral">
   
+  <!--#############  LOGO  ###############-->
   <div class="son">
     <div class="circle">
       <img src="./../../../assets/img/lgo.jpeg" alt="Sin Logo">
     </div>
-    <span>El consejo más dulce</span>
+    <p class="d-table" style="text-align: center;">El consejo más dulce</p>
   </div>
 
-  <div class="cont-table son">
-    <p>
+  <!--#############  TABLE  ###############-->
+  <div class="son">
+    <p class="d-table">
       Obten un consejo en nuestros puntos de venta:
     </p>
-
-    <table mat-table [dataSource]="datasourcePV" #tablePuntoVenta>
-      <ng-container matColumnDef="comercio">
-        <th mat-header-cell *matHeaderCellDef>Lugar</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.nombreComercial }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="direccion">
-        <th mat-header-cell *matHeaderCellDef>Dirección</th>
-        <td mat-cell *matCellDef="let element">{{ element.direccion }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="mapa">
-        <th mat-header-cell *matHeaderCellDef>Ubicación</th>
-        <td mat-cell *matCellDef="let element">
-          <a mat-raised-button href="{{ element.urlMaps }}" target="_blank">
-            <p class="btn_txt">Ver Mapa</p> 
-            <span class="material-icons pin">pin_drop</span>
-          </a>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedPVColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedPVColumns"></tr>
-    </table>
+    <div class="cont-table">
+      <table mat-table [dataSource]="datasourcePV" #tablePuntoVenta>
+        <ng-container matColumnDef="comercio">
+          <th mat-header-cell *matHeaderCellDef>Lugar</th>
+          <td mat-cell *matCellDef="let element" class="lugar">
+            {{ element.nombreComercial }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="direccion">
+          <th mat-header-cell *matHeaderCellDef>Dirección</th>
+          <td mat-cell *matCellDef="let element" class="direccion">{{ element.direccion }}</td>
+        </ng-container>
+        <ng-container matColumnDef="mapa">
+          <th mat-header-cell *matHeaderCellDef>Ubicación</th>
+          <td mat-cell *matCellDef="let element">
+            <a mat-raised-button href="{{ element.urlMaps }}" target="_blank">
+              <p class="btn_txt">Ver Mapa</p> 
+              <span class="material-icons pin">pin_drop</span>
+            </a>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedPVColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedPVColumns"></tr>
+      </table>
+    </div>
   </div>
+
+  <!--#############  PRODUCTOS  ###############-->
   <div class="son">
     <p>¿Ya conoces nuestra variedad de productos?</p>
     <p>Endulza tu día con:</p>
     <ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
+      <li>
+        <div class="card">
+          <div class="img"></div>
+          <p class="dulce">Cachuates</p>
+        </div>
+      </li>
+      <li>
+        <div class="card">
+          <p class="dulce">Gomitas</p>
+          <div class="img"></div>
+        </div>
+      </li>
+      <li>
+        <div class="card">
+          <div class="img"></div>
+          <p class="dulce">Bombones</p>
+        </div>
+      </li>
+      <li>
+        <div class="card">
+          <p class="dulce">Chocolate</p>
+          <div class="img"></div>          
+        </div>
+      </li>
+      <li>
+        <div class="card">
+          <div class="img"></div>
+          <p class="dulce">Galletas</p>
+        </div>
+      </li>
+      <li>
+        <div class="card">
+          <p class="dulce">Trufas</p>
+          <div class="img"></div>          
+        </div>
+      </li>
+      <li>
+        <div class="card">
+          <div class="img"></div>
+          <p class="dulce">Mazapanes</p>
+        </div>
+      </li>
     </ul>
-
   </div>
+
+  <!--#############  INSTRUCCIONES  ###############-->
+  <div class="son">
+    <p class="d-table">¿Cómo funciona La runa dulce?</p>
+    <ul>
+      <li>
+        <div class="card">
+          <div class="gde"></div>
+          <div class="gde"></div>
+        </div>
+      </li>
+      <li>
+        <div class="card">
+          <div class="gde"></div>
+          <div class="gde"></div>
+        </div>
+      </li>
+      <li>
+        <div class="card">
+          <div class="gde"></div>
+          <div class="gde"></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!--#############  CONTACTO  ###############-->
 </div>
