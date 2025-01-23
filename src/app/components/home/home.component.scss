@@ -6,3 +6,52 @@
     overflow: hidden;*/
     width: 70%;
 }
+
+.gral {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.son {
+    margin: auto;
+
+}
+
+.circle {
+    width: 100%;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+@media only screen and (max-width: 435px) {
+
+    .cont-table {
+        width: 90%;
+    }
+
+    img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .btn_txt {
+        font-size: 10px;
+        margin: 6px;
+        color: brown;
+    }
+
+    a {
+        height: auto;
+        width: 100%;
+    }
+
+    
+}

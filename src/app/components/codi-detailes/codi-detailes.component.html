@@ -6,7 +6,7 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <div class="center" >
+        <div class="center" *ngIf= "isExist">
             <div *ngFor="let qr of qrList" >
                 <qr-styles-dot [path]="qr['codi']" [img]="qr['img']" [width]="180" [height]="180" [imgSize]="10"></qr-styles-dot>
             </div>
@@ -23,6 +23,9 @@
             <div >
                 <button (click)="reiniciarConsultados()">Reiniciar Consultados</button>
             </div>
+        </div>
+        <div class="center" *ngIf= "!isExist">
+          <span>No existe el {{ mensajeExist }}</span>
         </div>
     </mat-card-content>
   </mat-card>

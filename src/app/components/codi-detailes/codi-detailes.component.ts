@@ -23,6 +23,8 @@ export class CodiDetailesComponent implements OnInit {
   pathBase = environment.pathInterp;
   mostrar = false;
   qrList: CodiModel[] = [];
+  isExist: boolean;
+  mensajeExist: string;
 
   constructor(private activateRoute: ActivatedRoute,
               private service: ProcessLotesService,) {
@@ -63,7 +65,18 @@ export class CodiDetailesComponent implements OnInit {
     this.pathQR = this.pathBase + codi;
     
     let lot = this.dataJsonLP.find((lotes) => lotes['lote'] === this.lote);
+    if (lot === undefined) {
+      this.mensajeExist = `Lote - ${this.lote}`;
+      this.isExist = false;
+      return;
+    }
     let paq = lot['paquetes'].find((paquetes) => paquetes['codigo'] === this.paquete);
+    if (paq === undefined) {
+      this.mensajeExist = `Paquete - ${this.paquete} del Lote - ${this.lote}`;
+      this.isExist = false;
+      return;
+    }
+    
     let consul = paq['consultados'].find((cns) => Object.keys(cns)[0] === this.runaCode);
     this.consultados = consul['consultas'];
     this.estatus = (paq['activo']) ? 'ACTIVO' : 'INACTIVO';
@@ -75,6 +88,7 @@ export class CodiDetailesComponent implements OnInit {
       img: this.image,
       folio: ''
     });
+    this.isExist = true;
     
   }
 

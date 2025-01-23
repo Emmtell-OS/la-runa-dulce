@@ -1,29 +1,56 @@
-<div class="cont-table">
-  <p>
-    Encuentra nuestros productos en cualquier de los siguientes puntos de venta:
-  </p>
+<div class="gral">
+  
+  <div class="son">
+    <div class="circle">
+      <img src="./../../../assets/img/lgo.jpeg" alt="Sin Logo">
+    </div>
+    <span>El consejo más dulce</span>
+  </div>
 
-  <table mat-table [dataSource]="datasourcePV" #tablePuntoVenta>
-    <ng-container matColumnDef="comercio">
-      <th mat-header-cell *matHeaderCellDef>Lugar</th>
-      <td mat-cell *matCellDef="let element">{{ element.nombreComercial }}</td>
-    </ng-container>
+  <div class="cont-table son">
+    <p>
+      Obten un consejo en nuestros puntos de venta:
+    </p>
 
-    <ng-container matColumnDef="direccion">
-      <th mat-header-cell *matHeaderCellDef>Dirección</th>
-      <td mat-cell *matCellDef="let element">{{ element.direccion }}</td>
-    </ng-container>
+    <table mat-table [dataSource]="datasourcePV" #tablePuntoVenta>
+      <ng-container matColumnDef="comercio">
+        <th mat-header-cell *matHeaderCellDef>Lugar</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.nombreComercial }}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="mapa">
-      <th mat-header-cell *matHeaderCellDef>Ubicación</th>
-      <td mat-cell *matCellDef="let element">
-        <a mat-raised-button href="{{ element.urlMaps }}" target="_blank">
-            Ver Mapa <span class="material-icons">pin_drop</span>
-        </a>
-    </td>
-    </ng-container>
+      <ng-container matColumnDef="direccion">
+        <th mat-header-cell *matHeaderCellDef>Dirección</th>
+        <td mat-cell *matCellDef="let element">{{ element.direccion }}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedPVColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedPVColumns"></tr>
-  </table>
+      <ng-container matColumnDef="mapa">
+        <th mat-header-cell *matHeaderCellDef>Ubicación</th>
+        <td mat-cell *matCellDef="let element">
+          <a mat-raised-button href="{{ element.urlMaps }}" target="_blank">
+            <p class="btn_txt">Ver Mapa</p> 
+            <span class="material-icons pin">pin_drop</span>
+          </a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedPVColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedPVColumns"></tr>
+    </table>
+  </div>
+  <div class="son">
+    <p>¿Ya conoces nuestra variedad de productos?</p>
+    <p>Endulza tu día con:</p>
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+
+  </div>
 </div>
