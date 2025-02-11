@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'consultas/interpretacion/:codi', component: InterpretacionesComponent  },
   { path: 'consultas/interpretacion/:codi/detailes', component: CodiDetailesComponent  },
   { path: 'admon-lots', component: ConfigComponent },
+  { path: 'admin-lots', component: ConfigComponent },
   { path: '', component: HomeComponent },
   { path: '**', redirectTo: '' }
 ];
