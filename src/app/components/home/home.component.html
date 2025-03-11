@@ -1,119 +1,115 @@
-<div class="gral">
-  
-  <!--#############  LOGO  ###############-->
-  <div class="son">
-    <div class="circle">
-      <img src="./../../../assets/img/lgo.jpeg" alt="Sin Logo">
-    </div>
-    <p class="d-table" style="text-align: center;">El consejo más dulce</p>
+<div class="bkg">
+  <div class="banner">
+    <img
+      src="../../../assets/img/logos/lrd-logo.jpeg"
+      alt="LOGO"
+      data-aos="zoom-in"
+      data-aos-duration="1500"
+    />
   </div>
 
-  <!--#############  TABLE  ###############-->
-  <div class="son">
-    <p class="d-table">
-      Obten un consejo en nuestros puntos de venta:
+  <div
+    class="presentacion"
+    data-aos="zoom-in-up"
+    data-aos-easing="ease-in-out-sine"
+    data-aos-duration="2000"
+  >
+    <p class="descripcion">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean facilisis
+      in dui in mattis. Vestibulum facilisis orci et dolor feugiat, non
+      scelerisque mauris tempus. Aenean vitae lectus posuere, egestas velit sed,
+      consectetur elit. Ut maximus viverra turpis sed pellentesque. Sed maximus
+      ut nisi hendrerit gravida. Mauris molestie tempus quam nec semper. Nulla
+      eu convallis quam. Donec tincidunt sagittis mi, et viverra ipsum tempor
+      sed. Class aptent taciti sociosqu ad litora torquent per conubia nostra,
+      per inceptos himenaeos.
     </p>
-    <div class="cont-table">
-      <table mat-table [dataSource]="datasourcePV" #tablePuntoVenta>
-        <ng-container matColumnDef="comercio">
-          <th mat-header-cell *matHeaderCellDef>Lugar</th>
-          <td mat-cell *matCellDef="let element" class="lugar">
-            {{ element.nombreComercial }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="direccion">
-          <th mat-header-cell *matHeaderCellDef>Dirección</th>
-          <td mat-cell *matCellDef="let element" class="direccion">{{ element.direccion }}</td>
-        </ng-container>
-        <ng-container matColumnDef="mapa">
-          <th mat-header-cell *matHeaderCellDef>Ubicación</th>
-          <td mat-cell *matCellDef="let element">
-            <a mat-raised-button href="{{ element.urlMaps }}" target="_blank">
-              <p class="btn_txt">Ver Mapa</p> 
-              <span class="material-icons pin">pin_drop</span>
-            </a>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedPVColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedPVColumns"></tr>
-      </table>
+  </div>
+
+  <div
+    class="marco"
+    data-aos="fade-down"
+    data-aos-easing="linear"
+    data-aos-duration="1500"
+  >
+    <div class="son">
+      <p class="descripcion">
+        Tu dosis de dulzura y fortuna, más cerca que nunca...
+      </p>
+      <p class="descripcion">Encuentranos en:</p>
+
+      <div class="tabla" data-aos="flip-left" data-aos-duration="1500">
+        <table mat-table [dataSource]="datasourcePV" #tablePuntoVenta>
+          <ng-container matColumnDef="comercio">
+            <th mat-header-cell *matHeaderCellDef>Lugar</th>
+            <td mat-cell *matCellDef="let element" class="lugar">
+              {{ element.nombreComercial }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="direccion">
+            <th mat-header-cell *matHeaderCellDef>Dirección</th>
+            <td mat-cell *matCellDef="let element" class="direccion">
+              {{ element.direccion }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="mapa">
+            <th mat-header-cell *matHeaderCellDef c>Ubicación</th>
+            <td mat-cell *matCellDef="let element">
+              <a
+                mat-raised-button
+                href="{{ element.urlMaps }}"
+                target="_blank"
+                class="btn_table"
+              >
+                <p class="btn_txt">Mapa</p>
+                <span class="material-icons pin">pin_drop</span>
+              </a>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedPVColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedPVColumns"></tr>
+        </table>
+      </div>
     </div>
   </div>
 
-  <!--#############  PRODUCTOS  ###############-->
-  <div class="son">
-    <p>¿Ya conoces nuestra variedad de productos?</p>
-    <p>Endulza tu día con:</p>
-    <ul>
-      <li>
-        <div class="card">
-          <div class="img"></div>
-          <p class="dulce">Cachuates</p>
+  <div class="marco" data-aos="fade-up-left" data-aos-duration="2000">
+    <div class="son">
+      <p class="descripcion">Endulza tu destino facilmente...</p>
+      <p class="descripcion">Conoce nuestra variedad de productos:</p>
+
+      <div class="galeria">
+        <div class="item_g">
+          <div class="item-desc inf-der"><p class="item-txt descripcion">chocolate</p></div>
         </div>
-      </li>
-      <li>
-        <div class="card">
-          <p class="dulce">Gomitas</p>
-          <div class="img"></div>
+        <div class="item_g">
+          <div class="item-desc sup-izq"><p class="item-txt descripcion">gomitas</p></div>
         </div>
-      </li>
-      <li>
-        <div class="card">
-          <div class="img"></div>
-          <p class="dulce">Bombones</p>
+        <div class="item_g">
+          <div class="item-desc inf-der"><p class="item-txt descripcion">cacahuates</p></div>
         </div>
-      </li>
-      <li>
-        <div class="card">
-          <p class="dulce">Chocolate</p>
-          <div class="img"></div>          
+        <div class="item_g">
+          <div class="item-desc sup-izq"><p class="item-txt descripcion">bombones</p></div>
         </div>
-      </li>
-      <li>
-        <div class="card">
-          <div class="img"></div>
-          <p class="dulce">Galletas</p>
+        <div class="item_g">
+          <div class="item-desc inf-der"><p class="item-txt descripcion">galletas</p></div>
         </div>
-      </li>
-      <li>
-        <div class="card">
-          <p class="dulce">Trufas</p>
-          <div class="img"></div>          
+        <div class="item_g">
+          <div class="item-desc sup-izq"><p class="item-txt descripcion">individual</p></div>
         </div>
-      </li>
-      <li>
-        <div class="card">
-          <div class="img"></div>
-          <p class="dulce">Mazapanes</p>
-        </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 
-  <!--#############  INSTRUCCIONES  ###############-->
-  <div class="son">
-    <p class="d-table">¿Cómo funciona La runa dulce?</p>
-    <ul>
-      <li>
-        <div class="card">
-          <div class="gde"></div>
-          <div class="gde"></div>
-        </div>
-      </li>
-      <li>
-        <div class="card">
-          <div class="gde"></div>
-          <div class="gde"></div>
-        </div>
-      </li>
-      <li>
-        <div class="card">
-          <div class="gde"></div>
-          <div class="gde"></div>
-        </div>
-      </li>
-    </ul>
+  <div
+    class="marco"
+    data-aos="zoom-in-down"
+    data-aos-easing="linear"
+    data-aos-duration="1500"
+  >
+    <div class="son">
+      <p class="descripcion">Y a todo esto..</p>
+      <p>¿Cómo funciona?</p>
+    </div>
   </div>
-
-  <!--#############  CONTACTO  ###############-->
 </div>

@@ -37,7 +37,7 @@ export class InterpretacionesComponent implements OnInit {
   intervalTextoAnimacion: any;
   iniciar;
   _UNO = 1;
-  imagen = './assets/img/';
+  imagen = './assets/img/runas/';
   catTemas: TemasModel;
   TEMACOLOR: any;
   TEMAIMG: any;

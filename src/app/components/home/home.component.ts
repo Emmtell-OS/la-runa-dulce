@@ -1,14 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { PuntosVentaModel } from '../../models/PuntosVentaModel';
 import { MatTable } from '@angular/material/table';
 import { PuntosVentaService } from '../../service/puntos-venta.service';
+import * as AOS from 'aos';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, AfterViewInit {
 
   displayedPVColumns = ['comercio', 'direccion', 'mapa'];
   datasourcePV: any;
@@ -19,6 +20,14 @@ export class HomeComponent {
   constructor(private servicePuntoVenta: PuntosVentaService) {
     this.getRegistroPuntoVenta(true);
   }
+
+ ngOnInit(): void {
+  AOS.init();
+ }
+
+ ngAfterViewInit(){
+  //AOS.init();
+}
 
   private async getRegistroPuntoVenta(ft: boolean) {
     /**conexión y consumo de Firebase */

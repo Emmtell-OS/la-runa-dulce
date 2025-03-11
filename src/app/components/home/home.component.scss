@@ -1,145 +1,136 @@
-.cont-table {
-    width: 90%;
-    margin: auto;
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-.d-table {
-    margin: 12px auto;
-    width: 100%;
+.son,
+img
+{
+  margin: auto;
 }
 
-.gral {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+.bkg {
+  background-color: #d0c6b3;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.son {
-    margin: 30px auto;
-}
-
-.circle {
-    width: 100%;
+.banner {
+  background-image: url('../../../assets/img/logos/bkgl.jpeg');
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 200px;
 }
 
 img {
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: auto;
+  width: 500px;
+  height: 300px;
 }
 
-.card {
-    //border: solid 2px #000;
-    display: flex;
-    flex-direction: row;
-    //justify-content: center;
-    //justify-content: space-evenly;
-    width: 350px;
+.marco {
+  background-color: #800080;
+  width: 50%;
+  margin: 420px auto;
+  box-shadow: 12px 12px 16px #fbb40e;
 }
 
-.dulce {
-    margin: auto 22px;
-    font-size: 27px;
+.son {
+  background-color: #800080;
+  border: 10px double #bf890b;
+  display: flex;
+  flex-direction: column;
 }
 
-.img {
-    border-radius: 100%;
-    width: 120px;
-    height: 120px;
-    background-color: #363333;
+.marco, .son {
+  border-radius: 10px;
+  padding: 20px;
 }
 
-li {
-    margin: 15px;
-    
+.liston {
+  background-color: #483d8b;
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  justify-content: space-between;
+  border-radius: 60px 25px 25px 60px;
+  padding: 3px;
 }
 
-ul {
-    list-style: none;
+.reverse {
+  flex-direction: row-reverse;
+  border-radius: 25px 60px 60px 25px;
 }
 
-.gde {
-    background-color: #898686;
-    width: 180px;
-    height: 180px;
-    margin: 5px 12px;
+.presentacion {
+  width: 50%;
+  text-align: center;
+  margin: 450px auto;
 }
 
+.galeria {
+  height: 400px;
+  display: flex;
+  flex-direction: row;
+}
 
-@media only screen and (max-width: 435px) {
+.item_g {
+  width: 600px;
+  height: 300px;
+  background-color: #013463;
+  margin: 1px;
+  opacity: 0.5;
+  position: relative;
 
-    .son {
-        margin: 15px auto;
-    }
+  transition: width 1s linear, height 1s linear, opacity 1s;
+}
 
-    img {
-        width: 190px;
-        height: 190px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
+.item-desc {
+  position: absolute;
+  background-color: #483d8b;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.3s ease, width 1s ease, height 1s ease;
+}
 
-    .cont-table {
-        width: 95%;
-        margin: auto;
-    }
+.inf-der {
+  bottom: 0;
+  right: 0;
+  margin-bottom: 25px;
+  align-items: end;
+}
 
-    .d-table {
-        width: 75%;
-        margin: auto;
-    }
+.sup-izq {
+  top: 0;
+  left: 0;
+  margin-top: 25px;
+  align-items: start;
+}
 
-    .direccion {
-        font-size: 11px;
-    }
+.item_g:hover .item-desc {
+  opacity: 0.8;
+  width: 50%;
+  height: 60px;
+}
 
-    .lugar {
-        font-size: 14px;
-    }
+.item_g:hover .item-txt {
+  opacity: 1;
+}
 
-    .btn_txt {
-        font-size: 15px;
-        margin: 12px 14px;
-        color: brown;
-        width: 100%;
-    }
+.item_g:hover {
+  background-color: #0174df;
+  width: 3000px;
+  height: 400px;
+}
 
-    a {
-        height: 100%;
-    }
-
-    ul {
-        background-color: cadetblue;
-    }
-
-    li {
-        background-color: aliceblue;
-        margin: 15px 35px 15px auto;
-    }
-
-    .card {
-        width: 100%;
-        background-color: aqua;
-        justify-content: space-between;
-    }
-
-    .img {
-        width: 95px;
-        height: 95px;
-        background-color: #9e4d4d;
-    }
-
-    .dulce {
-        margin: auto;
-        font-size: 18px;
-    }
-
-    .gde {
-        background-color: #d94a4a;
-        width: 140px;
-        height: 180px;
-        margin: 0px 14px;
-    }
+.item-txt {
+  margin: auto 10px;
+  opacity: 0;
+  transition: opacity 3s ease;
 }
