@@ -1,136 +1,248 @@
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.son,
-img
-{
-  margin: auto;
-}
-
-.bkg {
-  background-color: #d0c6b3;
-  width: 100%;
+.fondo {
+  background-color: #deaa87;
+  //width: 100%;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
+}
+
+.config-img {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  position: absolute;
+  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+}
+
+p {
+//font-size: 25px;
+font-family: "Passero One", sans-serif;
+letter-spacing: 2px;
+//text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.6); /* Sombra */
+line-height: 1.4;
+font-style: normal;
+//color: ;
+//text-shadow: -1px -1px 0 #555, 1px -1px 0 #555, -1px 1px 0 #555,
+  //1px 1px 0 #555, 4px 4px 2px rgba(0, 0, 0, 0.6); /* Sombra */
+}
+
+.camino {
+  width: 100%;
+  height: 800px;
+  background-image: url("../../../assets/img/fondos/plantilla_camino.svg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center center;
+}
+
+.bosque {
+  width: 100%;
+  height: 638px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center center;
+}
+
+.escenarios {
+  height: 1000px;
+  background-color: #deaa87;
+  position: relative;
+  //background-color: #8791de;
+}
+
+.letrero {
+  //margin-top: 90px ;
+  width: 60vw;
+  height: 60vh;
+  background-image: url("../../../assets/img/fondos/letrero.svg");
+  transform: translate(-70%, -50%);
+  //background-color: #6b4407;
+}
+
+.saludo {
+  //margin-top: 90px ;
+  width: 60vw;
+  height: 60vh;
+  background-image: url("../../../assets/img/fondos/saludo.svg");
+  transform: translate(-25%, -35%);
+}
+
+.introduccion-box {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -53%);
+  width: 70%;
+  height: 55%;
+  //background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.introduccion-text {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.desc-section {
+  margin: 50px 80px;
+  font-size: 25px;
+}
+
+.mapa {
+  //margin-top: 90px ;
+  width: 80vw;
+  height: 80vh;
+  background-image: url("../../../assets/img/fondos/guia.svg");
+  transform: translate(-40%, -50%);
+  //background-color: #483d8b;
+}
+
+.buscar {
+  //margin-top: 90px ;
+  width: 60vw;
+  height: 60vh;
+  background-image: url("../../../assets/img/fondos/buscar.svg");
+  transform: translate(-99%, -40%);
+  //background-color: #483d8b;
+}
+
+.cont-table {
+  //box-shadow: 12px 12px 24px #8e6300; // #fbb40e;
+  width: 68%;
+  margin: auto;
+  padding: 10px;
+  //background-color: #483D8B;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-52%, -50%);
+}
+
+.table th {
+  background-color: #ffccaa;
+  font-weight: bold;
+  //color: #483d8b;
+}
+
+.table tr {
+  color: #bf890b;
+  background-color: #ffccaa;
+  //background: rgb(19,18,20);
+//background: radial-gradient(circle, rgba(19,18,20,1) 0%, rgba(128,0,128,1) 30%, rgba(0,0,0,1) 67%, rgba(128,0,128,1) 95%);
+  font-size: 21px;
+  font-family: "Passero One", sans-serif;
+  //letter-spacing: 5px;
+}
+
+.table tr:hover {
+  background-color: #ffb380;
+}
+
+.puesto {
+  //margin-top: 90px ;
+  width: 80vw;
+  height: 70vh;
+  background-image: url("../../../assets/img/fondos/puesto.svg");
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  //background-color: #483d8b;
+}
+
+.presentar {
+  //margin-top: 90px ;
+  width: 20vw;
+  height: 70vh;
+  background-image: url("../../../assets/img/fondos/presentar.svg");
+  top: 68%;
+  left: 85%;
+  transform: translate(-50%, -50%);
+  //background-color: #483d8b;
+}
+
+.carrusel {
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  background-color: #333;
+}
+
+.carr-img {
+  //width: 250px;
+  height: 230px;
+  background-color: #0174df;
+}
+
+.instrucciones {
+  //margin-top: 90px ;
+  width: 100%;
+  //background-color: #483d8b;
+}
+
+.inst-img {
+  margin: 10px ;
+  width: 250px;
+  height: 350px;
+  //background-color: #483d8b;
+}
+
+.ul-inst {
+  list-style: none;
+  margin: 0 auto;
+  //background-color: #bf890b;
+  width: 850px;
 }
 
 .banner {
-  background-image: url('../../../assets/img/logos/bkgl.jpeg');
-  width: 100%;
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 200px;
-}
-
-img {
-  width: 500px;
-  height: 300px;
-}
-
-.marco {
-  background-color: #800080;
-  width: 50%;
-  margin: 420px auto;
-  box-shadow: 12px 12px 16px #fbb40e;
-}
-
-.son {
-  background-color: #800080;
-  border: 10px double #bf890b;
-  display: flex;
-  flex-direction: column;
-}
-
-.marco, .son {
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.liston {
-  background-color: #483d8b;
-  display: flex;
-  flex-direction: row;
-  width: 300px;
-  justify-content: space-between;
-  border-radius: 60px 25px 25px 60px;
-  padding: 3px;
-}
-
-.reverse {
-  flex-direction: row-reverse;
-  border-radius: 25px 60px 60px 25px;
-}
-
-.presentacion {
-  width: 50%;
-  text-align: center;
-  margin: 450px auto;
-}
-
-.galeria {
-  height: 400px;
-  display: flex;
-  flex-direction: row;
-}
-
-.item_g {
-  width: 600px;
-  height: 300px;
-  background-color: #013463;
-  margin: 1px;
-  opacity: 0.5;
+  background-image: url("../../../assets/img/fondos/banner.svg");
   position: relative;
-
-  transition: width 1s linear, height 1s linear, opacity 1s;
 }
 
-.item-desc {
+.logo {
   position: absolute;
-  background-color: #483d8b;
-  width: 0;
-  height: 0;
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  transition: opacity 0.3s ease, width 1s ease, height 1s ease;
+  box-sizing: border-box;
+  top: 5%;
+  left: 31%;
+  width: 500px;
+  height: 500px;
+  //position: relative;
+  //transform: translate(10%, 20%);
 }
 
-.inf-der {
-  bottom: 0;
-  right: 0;
-  margin-bottom: 25px;
-  align-items: end;
+.button {
+  //display: inline-block; /* Permite establecer ancho y alto */
+  width: 7vw;
+  height: 7vh;
+  animation: escalaImagen 1.2s infinite alternate ease-in-out;
 }
 
-.sup-izq {
-  top: 0;
-  left: 0;
-  margin-top: 25px;
-  align-items: start;
-}
-
-.item_g:hover .item-desc {
-  opacity: 0.8;
-  width: 50%;
-  height: 60px;
-}
-
-.item_g:hover .item-txt {
-  opacity: 1;
-}
-
-.item_g:hover {
-  background-color: #0174df;
-  width: 3000px;
-  height: 400px;
-}
-
-.item-txt {
-  margin: auto 10px;
-  opacity: 0;
-  transition: opacity 3s ease;
+@keyframes escalaImagen {
+  from {
+    filter: drop-shadow(5px 5px 5px #f79901);
+    transform: scale(1, 1);
+  } to {
+    filter: drop-shadow(5px 5px 5px #6b4407);
+    transform: scale(1.01, 1.01);
+  }
 }

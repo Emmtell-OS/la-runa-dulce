@@ -1,8 +1,9 @@
-import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { PuntosVentaModel } from '../../models/PuntosVentaModel';
 import { MatTable } from '@angular/material/table';
 import { PuntosVentaService } from '../../service/puntos-venta.service';
 import * as AOS from 'aos';
+import Glide, { Controls, Breakpoints } from '@glidejs/glide'
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   catPV: PuntosVentaModel[] = [];
 
   @ViewChild(MatTable) tablePuntoVenta!: MatTable<PuntosVentaModel>;
+  @ViewChild('glide', { static: true }) glideRef: ElementRef;
 
   constructor(private servicePuntoVenta: PuntosVentaService) {
     this.getRegistroPuntoVenta(true);
@@ -27,6 +29,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
  ngAfterViewInit(){
   //AOS.init();
+  new Glide(//'.glide'
+    this.glideRef.nativeElement, {
+    type: 'carousel',
+    startAt: 0,
+    perView: 2,
+    autoplay: 3000,
+    hoverpause: true,
+    keyboard: true,
+    swipeThreshold: 5,
+    dragThreshold: 10,
+    //gap: 50
+    /*breakpoints: {
+      800: {
+        perView: 2
+      },
+      480: {
+        perView: 1
+      }
+    }*/
+  }
+  ).mount();
 }
 
   private async getRegistroPuntoVenta(ft: boolean) {

@@ -112,13 +112,13 @@ export class AdminLotsComponent implements OnInit {
     if(Utils.getRand(0,1) === 1) {
       this.qrList.push({
         codi: this.pathBase,
-        img: './assets/img/OD.png',
+        img: '../../../assets/img/logos/logo-rd-oficial.png',
         folio: ''
       });
     } else {
       this.qrList2.push({
         codi: this.pathBase,
-        img: './assets/img/SW.png',
+        img: '../../../assets/img/logos/logo-rd-oficial.png',
         folio: ''
       });
     }

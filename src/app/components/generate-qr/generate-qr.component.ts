@@ -278,13 +278,13 @@ export class GenerateQrComponent implements OnInit {
           if(this.qrStyle === 1) {
             this.qrList.push({
               codi: this.pathBase + seleccionado.lote + runaCode + seleccionado.paquete,
-              img: './assets/img/' + runaCode.slice(0, 2) + '.png',
+              img: './assets/img/runas/' + runaCode.slice(0, 2) + '.png',
               folio: ''
             });
           } else {
             this.qrList2.push({
               codi: this.pathBase + seleccionado.lote + runaCode + seleccionado.paquete,
-              img: './assets/img/' + runaCode.slice(0, 2) + '.png',
+              img: './assets/img/runas/' + runaCode.slice(0, 2) + '.png',
               folio: ''
             });
           }

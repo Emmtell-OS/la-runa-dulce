@@ -70,6 +70,7 @@ export class PuntoVentaConsoleComponent {
       activo = this.catPV.find((pv) => pv.id === this.editId).activo;
       id = this.editId;
       creacion = this.catPV.find((pv) => pv.id === this.editId).creacion;
+      this.isEdit = false;
     } else {
       id = this.generateFolio().toString();
       activo = false;
@@ -115,6 +116,8 @@ export class PuntoVentaConsoleComponent {
   }
 
   editar(element: PuntosVentaModel) {
+    console.log(element);
+    
     this.isEdit = true
     this.editId = element.id
     this.formularioPuntoVenta.setValue({
