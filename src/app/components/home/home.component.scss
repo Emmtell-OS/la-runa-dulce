@@ -66,19 +66,19 @@ font-style: normal;
 
 .letrero {
   //margin-top: 90px ;
-  width: 60vw;
-  height: 60vh;
+  width: 47vw;
+  height: 47vh;
   background-image: url("../../../assets/img/fondos/letrero.svg");
-  transform: translate(-70%, -50%);
+  transform: translate(-95%, -50%);
   //background-color: #6b4407;
 }
 
 .saludo {
   //margin-top: 90px ;
-  width: 60vw;
-  height: 60vh;
+  width: 50vw;
+  height: 50vh;
   background-image: url("../../../assets/img/fondos/saludo.svg");
-  transform: translate(-25%, -35%);
+  transform: translate(-50%, -35%);
 }
 
 .introduccion-box {
@@ -98,84 +98,86 @@ font-style: normal;
 
 .introduccion-text {
   margin: 0;
-  font-size: 20px;
+  font-size: 15px;
   color: #333;
 }
 
 .desc-section {
   margin: 50px 80px;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .mapa {
   //margin-top: 90px ;
-  width: 80vw;
-  height: 80vh;
+  width: 60vw;
+  height: 30vw;
   background-image: url("../../../assets/img/fondos/guia.svg");
-  transform: translate(-40%, -50%);
+  transform: translate(-20%, -50%);
   //background-color: #483d8b;
 }
 
 .buscar {
   //margin-top: 90px ;
-  width: 60vw;
-  height: 60vh;
+  width: 40vw;
+  height: 40vh;
   background-image: url("../../../assets/img/fondos/buscar.svg");
-  transform: translate(-99%, -40%);
+  transform: translate(-80%, -20%);
   //background-color: #483d8b;
 }
 
 .cont-table {
   //box-shadow: 12px 12px 24px #8e6300; // #fbb40e;
-  width: 68%;
+  width: 70%;
+  //height: 10%;
   margin: auto;
-  padding: 10px;
-  //background-color: #483D8B;
+  //padding: 10px;
+  background-color: #483D8B;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-52%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .table th {
-  background-color: #ffccaa;
+  background-color: #fff6d5;
   font-weight: bold;
   //color: #483d8b;
 }
 
 .table tr {
   color: #bf890b;
-  background-color: #ffccaa;
+  background-color: #fff6d5;
   //background: rgb(19,18,20);
 //background: radial-gradient(circle, rgba(19,18,20,1) 0%, rgba(128,0,128,1) 30%, rgba(0,0,0,1) 67%, rgba(128,0,128,1) 95%);
-  font-size: 21px;
+  font-size: 15px;
   font-family: "Passero One", sans-serif;
+  height: 50px;
   //letter-spacing: 5px;
 }
 
 .table tr:hover {
-  background-color: #ffb380;
+  background-color: #ffeeaa;
 }
 
 .puesto {
   //margin-top: 90px ;
-  width: 80vw;
-  height: 70vh;
+  width: 60vw;
+  height: 60vh;
   background-image: url("../../../assets/img/fondos/puesto.svg");
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  //top: 50%;
+  //left: 50%;
+  transform: translate(-80%, -50%);
   //background-color: #483d8b;
 }
 
 .presentar {
   //margin-top: 90px ;
   width: 20vw;
-  height: 70vh;
+  height: 50vh;
   background-image: url("../../../assets/img/fondos/presentar.svg");
-  top: 68%;
-  left: 85%;
-  transform: translate(-50%, -50%);
+  //top: 50%;
+  //left: 50%;
+  transform: translate(-20%, -30%);
   //background-color: #483d8b;
 }
 
@@ -202,8 +204,8 @@ font-style: normal;
 
 .inst-img {
   margin: 10px ;
-  width: 250px;
-  height: 350px;
+  width: 180px;
+  height: 280px;
   //background-color: #483d8b;
 }
 
@@ -211,7 +213,7 @@ font-style: normal;
   list-style: none;
   margin: 0 auto;
   //background-color: #bf890b;
-  width: 850px;
+  width: 600px;
 }
 
 .banner {
@@ -232,8 +234,8 @@ font-style: normal;
 
 .button {
   //display: inline-block; /* Permite establecer ancho y alto */
-  width: 7vw;
-  height: 7vh;
+  width: 6vw;
+  height: 6vh;
   animation: escalaImagen 1.2s infinite alternate ease-in-out;
 }
 

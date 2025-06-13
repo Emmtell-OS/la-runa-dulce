@@ -15,7 +15,7 @@
    version="1.1"
    id="SVGRoot"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="boton-madera.svg">
+   sodipodi:docname="boton-mensaje.svg">
   <defs
      id="defs5207" />
   <sodipodi:namedview
@@ -26,15 +26,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
-     inkscape:cx="940.87685"
+     inkscape:cx="512.57217"
      inkscape:cy="470.78607"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1050"
-     inkscape:window-x="1920"
-     inkscape:window-y="0"
+     inkscape:window-height="966"
+     inkscape:window-x="0"
+     inkscape:window-y="84"
      inkscape:window-maximized="1"
      showguides="false" />
   <metadata
@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -290,26 +290,29 @@
        cx="131.84778"
        id="ellipse5880"
        style="opacity:1;fill:#999999;fill-opacity:1;fill-rule:nonzero;stroke:#4d4d4d;stroke-width:5;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill" />
-    <g
-       id="g5895"
-       transform="matrix(7.8744906,0,0,7.8744906,-3332.9408,-2916.5727)">
-      <text
-         transform="scale(1.1070424,0.90330776)"
-         id="text9530"
-         y="480.33908"
-         x="409.0928"
-         style="font-style:normal;font-weight:normal;font-size:47.47621536px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#bf890b;fill-opacity:1;stroke:none;stroke-width:1.1869055"
-         xml:space="preserve"><tspan
-           id="tspan9532"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:48.81610489px;font-family:'Passero One';-inkscape-font-specification:'Passero One, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:justify;writing-mode:lr-tb;text-anchor:start;fill:#bf890b;fill-opacity:1;stroke-width:1.1869055"
-           y="480.33908"
-           x="409.0928"
-           sodipodi:role="line">Mapa</tspan></text>
-      <path
-         inkscape:connector-curvature="0"
-         id="path9599"
-         d="m 603.8983,441.36475 c -6.06409,-8.68562 -11.70053,-18.3063 -13.36067,-22.80492 -0.68994,-1.86958 -0.80656,-2.41946 -0.81068,-3.8231 -0.005,-1.89347 0.41701,-3.34141 1.4463,-4.95549 1.77911,-2.78994 4.98885,-4.97292 8.71817,-5.92929 1.62551,-0.41684 2.7027,-0.53847 4.77271,-0.53877 2.01131,-3.4e-4 3.00482,0.10658 4.61561,0.49655 4.36552,1.05702 8.17109,3.96099 9.61046,7.33357 0.62339,1.46075 0.90321,3.3298 0.68781,4.5944 -0.39669,2.32883 -2.35898,6.64206 -5.47564,12.03586 -2.18006,3.77288 -9.1865,14.56608 -9.45559,14.56608 -0.037,0 -0.37414,-0.43873 -0.74848,-0.97489 z m 1.65352,-23.03441 c 1.58751,-0.23169 3.12092,-1.37473 3.54041,-2.63902 0.99835,-3.00896 -3.06478,-5.48481 -6.6564,-4.05611 -0.63872,0.25436 -1.45472,0.85636 -1.83413,1.35379 -0.79766,1.04575 -0.80882,2.47389 -0.0276,3.54561 0.33381,0.458 1.22303,1.14663 1.85474,1.4363 0.82257,0.37719 2.04077,0.51737 3.12308,0.35943 z"
-         style="display:inline;fill:#bf890b;fill-opacity:1;stroke-width:0.08629946" />
-    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:233.0436554px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#f1f29c;fill-opacity:1;stroke:#bf890b;stroke-width:5.82609177;stroke-opacity:1"
+       x="168.38474"
+       y="339.2923"
+       id="text9530"
+       transform="scale(1.1070424,0.90330777)"><tspan
+         sodipodi:role="line"
+         x="168.38474"
+         y="339.2923"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:207.78657532px;font-family:'Passero One';-inkscape-font-specification:'Passero One, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:justify;writing-mode:lr-tb;text-anchor:start;fill:#f1f29c;fill-opacity:1;stroke:#bf890b;stroke-width:5.82609177;stroke-opacity:1"
+         id="tspan9532">Ver </tspan></text>
+    <text
+       transform="scale(1.1070424,0.90330777)"
+       id="text862"
+       y="589.08173"
+       x="335.38293"
+       style="font-style:normal;font-weight:normal;font-size:373.85101318px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#f1f29c;fill-opacity:1;stroke:#bf890b;stroke-width:9.34627628;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         id="tspan860"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:333.33334351px;font-family:'Passero One';-inkscape-font-specification:'Passero One, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:justify;writing-mode:lr-tb;text-anchor:start;fill:#f1f29c;fill-opacity:1;stroke:#bf890b;stroke-width:9.34627628;stroke-opacity:1"
+         y="589.08173"
+         x="335.38293"
+         sodipodi:role="line">mensaje </tspan></text>
   </g>
 </svg>

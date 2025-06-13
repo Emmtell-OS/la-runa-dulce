@@ -20,6 +20,7 @@ export class InterpretacionesComponent implements OnInit {
   valueL: string;
   valueE: string;
   valueP: string;
+  animacionRand: string;
   mostrarAnimacion: boolean;
   mostrarInterpretacion: boolean;
   mostrarReintento: boolean;
@@ -29,6 +30,7 @@ export class InterpretacionesComponent implements OnInit {
   mostraraInterpretacion: boolean;
   mostraraReintento: boolean;
   mostraraCaducado: boolean;
+  mostrarBtnInterpretacion: boolean;
   limiteDias = 7;
   textInterp = '';
   textoAnimacionList: any;
@@ -51,10 +53,11 @@ export class InterpretacionesComponent implements OnInit {
     this.mostrarReintento = false;
     this.mostrarCaducado = false;
     this.mostrarInterpretacion = false;
-    this.textoAnimacionList = ['Abriendo bolsa ...', 'Revolviendo ...', 'Escogiendo runa ...', 'Continuar ->'];
+    this.mostrarBtnInterpretacion = false;
+    this.textoAnimacionList = ['Abriendo bolsa', 'Escogiendo runa', 'Interpretando', 'Listo'];
     //this.iniciarTexto();
     let x = 5;
-    
+    this.animacionRand = "/assets/img/animaciones/" + Utils.getRand(1, 2).toString() +".gif";
     
   }
 
@@ -70,16 +73,17 @@ export class InterpretacionesComponent implements OnInit {
   }
 
   iniciarTexto() {
-    this.textoAnimacion = 'Cargando ...'
+    this.textoAnimacion = 'Cargando'
     this.idTextoAnimacion = 0;
     this.intervalTextoAnimacion = setInterval(() => {
       if(this.idTextoAnimacion === this.textoAnimacionList.length) {
+        this.mostrarBtnInterpretacion = true;
         this.iniciar = this.textoAnimacionList[this.textoAnimacionList.length - 1];
         clearInterval(this.intervalTextoAnimacion);
       }
       this.textoAnimacion = this.textoAnimacionList[this.idTextoAnimacion];
       this.idTextoAnimacion = this.idTextoAnimacion + 1;
-    }, 4000);
+    }, 100); //cambiar a 1700
   }
 
   cerrarAnimacion() {
@@ -130,7 +134,7 @@ export class InterpretacionesComponent implements OnInit {
     if (valid) {
       this.mostraraInterpretacion = true;
     } else {
-      this.mostraraCaducado = true;
+      (this.textInterp === null) ? this.mostrarReintento = true : this.mostraraCaducado = true;
     }
   }
 
@@ -152,11 +156,12 @@ export class InterpretacionesComponent implements OnInit {
                     'days'
                   ) < this.limiteDias
                 ) {
+                  
                   this.obtenerInterpretacion(paq['consultados'][indexEmp]['inter'], this.valueE);
                   let contadorConsultas = paq['consultados'][indexEmp]['consultas'];
                   contadorConsultas += this._UNO;
                   paq['consultados'][indexEmp]['consultas'] = contadorConsultas;
-                  valid = true;
+                  valid = (this.textInterp === null) ? false : true;
                 }
               } else {
                 paq['consultados'][indexEmp][this.valueE] = moment().format();
@@ -165,7 +170,7 @@ export class InterpretacionesComponent implements OnInit {
                   paq['consultados'][indexEmp]['inter'],
                   this.valueE
                 );
-                valid = true;
+                valid = (this.textInterp === null) ? false : true;
               }
             }
           }
@@ -183,6 +188,8 @@ export class InterpretacionesComponent implements OnInit {
 
   private obtenerInterpretacion(id: number, runaCode: string) {
     
+    
+    
     this.imagen = this.imagen + runaCode.slice(0,2) + '.png'
     let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
     
@@ -190,11 +197,11 @@ export class InterpretacionesComponent implements OnInit {
       if (filtrado[runaCode][id] !== undefined) {
         this.textInterp = filtrado[runaCode][id];
         return;
-      }
+      } 
     }
 
     let interpretacion = Utils.elegirInterpretacion(runaCode, this.catInterpretaciones);      
-    this.textInterp = (interpretacion === null) ? 'Reintenta mas tarde...' : filtrado[runaCode][interpretacion];
+    this.textInterp = (interpretacion === null) ? null : filtrado[runaCode][interpretacion];
 
   }
 
@@ -247,5 +254,6 @@ export class InterpretacionesComponent implements OnInit {
         'opacity': '1.5'
       }
     }, 100);
+    
   }
 }
