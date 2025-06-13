@@ -1,0 +1,124 @@
+<!-- ########################## Paquetes table ######################### -->
+<div style="margin: 20px;"><span class="title">paquetes</span></div>
+<mat-form-field class="filtro">
+    <mat-label>Filtrar</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilterHistorialPaq($event)"
+      placeholder="Filtra por cualquier campo"
+      #input
+    />
+  </mat-form-field>
+  <div>
+    <table mat-table [dataSource]="dataSourceHistorialPaqs" #tableHistorialPaquetes>
+      <ng-container matColumnDef="paquete">
+        <th mat-header-cell *matHeaderCellDef>Paquete</th>
+        <td mat-cell *matCellDef="let element">{{ element.paquete }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="tipoPaquete">
+        <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
+        <td mat-cell *matCellDef="let element">{{ element.tipoPaquete }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="creacion">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.creacion | formatDate}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lote">
+        <th mat-header-cell *matHeaderCellDef>Lote</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.lote }}
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="estatus">
+        <th mat-header-cell *matHeaderCellDef>Estatus</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-slide-toggle
+              class="btn"
+              [checked]="element.activo"
+              (change)="mostrarDesactivarPaquete(element)"
+          >
+          Paquete {{ element.activo | boolean}} 
+          </mat-slide-toggle>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button 
+            class="btn-d" 
+            (click)="mostrarEliminarPaquete(element)"
+            *ngIf= "element.isEliminar">
+              Eliminar <span class="material-icons">delete</span>
+          </button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedPaquetesColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedPaquetesColumns"></tr>
+    </table>
+  </div>
+
+
+<!-- ########################## Lotes table ######################### -->
+<div style="margin: 20px;"><span class="title">lotes</span></div>
+<mat-form-field class="filtro">
+  <mat-label>Filtrar</mat-label>
+  <input
+    matInput
+    (keyup)="applyFilterHistorial($event)"
+    placeholder="Filtra por cualquier campo"
+    #input
+  />
+</mat-form-field>
+<div>
+  <table mat-table [dataSource]="dataSourceHistorial" #tableHistorialLotes>
+    <ng-container matColumnDef="lote">
+      <th mat-header-cell *matHeaderCellDef>Lote</th>
+      <td mat-cell *matCellDef="let element">{{ element.lote }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="paquetes">
+      <th mat-header-cell *matHeaderCellDef>Paquetes</th>
+      <td mat-cell *matCellDef="let element">{{ element.paquetes }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef>Fecha</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.creacion | formatDate}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estatus">
+      <th mat-header-cell *matHeaderCellDef>Estatus</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-slide-toggle
+            class="btn"
+            [checked]="element.activo"
+            (change)="mostrarDesactivarLote(element)"
+        >
+        Lote {{ element.activo | boolean}} 
+        </mat-slide-toggle>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button class="btn-d" (click)="mostrarEliminarLote(element)">
+          Eliminar <span class="material-icons">delete</span>
+      </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedLotesColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedLotesColumns"></tr>
+  </table>
+</div>  

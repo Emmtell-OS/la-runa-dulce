@@ -1,0 +1,31 @@
+.flotante {
+  width: 90px;
+  height: 98px;
+  cursor: pointer;
+  position: fixed;
+  z-index: 100;
+  margin-left: 90%;
+  margin-top: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 5px 5px 7px rgb(142, 140, 140);
+  border: solid 1px rgb(142, 140, 140);
+  //padding: 0;
+}
+
+.mff {
+  margin-left: 20px;
+  margin-top: 12px;
+  width: 260px;
+}
+
+.filtro {
+  width: 50%;
+}
+
+button {
+  margin-left: 50px;
+  width: 90px;
+  height: 30px;
+}

@@ -1,0 +1,194 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Tema Interpretaciones
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="formularioTemas">
+            <mat-form-field class="mff">
+                <mat-label>Tema</mat-label>
+                <input
+                type="text"
+                matInput
+                formControlName="tema"/>
+            </mat-form-field>
+            <mat-form-field class="mff">
+                <mat-label>Color</mat-label>
+                <input
+                matInput
+                type="color"
+                value= "#ffffff"
+                formControlName="color"/>
+            </mat-form-field>
+            <mat-form-field class="mff">
+                <mat-label>Imagen</mat-label>
+                <input
+                type="text"
+                matInput
+                formControlName="imagen"/>
+            </mat-form-field>
+
+            <button 
+            mat-stroked-button 
+            [disabled]="formularioTemas.invalid"
+            (click)="crearTema()">Crear</button>
+
+        </form>
+
+        <table mat-table [dataSource]="datasourceTemas" #table>
+            <ng-container matColumnDef="tema">
+              <th mat-header-cell *matHeaderCellDef>Tema</th>
+              <td mat-cell *matCellDef="let element">{{ element.tema }}</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="color">
+                <th mat-header-cell *matHeaderCellDef>Color</th>
+                <td mat-cell *matCellDef="let element">
+                    <div [ngStyle]="{'background-color': '#'+element.color}" class="barraColor">
+                        #{{ element.color }}
+                    </div>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="imagen">
+                <th mat-header-cell *matHeaderCellDef>Imagen</th>
+                <td mat-cell *matCellDef="let element" 
+                (dblclick)="portaPapeles(element.imagen)"
+                matTooltip="Dos clicks para copiar ruta"
+                >
+                    {{ element.imagen | reductor }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element; let index = index">
+                    <span *ngIf="element.asignado" class="txtTema"> TEMA ASIGNADO</span>
+                    <button
+                        mat-stroked-button
+                        *ngIf="!element.asignado"
+                        (click)="asignarTema(element)">
+                    Asignar
+                    </button>
+                    <button
+                        mat-stroked-button
+                        *ngIf="!element.asignado"
+                        (click)="editarTema(element)">
+                    Editar
+                    </button>
+                    <button
+                        mat-stroked-button
+                        *ngIf="!element.asignado"
+                        (click)="mostrarEliminarTema(element, false)">
+                    Eliminar
+                    </button>
+                </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedTemasColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedTemasColumns"></tr>
+        </table>
+
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Catálogo Tipos Paquete</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    <form [formGroup]="formularioTiposPaquetes">
+        <mat-form-field class="mff">
+            <mat-label>Tipo Paquete</mat-label>
+            <input
+            type="text"
+            matInput
+            formControlName="tipoPaquete"/>
+        </mat-form-field>
+        <mat-form-field class="mff">
+            <mat-label>Numero de Empaques</mat-label>
+            <input
+            type="text"
+            matInput
+            (keyup)="soloNumeros($event)"
+            (keydown)="soloNumeros($event)"
+            (keypress)="soloNumeros($event)"
+            formControlName="totalEmpaques"/>
+        </mat-form-field>
+
+        <button
+        mat-stroked-button
+        [disabled]="formularioTiposPaquetes.invalid"
+        (click)="calcular()"
+      >
+        Archivar
+      </button>
+    </form>
+
+    <table mat-table [dataSource]="datasourceTP" #table>
+        <ng-container matColumnDef="tipoPaquete">
+          <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
+          <td mat-cell *matCellDef="let element">{{ element.tipoPaquete }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalEmpaques">
+            <th mat-header-cell *matHeaderCellDef>Total Empaques</th>
+            <td mat-cell *matCellDef="let element">{{ element.totalEmpaques }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="columnGrid">
+            <th mat-header-cell *matHeaderCellDef>Column Grid</th>
+            <td mat-cell *matCellDef="let element">{{ element.columnGrid }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rowGrid">
+            <th mat-header-cell *matHeaderCellDef>Row Grid</th>
+            <td mat-cell *matCellDef="let element">{{ element.rowGrid }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let index = index">
+                <button
+                    mat-stroked-button
+                    (click)="editar(element)">
+                Editar
+                </button>
+                <button
+                    mat-stroked-button
+                    (click)="mostrarEliminar(element, false)">
+                Eliminar
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedTiposPaquetesColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedTiposPaquetesColumns"></tr>
+    </table>
+
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Puntos Venta Console
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <puntoventa></puntoventa>
+    </mat-card-content>
+</mat-card>
+
+
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            L&P Console
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <lp-console></lp-console>
+    </mat-card-content>
+</mat-card>

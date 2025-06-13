@@ -1,0 +1,98 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title> Administrador de interpretaciones </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="mbl">
+    <form [formGroup]="formularioInterpretaciones">
+
+      <!--autocomplete-->
+      <mat-form-field class="mff">
+        <mat-label>Escribre una runa</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="Runa"
+          [formControl]="runaFilterControl"
+          [matAutocomplete]="auto"
+          formControlName="runa"
+        />
+        <mat-autocomplete
+          autoActiveFirstOption
+          #auto="matAutocomplete"
+          (optionSelected)="autoCompleteInputValue = $event.option.value; obtenerValorRuna()"
+        >
+          <mat-option *ngFor="let runa of runas | async" [value]="runa['runa']">
+            {{ runa['runa'] }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!--interpretacion-->
+      <mat-form-field *ngIf = "selectInterp" class="mff">
+        <mat-label *ngIf = "selectInterp" >Interpretación</mat-label>
+
+        <mat-select formControlName="interpretacion" (closed)="obtenerValorInterpretacion()" *ngIf = "selectInterp">
+          <mat-option
+            *ngFor="let interpretacion of interpretaciones"
+            [value]="interpretacion"
+            >{{ interpretacion }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <!--Buttons-->
+        <button
+        mat-stroked-button
+        *ngIf="btnEditar"
+        (click)="editarInterpretacion()"
+        >
+          <span>Editar</span>
+        </button>
+
+        <button
+        mat-stroked-button
+        *ngIf="btnEditar"
+        (click)="mostrarEliminar()"
+        >
+          <span>Eliminar</span>
+        </button>
+
+        <button
+        mat-stroked-button
+        *ngIf="btnCreate"
+        (click)="registrarInterpretacion()"
+        > <span>{{ txtbtn }}</span> </button>
+      
+
+      <!--Input descripcion-->
+
+      <div  class="d-descripcion-i">
+        <mat-form-field *ngIf="descripcionInput" appearence="fill" class="descripcion-i">
+          <mat-label>Descripción...</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="500"
+            formControlName="descripcion"
+          >
+          </textarea>
+        </mat-form-field>
+
+        <div *ngIf="mostrarMensaje" class="mbl">
+          <p>{{mensaje}}</p>
+        </div>
+
+        <!--Parrafo descripcion -->
+      <div *ngIf= "descripcionP" class="descripcion">
+        <p>
+          {{ descripcionParrafo }}
+        </p>
+      </div>
+
+      </div>
+    </form>
+
+  </mat-card-content>
+</mat-card>

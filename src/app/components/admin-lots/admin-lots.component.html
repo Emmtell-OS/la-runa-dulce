@@ -1,0 +1,241 @@
+<mat-card appearance="outlined">
+  <div class="flotante" (click)="mostrarGenerarQR()" *ngFor="let qr of qrList">
+    <qr-styles [path]="qr['codi']" [img]="qr['img']" [width]="90" [height]="90" [imgSize]="1.5"></qr-styles>
+  </div>
+  <div class="flotante" (click)="mostrarGenerarQR()" *ngFor="let qr of qrList2">
+    <qr-styles-dot [path]="qr['codi']" [img]="qr['img']" [width]="90" [height]="90" [imgSize]="1.5"></qr-styles-dot>
+  </div>
+  <mat-card-header>
+    <mat-card-title> Registro de Lotes y Paquetes</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="formg">
+    <form [formGroup]="formularioRegistro">
+      <!--Autocomplete Lotes-->
+      <mat-form-field class="mff">
+        <mat-label>Inserta Lote</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="Número lote"
+          [formControl]="lotesFilterControl"
+          [matAutocomplete]="auto"
+          formControlName="lote"
+        />
+        <mat-autocomplete
+          autoActiveFirstOption
+          #auto="matAutocomplete"
+          (optionSelected)="autoCompleteInputValue = $event.option.value"
+        >
+          <mat-option
+            *ngFor="let lotes of filteredLotes | async"
+            [value]="lotes"
+            >{{ lotes }}</mat-option
+          >
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!--Select tipos Paquete-->
+      <mat-form-field class="mff">
+        <mat-label>Tipo de Paquete</mat-label>
+
+        <mat-select formControlName="tipoPaquete">
+          <mat-option *ngFor="let tipo of tiposPaquete" [value]="tipo">{{
+            tipo
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!--Input Cantidad paquetes-->
+      <mat-form-field class="mff">
+        <mat-label>Cantidad de paquetes</mat-label>
+        <input matInput type="text" 
+        (keyup)="soloNumeros($event)"
+        (keydown)="soloNumeros($event)"
+        (keypress)="soloNumeros($event)"
+        formControlName="cantidad" />
+      </mat-form-field>
+
+      <!--button add-->
+      <button
+        mat-stroked-button
+        (click)="agregarPreregistro(lotesFilterControl)"
+        [disabled]="formularioRegistro.invalid"
+      >
+        Agregar
+      </button>
+
+      <button
+        mat-stroked-button
+        [disabled]="stashLoteList.length === 0"
+        (click)="registrarPedido()"
+      >
+        Registrar
+      </button>
+    </form>
+    </div>
+
+    <!--Tabla de preregistro-->
+
+    <table mat-table [dataSource]="dataSource" #table>
+      <ng-container matColumnDef="lote">
+        <th mat-header-cell *matHeaderCellDef>Lote</th>
+        <td mat-cell *matCellDef="let element">{{ element.lote }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="tipoPaquete">
+        <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
+        <td mat-cell *matCellDef="let element">{{ element.tipoPaquete }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cantidad">
+        <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+        <td mat-cell *matCellDef="let element">{{ element.cantidad }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <button mat-stroked-button (click)="dropRow(i, lotesFilterControl)">
+            Eliminar
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+
+<mat-divider></mat-divider>
+
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Producción</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="datasourceProduccion">
+        <ng-container matColumnDef="lote">
+          <th mat-header-cell *matHeaderCellDef>Lote</th>
+          <td mat-cell *matCellDef="let element">{{ element.lote }}</td>
+        </ng-container>
+        <ng-container matColumnDef="paquete">
+          <th mat-header-cell *matHeaderCellDef>Paquete</th>
+          <td mat-cell *matCellDef="let element">{{ element.paquete }}</td>
+        </ng-container>
+        <ng-container matColumnDef="tipoPaquete">
+          <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
+          <td mat-cell *matCellDef="let element">{{ element.tipoPaquete }}</td>
+        </ng-container>
+        <ng-container matColumnDef="produccion">
+          <th mat-header-cell *matHeaderCellDef>Estatus</th>
+          <td mat-cell *matCellDef="let element">{{ element.produccion }}</td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element; let index = index">
+            <button
+              mat-stroked-button
+              *ngIf="btnProduction[index]"
+              (click)="iniciarProduccion(index, element)"
+            >
+              Iniciar
+            </button>
+            <button
+              mat-stroked-button
+              *ngIf="!btnProduction[index]"
+              (click)="completarProduccion(element, index)"
+            >
+              Completado
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedProduccionColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedProduccionColumns"
+        ></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<mat-divider></mat-divider>
+
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Historial</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field class= "filtro">
+        <mat-label>Filtrar</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilterHistorial($event)"
+          placeholder="Filtra por cualquier campo"
+          #input
+        />
+      </mat-form-field>
+      <div>
+        <table mat-table [dataSource]="dataSourceHistorial" #tableHistorial>
+          <ng-container matColumnDef="lote">
+            <th mat-header-cell *matHeaderCellDef>Lote</th>
+            <td mat-cell *matCellDef="let element">{{ element.lote }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="loteActivo">
+            <th mat-header-cell *matHeaderCellDef>Estatus Lote</th>
+            <td mat-cell *matCellDef="let element">{{ element.loteActivo | boolean }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="paquete">
+            <th mat-header-cell *matHeaderCellDef>Paquete</th>
+            <td mat-cell *matCellDef="let element">{{ element.paquete }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="tipoPaquete">
+            <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.tipoPaquete }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="activo">
+            <th mat-header-cell *matHeaderCellDef>Estatus</th>
+            <td mat-cell *matCellDef="let element">{{ element.activo | boolean }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="consultados">
+            <th mat-header-cell *matHeaderCellDef>Consultados</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.consultados }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let index = index">
+              <button
+                mat-stroked-button
+                (click)="detallesPaquete(index, element)"
+              >
+                Detalles
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedHistorialColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedHistorialColumns"
+          ></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+

@@ -1,0 +1,32 @@
+<div class="cntn">
+  <mat-card appearance="outlined" class="mtc">
+    <mat-card-header>
+      <mat-card-title>
+        <p>Detalles QR</p>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="center" *ngIf= "isExist">
+            <div *ngFor="let qr of qrList" >
+                <qr-styles-dot [path]="qr['codi']" [img]="qr['img']" [width]="180" [height]="180" [imgSize]="1.5"></qr-styles-dot>
+            </div>
+            <div >
+                <ul>
+                    <li>Runa Code: <span>{{runaCode}}</span> </li>
+                    <li>Tipo Paquete: <span>{{tipoPaquete}}</span></li>
+                    <li>Paquete: <span>{{paquete}}</span></li>
+                    <li>Lote: <span>{{lote}}</span></li>
+                    <li>Consultados: <span>{{consultados}}</span></li>
+                    <li>Estatus: <span>{{estatus}}</span></li>
+                </ul>
+            </div>
+            <div >
+                <button (click)="reiniciarConsultados()">Reiniciar Consultados</button>
+            </div>
+        </div>
+        <div class="center" *ngIf= "!isExist">
+          <span>No existe el {{ mensajeExist }}</span>
+        </div>
+    </mat-card-content>
+  </mat-card>
+</div>

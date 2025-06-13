@@ -1,0 +1,117 @@
+<div class="pad" [ngStyle]="">
+  <!-- Boton iniciar -->
+  <div
+    [ngStyle]="TEMACOLOR"
+    class="base"
+    style="overflow-y: scroll"
+    *ngIf="mostrarInicio"
+  >
+    <img
+      src="./../../../assets/img/logos/logo-rd-oficial.png"
+      alt="LOGO"
+      class="logo"
+    />
+
+    <div class="instrucciones-txt">
+      <p class="descripcion-titulo">Instrucciones</p>
+      <p class="descripcion-txt">
+        Para obtener un mensaje certero, sigue estos pasos:
+      </p>
+    </div>
+
+    <div class="contenedor-instrucciones">
+      <ul class="ul-inst">
+        <li class="li-inst">
+          <img
+            src="../../../assets/img/instrucciones/inter/1.png"
+            alt=""
+            class="inst-img"
+          />
+          <img
+            src="../../../assets/img/instrucciones/inter/2.png"
+            alt=""
+            class="inst-img"
+          />
+        </li>
+        <li class="li-inst">
+          <img
+            src="../../../assets/img/instrucciones/inter/3.png"
+            alt=""
+            class="inst-img"
+          />
+          <img
+            src="../../../assets/img/instrucciones/inter/4.png"
+            alt=""
+            class="inst-img"
+          />
+        </li>
+      </ul>
+    </div>
+
+    <div
+      class="btn btnContinuar"
+      (click)="btnIniciar(); mostrarAnimacion = true"
+    ></div>
+  </div>
+
+  <!-- Animación -->
+  <div
+    [ngStyle]="TEMACOLOR"
+    class="base"
+    *ngIf="mostrarAnimacion && !mostrarInicio"
+  >
+    <div class="contenedor-animacion">
+      <img [src]="animacionRand" class="animacion" alt="animacion" />
+    </div>
+    <div class="textoIntermitente">
+      <p>{{ textoAnimacion }}</p>
+    </div>
+
+    <div
+      class="btn btnMensaje"
+      (click)="cerrarAnimacion()"
+      *ngIf="mostrarBtnInterpretacion"
+    ></div>
+  </div>
+
+  <!-- Interpretacion -->
+  <div
+    [ngStyle]="TEMAIMG"
+    class="base"
+    *ngIf="!mostrarAnimacion && !mostrarInicio"
+  >
+    <!-- Contenido Interpretacion -->
+    <div *ngIf="mostrarInterpretacion" class="interpretacion">
+      <div class="contenedor contenedor-runa">
+        <img [src]="imagen" alt=""  class="img-runa"/>
+        <!--<p class="texto-justificado">hagalaz</p>-->
+      </div>
+      <!--<div class="contenedor fondo-contenedor">
+        <p class="texto-interpretacion">{{ textInterp }}</p>
+      </div>-->
+    </div>
+
+    <!-- Contenido Caducado -->
+    <div *ngIf="mostrarCaducado">
+      <div class="contenedor contenedor-alerta">
+        <img src="../../../assets/bkg-interpretacion/caduco.png" class="alerta" 
+        *ngIf="!mostrarAnimacion && !mostrarInicio"/>
+      </div>
+    </div>
+
+    <!-- Contenido Reintento -->
+    <div *ngIf="mostrarReintento">
+      <div class="contenedor contenedor-alerta">
+        <img src="../../../assets/bkg-interpretacion/error.png" class="alerta" 
+        *ngIf="!mostrarAnimacion && !mostrarInicio"/>
+      </div>
+    </div>
+
+    <!--<div class="contenedor-boton">
+      <a class="btn" style="margin: 0 auto" routerLink="/" target="_self">
+        <img src="../../../assets/img/btn/boton-inicio.svg" class="btnInicio" 
+        *ngIf="!mostrarAnimacion && !mostrarInicio"/>
+      </a>
+    </div>-->
+  </div>
+</div>

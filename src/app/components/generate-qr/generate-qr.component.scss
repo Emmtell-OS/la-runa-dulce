@@ -1,0 +1,36 @@
+.qrcodeImage {
+    margin: 10px;
+}
+
+.gridItem {
+    margin: 4px;
+    //background-color: aqua;
+    width: 20px;
+}
+
+.conBorde {
+    border-top: 2px dashed black;
+}
+
+.sinBorde {
+    border-top: none;
+}
+
+span {
+    font-size: 10px;
+    margin-left: 30px;
+}
+
+.filtro {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-left: 15px;
+    width: 70%;
+}
+
+button {
+    margin-left: 50px;
+    width: 90px;
+    height: 30px;
+    box-shadow: 4px 4px 9px rgb(150, 149, 149);
+}

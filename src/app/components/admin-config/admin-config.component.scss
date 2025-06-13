@@ -1,0 +1,30 @@
+.mff {
+    margin-left: 20px;
+    margin-top: 12px;
+    width: 260px;
+}
+
+button {
+    margin-left: 50px;
+    width: 90px;
+    height: 30px;
+}
+
+.txtTema {
+    color: brown; 
+    font-weight: bold; 
+    letter-spacing: 3px;
+}
+
+.barraColor {
+    color: white;
+    width: 140px;
+    height: 25px;
+    text-align: center;
+    text-decoration: underline;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
