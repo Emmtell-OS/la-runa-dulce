@@ -1,4 +1,4 @@
-<div class="pad" [ngStyle]="">
+<div class="pad" [ngStyle]="TEMACOLOR">
   <!-- Boton iniciar -->
   <div
     [ngStyle]="TEMACOLOR"
@@ -82,9 +82,11 @@
   >
     <!-- Contenido Interpretacion -->
     <div *ngIf="mostrarInterpretacion" class="interpretacion">
-      <div class="contenedor contenedor-runa">
-        <img [src]="imagen" alt=""  class="img-runa"/>
-        <!--<p class="texto-justificado">hagalaz</p>-->
+      <div class="contenedor">
+        <div class="contenedor contenedor-runa">
+          <img [src]="imagen" alt=""  class="img-runa"/>
+        </div>
+        <p class="texto-runa-nombre">{{nombreRuna}}</p>
       </div>
       <div class="contenedor fondo-contenedor">
         <p class="texto-interpretacion">{{ textInterp }}</p>

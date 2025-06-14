@@ -127,7 +127,7 @@
   animation-direction: alternate-reverse;
   animation-iteration-count: infinite;
   animation-timing-function: ease-out;
-  background-color: #d1a020;
+  //background-color: #d1a020;
 }
 
 @keyframes btnScala {
@@ -186,54 +186,53 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 .contenedor-runa {
-  //background-color: #704214;
+  //background-color: #70421480;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
   background-image: url('../../../assets/img/fondos/marco.svg');
   margin-top: 10px;
   width: 90%;
-  height: 120px;
+  //height: 120px;
+  //opacity: 0.5;
 }
 
 .img-runa {
   width: 50px;
   height: 100px;
-  margin: 0 auto;
+  margin: 15px auto;
   //background-color: aqua;
 }
 
-.texto-justificado {
-  width: 100%;
-  background-color: aquamarine;
+.texto-runa-nombre {
+  font-family: 'Fondamento', serif;
+  font-size: 22px;
+  color: #f1f29c;
+  text-transform: uppercase;
+  font-weight: bold;
   text-align: justify;
-  hyphens: auto; 
-  //font-size: 16px;
-  line-height: 1.6;
-  color: #333;
-  //margin-top: 25px; /* Espacio para diferenciar del párrafo anterior */
-
-  /* Propiedades para ajustar el espaciado entre letras/palabras */
-  /* Úsalos con precaución, ya que pueden afectar la legibilidad si se exageran */
-  //letter-spacing: 0.5px; /* Añade un poco de espacio extra entre las letras */
-  /* word-spacing: 2px; */
+  hyphens: auto;
+  letter-spacing: 0.7em;
+  text-decoration: line-through;
+  background-color: rgba(112, 66, 20, 0.5);
 }
 
 .fondo-contenedor {
-  background: rgba(76, 76, 76, 0.8);
+  background: rgba(112, 66, 20, 0.7); // rgba(76, 76, 76, 0.8);
   overflow-y: scroll;
   opacity: 0.9;
   width: 90%;
   border-radius: 10px;
   height: 50vh;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 .texto-interpretacion {
-  width: 100%;
+  width: 95%;
   height: 100%;
   text-align: center;
   //margin: 5px; //espacio entre la interpretacion y la imagen
@@ -242,11 +241,12 @@
   font-family: "Fondamento", sans-serif;
   //opacity: .9;
   //background: rgba(76, 76, 76, 0.8);
-  color: #d1a020;
+  color: #f1f29c;
 }
 
 .contenedor-boton {
-  transform: translate(0%, -10%);
+  margin-top: 20px;
+  transform: translate(0%, -20%);
   position: relative;
 }
 
@@ -256,85 +256,10 @@
 }
 
 .contenedor-alerta {
-  margin-top: 20;
+  margin-top: 20vh;
 }
 
 /*
-.costal {
-  width: 120px;
-  height: 120px;
-}
-
-.text {
-  margin-top: 95px;
-  opacity: 0;
-  animation: txtAnim; 
-  animation-duration: 3.9s;
-  position: relative; 
-  animation-iteration-count: 6;
-  color: #d1a020;
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 3px;
-}
-
-.anim {
-  color: #d1a020;
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  position: relative;
-  //animation: textScala 3s linear 0 infinite normal;
-  animation-name: textScala;
-  animation-duration: 3s;
-  animation-direction: alternate-reverse;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-out;
-}
-
-.dcostal {
-  position: relative;
-  animation-name: mezclar;
-  animation-duration: 2.7s;
-  animation-direction: alternate-reverse;
-  animation-iteration-count: 8;
-  animation-timing-function: ease-out;
-  transition: step-start;
-}
-
-img {
-  width: 340px;
-  height: 340px;
-  margin: 5px;
-}
-
-.p-interp, div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.p-interp {
-  width: 90%;
-  height: 90%;
-}
-
-.txtInterp {
-  width: 100%;
-  text-align: center;
-  //margin: 5px; //espacio entre la interpretacion y la imagen
-  font-size: 20px;
-  line-height: 1.5;
-  //opacity: .9;
-  background: rgba(76, 76, 76, 0.8);
-  color: #d1a020;
-}
-
-mark {
-  background-color: #4c4c4c;
-  opacity: .9;
-  color: #fff;
-}
 
 @media only screen and (max-width: 435px) {
   .base, .animation, .interpretation {
@@ -362,45 +287,5 @@ mark {
   }
 }
 
-@keyframes mezclar {
-  0% {
-    transform: rotate(18deg);
-    top: -100px;
-  }
-  25% {
-    transform: rotate(-18deg);
-  }
-  50% {
-    transform: rotateY(180deg);
-  }
-  75% {
-    transform: rotate(18deg);
-  }
-  100% {
-    transform: rotate(-18deg);
-    top: 70px;
-  }
-}
-
-@keyframes txtAnim {
-    from {
-      opacity: 0;
-      transform: translateX(-100%);
-    } to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-}
-
-@keyframes textScala {
-  from {
-    color: #845f03;
-    transform: scale(1, 1);
-  } to {
-    color: #d1a020;
-    transform: scale(1.3, 1.3);
-    //font-weight: bold;
-  }
-}
 
 */

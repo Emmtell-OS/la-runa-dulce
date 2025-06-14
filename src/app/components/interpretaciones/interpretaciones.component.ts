@@ -44,6 +44,7 @@ export class InterpretacionesComponent implements OnInit {
   TEMACOLOR: any;
   TEMAIMG: any;
   bkgInterpretacion = '';
+  nombreRuna: string;
 
   constructor(private activateRoute: ActivatedRoute, 
               private service: ProcessLotesService,
@@ -188,10 +189,10 @@ export class InterpretacionesComponent implements OnInit {
 
   private obtenerInterpretacion(id: number, runaCode: string) {
     
-    
-    
     this.imagen = this.imagen + runaCode.slice(0,2) + '.png'
     let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
+    this.nombreRuna = Utils.getNombreRuna(runaCode.slice(0,2));
+    console.log(this.nombreRuna);
     
     if (filtrado !== undefined ) {
       if (filtrado[runaCode][id] !== undefined) {
@@ -200,7 +201,7 @@ export class InterpretacionesComponent implements OnInit {
       } 
     }
 
-    let interpretacion = Utils.elegirInterpretacion(runaCode, this.catInterpretaciones);      
+    let interpretacion = Utils.elegirInterpretacion(runaCode, this.catInterpretaciones); 
     this.textInterp = (interpretacion === null) ? null : filtrado[runaCode][interpretacion];
 
   }
