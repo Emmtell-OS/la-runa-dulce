@@ -58,6 +58,7 @@
   <div
     [ngStyle]="TEMACOLOR"
     class="base"
+    [@slideInOut]="'in'"
     *ngIf="mostrarAnimacion && !mostrarInicio"
   >
     <div class="contenedor-animacion">
@@ -78,6 +79,7 @@
   <div
     [ngStyle]="TEMAIMG"
     class="base"
+    [@slideInUp]="'in'"
     *ngIf="!mostrarAnimacion && !mostrarInicio"
   >
     <!-- Contenido Interpretacion -->
@@ -109,7 +111,7 @@
       </div>
     </div>
 
-    <div class="contenedor-boton">
+    <div class="contenedor-boton" *ngIf="mostrarBtnInicio">
       <a class="btn" style="margin: 0 auto" routerLink="/" target="_self">
         <img src="../../../assets/img/btn/boton-inicio.svg" class="btnInicio" 
         *ngIf="!mostrarAnimacion && !mostrarInicio"/>

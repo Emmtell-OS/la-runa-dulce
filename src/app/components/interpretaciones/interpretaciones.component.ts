@@ -8,11 +8,15 @@ import { InterpretacionesServiceService } from '../../service/interpretaciones-s
 import Utils from '../../utilities/utils';
 import { TemaService } from '../../service/tema.service';
 import { TemasModel } from '../../models/TemasModel';
+import { slideInOut } from '../../animaciones/slideInOut';
+import { slideInUp } from '../../animaciones/slideInUp';
+
 
 @Component({
   selector: 'app-interpretaciones',
   templateUrl: './interpretaciones.component.html',
   styleUrl: './interpretaciones.component.scss',
+  animations: [slideInOut, slideInUp]
 })
 export class InterpretacionesComponent implements OnInit {
   dataJsonLP = [];
@@ -31,6 +35,7 @@ export class InterpretacionesComponent implements OnInit {
   mostraraReintento: boolean;
   mostraraCaducado: boolean;
   mostrarBtnInterpretacion: boolean;
+  mostrarBtnInicio: boolean;
   limiteDias = 7;
   textInterp = '';
   textoAnimacionList: any;
@@ -55,6 +60,7 @@ export class InterpretacionesComponent implements OnInit {
     this.mostrarCaducado = false;
     this.mostrarInterpretacion = false;
     this.mostrarBtnInterpretacion = false;
+    this.mostrarBtnInicio = false;
     this.textoAnimacionList = ['Abriendo bolsa', 'Escogiendo runa', 'Interpretando', 'Listo'];
     //this.iniciarTexto();
     let x = 5;
@@ -84,7 +90,7 @@ export class InterpretacionesComponent implements OnInit {
       }
       this.textoAnimacion = this.textoAnimacionList[this.idTextoAnimacion];
       this.idTextoAnimacion = this.idTextoAnimacion + 1;
-    }, 100); //cambiar a 1700
+    }, 1500); //cambiar a 1700
   }
 
   cerrarAnimacion() {
@@ -94,6 +100,7 @@ export class InterpretacionesComponent implements OnInit {
     }
     if (this.mostraraInterpretacion) {
       this.mostrarInterpretacion = true;
+      this.mostrarBtnInicio = true
     } else if (this.mostraraCaducado) {
       this.mostrarCaducado = true;
     } else {
