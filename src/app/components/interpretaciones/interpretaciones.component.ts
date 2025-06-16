@@ -192,7 +192,6 @@ export class InterpretacionesComponent implements OnInit {
     this.imagen = this.imagen + runaCode.slice(0,2) + '.png'
     let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
     this.nombreRuna = Utils.getNombreRuna(runaCode.slice(0,2));
-    console.log(this.nombreRuna);
     
     if (filtrado !== undefined ) {
       if (filtrado[runaCode][id] !== undefined) {
