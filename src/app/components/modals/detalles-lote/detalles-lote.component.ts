@@ -60,11 +60,7 @@ export class DetallesLoteComponent {
             this.activo = paq['activo'] ? 'En uso' : 'Inactivo';
             paq['consultados'].map(r => {
               this.runas.push({
-<<<<<<< HEAD
-                url: '/assets/img/' + Object.keys(r)[0].slice(0,2) + '.png',
-=======
                 url: '/assets/img/runas/' + Object.keys(r)[0].slice(0,2) + '.png',
->>>>>>> diseño
                 codr: Object.keys(r)[0],
                 consultas: r['consultas'],
                 semaforo: this.getSemaforoClas(r[Object.keys(r)[0]]),

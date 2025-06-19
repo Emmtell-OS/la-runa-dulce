@@ -12,8 +12,6 @@ export default class Utils {
     static getRand(MIN:number, MAX:number): number {
         return Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
     }
-<<<<<<< HEAD
-=======
 
     static getNombreRuna(runaCode: string): string {
         const runa = {
@@ -46,5 +44,5 @@ export default class Utils {
         
         return runa[runaCode];
     }
->>>>>>> diseño
+
 }

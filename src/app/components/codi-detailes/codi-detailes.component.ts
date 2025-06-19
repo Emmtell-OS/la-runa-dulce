@@ -7,16 +7,10 @@ import { CodiModel } from '../../models/CodiModel';
 @Component({
   selector: 'app-codi-detailes',
   templateUrl: './codi-detailes.component.html',
-<<<<<<< HEAD
-  styleUrl: './codi-detailes.component.scss'
-})
-export class CodiDetailesComponent implements OnInit {
-
-=======
   styleUrl: './codi-detailes.component.scss',
 })
 export class CodiDetailesComponent implements OnInit {
->>>>>>> diseño
+
   image: string;
   lote: string;
   paquete: string;
@@ -32,16 +26,11 @@ export class CodiDetailesComponent implements OnInit {
   isExist: boolean;
   mensajeExist: string;
 
-<<<<<<< HEAD
-  constructor(private activateRoute: ActivatedRoute,
-              private service: ProcessLotesService,) {
-  }
-=======
   constructor(
     private activateRoute: ActivatedRoute,
     private service: ProcessLotesService
   ) {}
->>>>>>> diseño
+
 
   ngOnInit(): void {
     this.getRegistroLotes();
@@ -57,27 +46,19 @@ export class CodiDetailesComponent implements OnInit {
       this.getValores();
     } catch (error) {
       console.error(error);
-<<<<<<< HEAD
-      
-=======
->>>>>>> diseño
+
     }
   }
 
   obtenerFirebaseData() {
     return new Promise((resolve, reject) => {
-<<<<<<< HEAD
-      this.service.getAll().valueChanges().subscribe(val => {
-        resolve(val);
-      })
-=======
       this.service
         .getAll()
         .valueChanges()
         .subscribe((val) => {
           resolve(val);
         });
->>>>>>> diseño
+
     });
   }
 
@@ -86,41 +67,25 @@ export class CodiDetailesComponent implements OnInit {
     this.lote = codi.slice(0, 10);
     this.paquete = codi.slice(-10);
     this.runaCode = codi.slice(10, 14);
-<<<<<<< HEAD
-    this.image = './assets/img/' + this.runaCode.slice(0, 2) + '.png';
-    this.pathQR = this.pathBase + codi;
-    
-=======
     this.image = './assets/img/runas/' + this.runaCode.slice(0, 2) + '.png';
     this.pathQR = this.pathBase + codi;
 
->>>>>>> diseño
+
     let lot = this.dataJsonLP.find((lotes) => lotes['lote'] === this.lote);
     if (lot === undefined) {
       this.mensajeExist = `Lote - ${this.lote}`;
       this.isExist = false;
       return;
     }
-<<<<<<< HEAD
-    let paq = lot['paquetes'].find((paquetes) => paquetes['codigo'] === this.paquete);
-=======
     let paq = lot['paquetes'].find(
       (paquetes) => paquetes['codigo'] === this.paquete
     );
->>>>>>> diseño
+
     if (paq === undefined) {
       this.mensajeExist = `Paquete - ${this.paquete} del Lote - ${this.lote}`;
       this.isExist = false;
       return;
     }
-<<<<<<< HEAD
-    
-    let consul = paq['consultados'].find((cns) => Object.keys(cns)[0] === this.runaCode);
-    this.consultados = consul['consultas'];
-    this.estatus = (paq['activo']) ? 'ACTIVO' : 'INACTIVO';
-    this.tipoPaquete = paq['tipoPaquete'];
-    this.mostrar = true;
-=======
     try {
       let consul = paq['consultados'].find(
         (cns) => Object.keys(cns)[0] === this.runaCode
@@ -134,27 +99,11 @@ export class CodiDetailesComponent implements OnInit {
       this.isExist = false;
       return;
     }
->>>>>>> diseño
+
 
     this.qrList.push({
       codi: this.pathQR,
       img: this.image,
-<<<<<<< HEAD
-      folio: ''
-    });
-    this.isExist = true;
-    
-  }
-
-  reiniciarConsultados() {
-
-    let isSaveValid = false;
-    this.dataJsonLP.find((lote => {
-      if(lote['lote'] === this.lote) {
-        lote['paquetes'].find(paq => {
-          if(paq['codigo'] === this.paquete) {
-            let indexConsultado = paq['consultados'].findIndex((elm) => Object.keys(elm)[0] === this.runaCode);
-=======
       folio: '',
     });
     this.isExist = true;
@@ -169,36 +118,24 @@ export class CodiDetailesComponent implements OnInit {
             let indexConsultado = paq['consultados'].findIndex(
               (elm) => Object.keys(elm)[0] === this.runaCode
             );
->>>>>>> diseño
+
             paq['consultados'][indexConsultado][this.runaCode] = '';
             paq['consultados'][indexConsultado]['consultas'] = 0;
             isSaveValid = true;
           }
         });
       }
-<<<<<<< HEAD
-    }));
-
-    if(isSaveValid) {
-      let loteToSave = this.dataJsonLP.find(lote => lote['lote'] === this.lote);
-=======
     });
 
     if (isSaveValid) {
       let loteToSave = this.dataJsonLP.find(
         (lote) => lote['lote'] === this.lote
       );
->>>>>>> diseño
+
       this.service.update(this.lote, loteToSave);
       this.getRegistroLotes();
       this.qrList = [];
     }
-<<<<<<< HEAD
-    
-
   }
 
-=======
-  }
->>>>>>> diseño
 }
