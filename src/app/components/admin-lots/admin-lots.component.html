@@ -1,9 +1,16 @@
 <mat-card appearance="outlined">
   <div class="flotante" (click)="mostrarGenerarQR()" *ngFor="let qr of qrList">
+<<<<<<< HEAD
     <qr-styles [path]="qr['codi']" [img]="qr['img']" [width]="90" [height]="90" [imgSize]="9"></qr-styles>
   </div>
   <div class="flotante" (click)="mostrarGenerarQR()" *ngFor="let qr of qrList2">
     <qr-styles-dot [path]="qr['codi']" [img]="qr['img']" [width]="90" [height]="90" [imgSize]="9"></qr-styles-dot>
+=======
+    <qr-styles [path]="qr['codi']" [img]="qr['img']" [width]="90" [height]="90" [imgSize]="1.5"></qr-styles>
+  </div>
+  <div class="flotante" (click)="mostrarGenerarQR()" *ngFor="let qr of qrList2">
+    <qr-styles-dot [path]="qr['codi']" [img]="qr['img']" [width]="90" [height]="90" [imgSize]="1.5"></qr-styles-dot>
+>>>>>>> diseño
   </div>
   <mat-card-header>
     <mat-card-title> Registro de Lotes y Paquetes</mat-card-title>

@@ -96,10 +96,17 @@
     ></qrcode>
     </mat-grid-tile> -->
     <mat-grid-tile class="gridItem" *ngFor="let qr of qrList">
+<<<<<<< HEAD
       <qr-styles [path]="qr['codi']" [img]="qr['img']" [width]="160" [height]="160" [imgSize]="10" ></qr-styles>
     </mat-grid-tile>
     <mat-grid-tile class="gridItem" *ngFor="let qr2 of qrList2">
       <qr-styles-dot [path]="qr2['codi']" [img]="qr2['img']" [width]="160" [height]="160" [imgSize]="10" ></qr-styles-dot>
+=======
+      <qr-styles [path]="qr['codi']" [img]="qr['img']" [width]="160" [height]="160" [imgSize]="1.8" ></qr-styles>
+    </mat-grid-tile>
+    <mat-grid-tile class="gridItem" *ngFor="let qr2 of qrList2">
+      <qr-styles-dot [path]="qr2['codi']" [img]="qr2['img']" [width]="160" [height]="160" [imgSize]="1.8" ></qr-styles-dot>
+>>>>>>> diseño
     </mat-grid-tile>
   </mat-grid-list>
 </div>

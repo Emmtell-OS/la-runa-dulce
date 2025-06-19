@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <div class="pad" [ngStyle]="">
+=======
+<div class="pad" [ngStyle]="TEMACOLOR">
+>>>>>>> diseño
   <!-- Boton iniciar -->
   <div
     [ngStyle]="TEMACOLOR"
@@ -58,6 +62,10 @@
   <div
     [ngStyle]="TEMACOLOR"
     class="base"
+<<<<<<< HEAD
+=======
+    [@slideInOut]="'in'"
+>>>>>>> diseño
     *ngIf="mostrarAnimacion && !mostrarInicio"
   >
     <div class="contenedor-animacion">
@@ -78,10 +86,15 @@
   <div
     [ngStyle]="TEMAIMG"
     class="base"
+<<<<<<< HEAD
+=======
+    [@slideInUp]="'in'"
+>>>>>>> diseño
     *ngIf="!mostrarAnimacion && !mostrarInicio"
   >
     <!-- Contenido Interpretacion -->
     <div *ngIf="mostrarInterpretacion" class="interpretacion">
+<<<<<<< HEAD
       <div class="contenedor contenedor-runa">
         <img [src]="imagen" alt=""  class="img-runa"/>
         <!--<p class="texto-justificado">hagalaz</p>-->
@@ -89,6 +102,17 @@
       <!--<div class="contenedor fondo-contenedor">
         <p class="texto-interpretacion">{{ textInterp }}</p>
       </div>-->
+=======
+      <div class="contenedor">
+        <div class="contenedor contenedor-runa">
+          <img [src]="imagen" alt=""  class="img-runa"/>
+        </div>
+        <p class="texto-runa-nombre">{{nombreRuna}}</p>
+      </div>
+      <div class="contenedor fondo-contenedor">
+        <p class="texto-interpretacion">{{ textInterp }}</p>
+      </div>
+>>>>>>> diseño
     </div>
 
     <!-- Contenido Caducado -->
@@ -107,11 +131,19 @@
       </div>
     </div>
 
+<<<<<<< HEAD
     <!--<div class="contenedor-boton">
+=======
+    <div class="contenedor-boton" *ngIf="mostrarBtnInicio">
+>>>>>>> diseño
       <a class="btn" style="margin: 0 auto" routerLink="/" target="_self">
         <img src="../../../assets/img/btn/boton-inicio.svg" class="btnInicio" 
         *ngIf="!mostrarAnimacion && !mostrarInicio"/>
       </a>
+<<<<<<< HEAD
     </div>-->
+=======
+    </div>
+>>>>>>> diseño
   </div>
 </div>

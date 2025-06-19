@@ -25,7 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
+<<<<<<< HEAD
      inkscape:zoom="4.315"
+=======
+     inkscape:zoom="3.255"
+>>>>>>> diseño
      inkscape:cx="200"
      inkscape:cy="77.5"
      inkscape:document-units="px"
@@ -44,7 +48,11 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+<<<<<<< HEAD
         <dc:title></dc:title>
+=======
+        <dc:title />
+>>>>>>> diseño
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -53,6 +61,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-45)">
+<<<<<<< HEAD
     <g
        id="g1083"
        transform="matrix(0.78051824,0,0,0.6063579,78.25379,47.280433)"
@@ -97,11 +106,65 @@
          id="g916">
         <path
            style="fill:none;stroke:#d1a020;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+=======
+    <rect
+       style="opacity:1;fill:#704214;fill-opacity:1;fill-rule:nonzero;stroke:#704214;stroke-width:1;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect865"
+       width="400.92166"
+       height="40.552994"
+       x="0.30721965"
+       y="102.61137" />
+    <ellipse
+       style="opacity:1;fill:#704214;fill-opacity:1;fill-rule:nonzero;stroke:#704214;stroke-width:1.08772767;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:6;stroke-opacity:1;paint-order:fill markers stroke"
+       id="path868"
+       cx="199.75555"
+       cy="122.41167"
+       rx="63.324589"
+       ry="58.635086" />
+    <path
+       style="fill:none;stroke:#fff6d5;stroke-width:1.40179455;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="m 289.75458,106.45911 v 28.92543 l 16.41828,-28.82215 v 28.82215 z"
+       id="path855"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path857"
+       d="m 308.44568,135.3123 v -28.78095 l 16.30634,9.7315 v 18.9943"
+       style="fill:none;stroke:#fff6d5;stroke-width:1.40179455;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+    <path
+       style="fill:none;stroke:#fff6d5;stroke-width:1.40179455;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 326.81277,135.28014 v -28.66141 l 18.19566,12.67398"
+       id="path867"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#fff6d5;stroke-width:1.40179455;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 365.468,106.50828 -17.91815,12.48069 17.91815,16.3464"
+       id="path869"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#fff6d5;stroke-width:1.40179455;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="m 368.8543,135.28014 v -28.77186 l 8.40409,13.6404 8.3248,-13.69562 v 28.88231"
+       id="path873"
+       inkscape:connector-curvature="0" />
+    <g
+       style="stroke:#fff6d5;stroke-opacity:1"
+       id="g934"
+       transform="matrix(0.75918154,0,0,0.70558122,48.355977,53.746866)">
+      <g
+         style="stroke:#fff6d5;stroke-opacity:1"
+         id="g916">
+        <path
+           style="fill:none;stroke:#fff6d5;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+>>>>>>> diseño
            d="m 144.55141,104.23646 -19.7183,11.38437 c 0,0 4.93992,26.96929 35.247,45.52737 0,0 31.64219,20.82777 70.89452,4.93992 0,0 19.35915,-8.54473 28.83845,-21.22831 0,0 12.95061,-16.68892 15.62083,-29.77303 l -19.78026,-11.42014"
            id="path907"
            inkscape:connector-curvature="0" />
         <path
+<<<<<<< HEAD
            style="fill:none;stroke:#d1a020;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+=======
+           style="fill:none;stroke:#fff6d5;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+>>>>>>> diseño
            d="M 267.69292,129.90654 244.43371,116.47783"
            id="path909"
            inkscape:connector-curvature="0" />
@@ -109,29 +172,47 @@
            inkscape:connector-curvature="0"
            id="path911"
            d="m 130.43371,129.90654 23.25921,-13.42871"
+<<<<<<< HEAD
            style="fill:none;stroke:#d1a020;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
       </g>
       <g
          style="stroke:#d1a020;stroke-opacity:1"
+=======
+           style="fill:none;stroke:#fff6d5;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+      </g>
+      <g
+         style="stroke:#fff6d5;stroke-opacity:1"
+>>>>>>> diseño
          transform="matrix(1,0,0,-1,0,193.7031)"
          id="g924">
         <path
            inkscape:connector-curvature="0"
            id="path918"
            d="m 144.55141,104.23646 -19.7183,11.38437 c 0,0 4.93992,26.96929 35.247,45.52737 0,0 31.64219,20.82777 70.89452,4.93992 0,0 19.35915,-8.54473 28.83845,-21.22831 0,0 12.95061,-16.68892 15.62083,-29.77303 l -19.78026,-11.42014"
+<<<<<<< HEAD
            style="fill:none;stroke:#d1a020;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+=======
+           style="fill:none;stroke:#fff6d5;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+>>>>>>> diseño
         <path
            inkscape:connector-curvature="0"
            id="path920"
            d="M 267.69292,129.90654 244.43371,116.47783"
+<<<<<<< HEAD
            style="fill:none;stroke:#d1a020;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
         <path
            style="fill:none;stroke:#d1a020;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+=======
+           style="fill:none;stroke:#fff6d5;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+        <path
+           style="fill:none;stroke:#fff6d5;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+>>>>>>> diseño
            d="m 130.43371,129.90654 23.25921,-13.42871"
            id="path922"
            inkscape:connector-curvature="0" />
       </g>
     </g>
+<<<<<<< HEAD
     <g
        id="g1093"
        transform="matrix(0.77707685,0,0,0.60553004,21.85859,47.40606)">
@@ -176,5 +257,52 @@
            inkscape:connector-curvature="0" />
       </g>
     </g>
+=======
+    <path
+       style="fill:none;stroke:#fff6d5;stroke-width:1.40659392;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="m 28.535041,137.49341 v -28.92827 l 15.668011,6.63517 -15.668011,6.63519 13.504138,9.90526"
+       id="path33"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#fff6d5;stroke-width:1.40659392;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="m 46.841418,137.61204 v -29.1097 l 16.080798,9.84265 v 19.21128"
+       id="path843"
+       inkscape:connector-curvature="0" />
+    <g
+       id="g861"
+       transform="matrix(1.3929083,0,0,0.58811923,-27.793299,67.618488)"
+       style="stroke:#fff6d5;stroke-width:1.55408502;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+      <path
+         inkscape:connector-curvature="0"
+         id="path849"
+         d="M 80.056949,118.90458 V 69.624237 l 11.476716,19.878254"
+         style="fill:none;stroke:#fff6d5;stroke-width:1.55408502;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path851"
+         d="m 80.151356,89.921695 10.06954,17.440955"
+         style="fill:none;stroke:#fff6d5;stroke-width:1.55408502;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+    </g>
+    <g
+       id="g865"
+       transform="matrix(0.977671,0,0,0.59158185,14.859752,67.565209)"
+       style="stroke:#fff6d5;stroke-width:1.84954512;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">
+      <path
+         inkscape:connector-curvature="0"
+         id="path845"
+         d="M 60.137119,69.718644 V 118.99898"
+         style="fill:none;stroke:#fff6d5;stroke-width:1.84954512;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path853"
+         d="M 52.018136,81.236271 68.256102,97.474237"
+         style="fill:none;stroke:#fff6d5;stroke-width:1.84954512;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers" />
+    </g>
+    <path
+       style="fill:none;stroke:#fff6d5;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="M 1.7965922,122.92061 H 397.86383"
+       id="path875"
+       inkscape:connector-curvature="0" />
+>>>>>>> diseño
   </g>
 </svg>

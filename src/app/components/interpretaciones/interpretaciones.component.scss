@@ -127,7 +127,11 @@
   animation-direction: alternate-reverse;
   animation-iteration-count: infinite;
   animation-timing-function: ease-out;
+<<<<<<< HEAD
   background-color: #d1a020;
+=======
+  //background-color: #d1a020;
+>>>>>>> diseño
 }
 
 @keyframes btnScala {
@@ -186,6 +190,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
 }
 
 .contenedor-runa {
@@ -224,16 +229,63 @@
 
 .fondo-contenedor {
   background: rgba(76, 76, 76, 0.8);
+=======
+  box-sizing: border-box;
+}
+
+.contenedor-runa {
+  //background-color: #70421480;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url('../../../assets/img/fondos/marco.svg');
+  margin-top: 10px;
+  width: 90%;
+  //height: 120px;
+  //opacity: 0.5;
+}
+
+.img-runa {
+  width: 50px;
+  height: 100px;
+  margin: 15px auto;
+  //background-color: aqua;
+}
+
+.texto-runa-nombre {
+  font-family: 'Fondamento', serif;
+  font-size: 22px;
+  color: #f1f29c;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: justify;
+  hyphens: auto;
+  letter-spacing: 0.7em;
+  text-decoration: line-through;
+  background-color: rgba(112, 66, 20, 0.5);
+}
+
+.fondo-contenedor {
+  background: rgba(112, 66, 20, 0.7); // rgba(76, 76, 76, 0.8);
+>>>>>>> diseño
   overflow-y: scroll;
   opacity: 0.9;
   width: 90%;
   border-radius: 10px;
   height: 50vh;
+<<<<<<< HEAD
   padding: 20px 0;
 }
 
 .texto-interpretacion {
   width: 100%;
+=======
+  padding: 10px 0;
+}
+
+.texto-interpretacion {
+  width: 95%;
+>>>>>>> diseño
   height: 100%;
   text-align: center;
   //margin: 5px; //espacio entre la interpretacion y la imagen
@@ -242,11 +294,20 @@
   font-family: "Fondamento", sans-serif;
   //opacity: .9;
   //background: rgba(76, 76, 76, 0.8);
+<<<<<<< HEAD
   color: #d1a020;
 }
 
 .contenedor-boton {
   transform: translate(0%, -10%);
+=======
+  color: #f1f29c;
+}
+
+.contenedor-boton {
+  margin-top: 20px;
+  transform: translate(0%, -20%);
+>>>>>>> diseño
   position: relative;
 }
 
@@ -256,6 +317,7 @@
 }
 
 .contenedor-alerta {
+<<<<<<< HEAD
   margin-top: 20;
 }
 
@@ -404,3 +466,74 @@ mark {
 }
 
 */
+=======
+  margin-top: 20vh;
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 440px) {
+
+  .base {
+    height: 1000px;
+  }
+
+  .btn {
+    width: 20vw;
+    height: 20vw;
+  }
+
+  .btnInicio {
+    width: 15vw;
+    height: 15vh;
+  }
+
+  .animacion {
+    width: 50vw;
+    height: 50vh;
+  }
+
+  .contenedor-animacion {
+    margin-bottom: 20px;
+  }
+
+  .textoIntermitente {
+    font-size: 40px;
+    margin-top: 50px;
+  }
+
+  .contenedor-boton {
+    margin-top: 0;
+    transform: translate(0%, -30%);
+  }
+
+}
+
+@media only screen and (max-width: 435px) {
+
+  .pad {
+    width: 100%;
+    height: 100%;
+    //padding: 0;
+    //margin: 0;
+    display: contents;
+    //background-color: aqua;
+  }
+
+  .base {
+    width: 100%;
+    height: 100%;
+  }
+
+  .li-inst .inst-img {
+    width: 200px;
+    height: 300px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .btn, .btnInicio {
+    width: 38vw;
+    height: 38vw;
+  }
+
+}
+>>>>>>> diseño

@@ -16,6 +16,10 @@ html {
   padding: 0;
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
+=======
+  gap: 0;
+>>>>>>> diseño
 }
 
 .config-img {
@@ -41,12 +45,22 @@ font-style: normal;
 }
 
 .camino {
+<<<<<<< HEAD
   width: 100%;
   height: 800px;
   background-image: url("../../../assets/img/fondos/plantilla_camino.svg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: center center;
+=======
+  height: 1000px;
+  background-color: #deaa87;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top;
+  box-sizing: border-box;
+>>>>>>> diseño
 }
 
 .bosque {
@@ -64,6 +78,54 @@ font-style: normal;
   //background-color: #8791de;
 }
 
+<<<<<<< HEAD
+=======
+.escenario-letrero {
+  height: 780px;
+  background-color: #deaa87;
+  background-image: url("../../../assets/img/fondos/camino-1.svg");
+}
+
+.camino-dos {
+  background-image: url("../../../assets/img/fondos/camino-2.svg");
+  width: 100%;
+  height: 780px;
+}
+
+.camino-cuatro {
+  background-image: url("../../../assets/img/fondos/camino-4.svg");
+  width: 100%;
+  height: 794px;
+}
+
+.camino-seis {
+  background-image: url("../../../assets/img/fondos/camino-6.svg");
+  width: 100%;
+  height: 770px;
+}
+
+.escenario-mapa {
+  height: 797px;
+  width: 100%;
+  background-color: #deaa87;
+  background-image: url("../../../assets/img/fondos/camino-3.svg");
+}
+
+.escenario-tienda {
+  height: 795px;
+  width: 100%;
+  background-color: #deaa87;
+  background-image: url("../../../assets/img/fondos/camino-5.svg");
+}
+
+.escenario-instruccion {
+  height: 1000px;
+  width: 100%;
+  background-color: #deaa87;
+  background-image: url("../../../assets/img/fondos/camino-7.svg");
+}
+
+>>>>>>> diseño
 .letrero {
   //margin-top: 90px ;
   width: 47vw;
@@ -122,20 +184,35 @@ font-style: normal;
   height: 40vh;
   background-image: url("../../../assets/img/fondos/buscar.svg");
   transform: translate(-80%, -20%);
+<<<<<<< HEAD
+=======
+  
+>>>>>>> diseño
   //background-color: #483d8b;
 }
 
 .cont-table {
   //box-shadow: 12px 12px 24px #8e6300; // #fbb40e;
   width: 70%;
+<<<<<<< HEAD
   //height: 10%;
   margin: auto;
   //padding: 10px;
   background-color: #483D8B;
+=======
+  height: 310px;
+  margin: auto;
+  //padding: 10px;
+  //background-color: #483D8B;
+>>>>>>> diseño
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+<<<<<<< HEAD
+=======
+  overflow: auto;
+>>>>>>> diseño
 }
 
 .table th {
