@@ -15,15 +15,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
   displayedPVColumns = ['comercio', 'direccion', 'mapa'];
   datasourcePV: any;
   catPV: PuntosVentaModel[] = [];
+  mostrarMobile: boolean;
+  imgCarrusel: number;
+  mostrarApuntador: boolean;
+
+  w: number; //eliminar en produccion
+  h: number; //eliminar en produccion
 
   @ViewChild(MatTable) tablePuntoVenta!: MatTable<PuntosVentaModel>;
   @ViewChild('glide', { static: true }) glideRef: ElementRef;
 
   constructor(private servicePuntoVenta: PuntosVentaService) {
     this.getRegistroPuntoVenta(true);
+    this.w = window.innerWidth;
+    this.h = window.innerHeight;
+    if (this.w <= 768) {
+      this.mostrarMobile = true;
+      this.imgCarrusel = 1;
+      this.mostrarApuntador = true;
+    } else {
+      this.mostrarMobile = false;
+      this.imgCarrusel = 2;
+    }
   }
 
- ngOnInit(): void {
+ngOnInit(): void {
   AOS.init();
  }
 
@@ -33,7 +49,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.glideRef.nativeElement, {
     type: 'carousel',
     startAt: 0,
-    perView: 2,
+    perView: this.imgCarrusel,
     autoplay: 3000,
     hoverpause: true,
     keyboard: true,
@@ -72,6 +88,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         resolve(val);
       })
     });
+  }
+
+  clickApuntador() {
+    this.mostrarApuntador = false;
   }
   
 }

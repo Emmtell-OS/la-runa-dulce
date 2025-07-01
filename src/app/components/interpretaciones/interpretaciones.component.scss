@@ -59,10 +59,10 @@
 
 .contenedor-instrucciones {
   width: 100%;
-  display: flex;
-  justify-content: center;
+  //display: flex;
+  //justify-content: center;
   //background-color: aqua;
-  flex-shrink: 0;
+  //flex-shrink: 0;
 }
 
 .ul-inst {
@@ -86,11 +86,11 @@
   border-bottom: none;
 }
 
-.li-inst .inst-img {
+.inst-img {
   width: 150px;
   height: 230px;
-  object-fit: contain;
-  display: block;
+  //object-fit: contain;
+  //display: block;
 }
 
 .btn {
@@ -109,12 +109,12 @@
 }
 
 .btnContinuar {
-  background-image: url("../../../assets/img/btn/boton-continuar.svg");
+  background-image: url("../../../assets/img/btn/boton-continuar.png");
   flex-shrink: 0;
 }
 
 .btnMensaje {
-  background-image: url("../../../assets/img/btn/boton-mensaje.svg");
+  background-image: url("../../../assets/img/btn/boton-mensaje.png");
 }
 
 .btnInicio {
@@ -136,7 +136,7 @@
   }
   to {
     //color: rgb(169, 4, 81);
-    transform: scale(1.1, 1.1);
+    transform: scale(1.2, 1.2);
     //font-weight: bold;
   }
 }
@@ -148,7 +148,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5vh;
+  margin: 5vh 0;
 }
 
 .animacion {
@@ -164,7 +164,7 @@
   line-height: 1.4;
   font-style: normal;
   color: #f1f29c;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .interpretacion {
@@ -245,8 +245,8 @@
 }
 
 .contenedor-boton {
-  margin-top: 20px;
-  transform: translate(0%, -20%);
+  margin-top: 90px;
+  transform: translate(0%, -40%);
   position: relative;
 }
 
@@ -257,6 +257,50 @@
 
 .contenedor-alerta {
   margin-top: 20vh;
+}
+
+.instrucciones-mbl {
+  background-color:#d38d5f;
+  width: 70%;
+  margin: 50px auto;
+  overflow-x: scroll;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 5px solid #c87137;
+}
+
+.deslizar {
+  //background-color: #bf890b;
+  width: 80%;
+  margin: auto;
+  position: relative;
+  transform: translate(0, -150px);
+}
+
+.dedo {
+  height: 140px;
+  width: 70px;
+  position: relative;
+  margin: auto;
+  animation: dezlis 8s infinite;
+  //background-color: #0174df;
+}
+
+@keyframes dezlis {
+  0% {
+    left: 70%;
+  }
+  50% {
+    left: 10%;
+  }
+  100% {
+    left: 70%;
+  }
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 440px) {
@@ -312,16 +356,21 @@
     height: 100%;
   }
 
-  .li-inst .inst-img {
-    width: 200px;
-    height: 300px;
-    object-fit: contain;
-    display: block;
+  .inst-img {
+    width: 250px;
+    height: 350px;
+    //object-fit: contain;
+    //display: block;
   }
 
-  .btn, .btnInicio {
-    width: 38vw;
-    height: 38vw;
+  .btn {
+    width: 40vw;
+    height: 40vh;
+  }
+
+  .btnInicio {
+    width: 40vw;
+    height: 7vh;
   }
 
 }

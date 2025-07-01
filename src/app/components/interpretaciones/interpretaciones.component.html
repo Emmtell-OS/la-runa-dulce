@@ -20,32 +20,32 @@
     </div>
 
     <div class="contenedor-instrucciones">
-      <ul class="ul-inst">
-        <li class="li-inst">
-          <img
+      <div class="instrucciones-mbl" (click)="clickApuntador()" (scroll)="clickApuntador()">
+        <img
             src="../../../assets/img/instrucciones/inter/1.png"
             alt=""
             class="inst-img"
           />
-          <img
+        <img
             src="../../../assets/img/instrucciones/inter/2.png"
             alt=""
             class="inst-img"
-          />
-        </li>
-        <li class="li-inst">
-          <img
-            src="../../../assets/img/instrucciones/inter/3.png"
-            alt=""
-            class="inst-img"
-          />
-          <img
-            src="../../../assets/img/instrucciones/inter/4.png"
-            alt=""
-            class="inst-img"
-          />
-        </li>
-      </ul>
+        />
+        <img
+          src="../../../assets/img/instrucciones/inter/3.png"
+          alt=""
+          class="inst-img"
+        />
+        <img
+          src="../../../assets/img/instrucciones/inter/4.png"
+          alt=""
+          class="inst-img"
+        />
+      </div>
+    </div>
+    <div class="deslizar" *ngIf="mostrarApuntador" (click)="clickApuntador()" (scroll)="clickApuntador()">
+      <img src="../../../assets/img/instrucciones/deslizar.svg" alt=""
+        class="dedo">
     </div>
 
     <div
@@ -113,7 +113,7 @@
 
     <div class="contenedor-boton" *ngIf="mostrarBtnInicio">
       <a class="btn" style="margin: 0 auto" routerLink="/" target="_self">
-        <img src="../../../assets/img/btn/boton-inicio.svg" class="btnInicio" 
+        <img src="../../../assets/img/btn/mboton-ini.png" class="btnInicio" 
         *ngIf="!mostrarAnimacion && !mostrarInicio"/>
       </a>
     </div>

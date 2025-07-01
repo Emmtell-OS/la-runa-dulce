@@ -5,20 +5,22 @@
       alt="LOGO"
       class="logo"
     />
+    <p>w: {{ w }}, h: {{ h }}</p>
   </div>
   <!--<div class="camino"></div>-->
   <div class="camino escenario-letrero">
     <div class="letrero config-img">
       <div class="introduccion-box">
         <p class="introduccion-text">
-          Bienvenido a La Runa Dulce, donde transformamos el misticismo de las runas en consejos
-          prácticos y accesibles. Cada escaneo de nuestros códigos QR te conecta
-          con una interpretación rúnica, diseñada para iluminar tus decisiones y
-          fomentar tu bienestar. Encuentra la magia en cada bocado: nuestros QR
-          vienen en deliciosas bolsas de dulces. ¡Es la excusa perfecta para un
-          dulce placer y una dosis de inspiración! Si buscas solo la sabiduría,
-          también puedes adquirir los QR individualmente. ¡Sumérgete hoy mismo en la
-          dulzura del autoconocimiento con La Runa Dulce!
+          Bienvenido a La Runa Dulce, donde transformamos el misticismo de las
+          runas en consejos prácticos y accesibles. Cada escaneo de nuestros
+          códigos QR te conecta con una interpretación rúnica, diseñada para
+          iluminar tus decisiones y fomentar tu bienestar. Encuentra la magia en
+          cada bocado: nuestros QR vienen en deliciosas bolsas de dulces. ¡Es la
+          excusa perfecta para un dulce placer y una dosis de inspiración! Si
+          buscas solo la sabiduría, también puedes adquirir los QR
+          individualmente. ¡Sumérgete hoy mismo en la dulzura del
+          autoconocimiento con La Runa Dulce!
         </p>
       </div>
     </div>
@@ -26,51 +28,48 @@
   </div>
   <div class="camino camino-dos"></div>
   <div class="camino escenario-mapa">
-    <div class="desc-section">
+    <div class="descripcion-seccion">
       <p class="">Tu dosis de dulzura y fortuna, más cerca que nunca...</p>
       <p class="">Encuentranos en:</p>
     </div>
     <div class="mapa config-img">
-        <div class="cont-table">
-          <table
-            mat-table
-            [dataSource]="datasourcePV"
-            #tablePuntoVenta
-            class="table"
-          >
-            <ng-container matColumnDef="comercio">
-              <th mat-header-cell *matHeaderCellDef>Lugar</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.nombreComercial }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="direccion">
-              <th mat-header-cell *matHeaderCellDef>Dirección</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.direccion }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="mapa">
-              <th mat-header-cell *matHeaderCellDef>Ubicación</th>
-              <td mat-cell *matCellDef="let element">
-                <a href="{{ element.urlMaps }}" target="_blank" class="">
-                  <img
-                    src="../../../assets/img/btn/boton-mapa.svg"
-                    class="button"
-                  />
-                </a>
-              </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedPVColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedPVColumns"></tr>
-          </table>
-        </div>
+      <div class="cont-table">
+        <table
+          mat-table
+          [dataSource]="datasourcePV"
+          #tablePuntoVenta
+          class="table"
+        >
+          <ng-container matColumnDef="comercio">
+            <th mat-header-cell *matHeaderCellDef>Lugar</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.nombreComercial }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="direccion">
+            <th mat-header-cell *matHeaderCellDef>Dirección</th>
+            <td mat-cell *matCellDef="let element" class="mbl-direccion">
+              {{ element.direccion }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="mapa">
+            <th mat-header-cell *matHeaderCellDef>Ubicación</th>
+            <td mat-cell *matCellDef="let element">
+              <a href="{{ element.urlMaps }}" target="_blank" class="">
+                <div class="button"></div>
+              </a>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedPVColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedPVColumns"></tr>
+        </table>
+      </div>
     </div>
-    <div class="buscar config-img"></div>
+    <!--<div class="buscar config-img"></div>-->
   </div>
   <div class="camino camino-cuatro"></div>
   <div class="camino escenario-tienda">
-    <div class="desc-section">
+    <div class="descripcion-seccion">
       <p class="">Endulza tu destino facilmente...</p>
       <p class="">Conoce nuestra variedad de productos:</p>
     </div>
@@ -80,26 +79,32 @@
           <div #glide>
             <div class="glide__track" data-glide-el="track">
               <ul class="glide__slides">
-                <li >
+                <li>
                   <div class="carr-img">Img 1</div>
                 </li>
-                <li >             
+                <li>
                   <div class="carr-img">Img 2</div>
                 </li>
-                <li >
+                <li>
                   <div class="carr-img">Img 3</div>
                 </li>
-                <li >
+                <li>
                   <div class="carr-img">Img 4</div>
                 </li>
               </ul>
             </div>
-  
+
             <div class="glide__arrows" data-glide-el="controls">
-              <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+              <button
+                class="glide__arrow glide__arrow--left"
+                data-glide-dir="<"
+              >
                 prev
               </button>
-              <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
+              <button
+                class="glide__arrow glide__arrow--right"
+                data-glide-dir=">"
+              >
                 next
               </button>
             </div>
@@ -111,12 +116,49 @@
   </div>
   <div class="camino camino-seis"></div>
   <div class="camino escenario-instruccion">
-    <div class="desc-section">
+    <div class="descripcion-seccion">
       <p>Y a todo esto..</p>
       <p>¿Cómo funciona?</p>
     </div>
     <div class="instrucciones">
-      <ul class="ul-inst">
+      <div class="instrucciones-mbl" *ngIf="mostrarMobile" 
+        (click)="clickApuntador()" (scroll)="clickApuntador()">
+        <img
+          src="../../../assets/img/instrucciones/home/hi.png"
+          alt=""
+          class="inst-img"
+        />
+        <img
+          src="../../../assets/img/instrucciones/home/1.png"
+          alt=""
+          class="inst-img"
+        />
+        <img
+          src="../../../assets/img/instrucciones/home/2.png"
+          alt=""
+          class="inst-img"
+        />
+        <img
+          src="../../../assets/img/instrucciones/home/3.png"
+          alt=""
+          class="inst-img"
+        />
+        <img
+          src="../../../assets/img/instrucciones/home/4.png"
+          alt=""
+          class="inst-img"
+        />
+        <img
+          src="../../../assets/img/instrucciones/home/hf.png"
+          alt=""
+          class="inst-img"
+        />
+      </div>
+      <div class="deslizar" *ngIf="mostrarMobile&&mostrarApuntador"
+        (click)="clickApuntador()" (scroll)="clickApuntador()">
+        <img src="../../../assets/img/instrucciones/deslizar.svg" alt="puntero" class="dedo">
+      </div>
+      <ul class="ul-inst" *ngIf="!mostrarMobile">
         <li class="li-inst">
           <img src="../../../assets/img/instrucciones/home/hi.png" alt="" class="inst-img">
           <img src="../../../assets/img/instrucciones/home/1.png" alt="" class="inst-img">
@@ -130,8 +172,24 @@
       </ul>
     </div>
   </div>
+  <div class="footer">
+    <div class="contacto">
+      <a href="https://www.instagram.com/duxemm?igsh=cGRuYjgybHFla2t5" target="_blank" class="a-contacto">
+        <img src="../../../assets/img/icons/ig.png" alt="instagram" class="icon-contacto">
+      </a>
+      <a href="https://wa.me/qr/VWHMY377MR2VF1" target="_blank" class="a-contacto">
+        <img src="../../../assets/img/icons/wa.png" alt="whatsapp" class="icon-contacto">
+      </a>
+      <a href="https://t.me/duxemm" target="_blank" class="a-contacto">
+        <img src="../../../assets/img/icons/te.png" alt="telegram" class="icon-contacto">
+      </a>
+      <a href="https://www.tiktok.com/@duxemm?_t=ZM-8xeAVEmsrOI&_r=1" target="_blank" class="a-contacto">
+        <img src="../../../assets/img/icons/tk.png" alt="tiktok" class="icon-contacto">
+      </a>
+    </div>
+    <p class="cpr">&copy;Copyright 2025</p>
+  </div>
 </div>
-
 
 <!-- ************ Instrucciones *****************  -->
 <!--<div

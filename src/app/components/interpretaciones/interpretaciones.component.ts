@@ -36,6 +36,7 @@ export class InterpretacionesComponent implements OnInit {
   mostraraCaducado: boolean;
   mostrarBtnInterpretacion: boolean;
   mostrarBtnInicio: boolean;
+  mostrarApuntador: boolean;
   limiteDias = 7;
   textInterp = '';
   textoAnimacionList: any;
@@ -61,10 +62,11 @@ export class InterpretacionesComponent implements OnInit {
     this.mostrarInterpretacion = false;
     this.mostrarBtnInterpretacion = false;
     this.mostrarBtnInicio = false;
+    this.mostrarApuntador = true;
     this.textoAnimacionList = ['Abriendo bolsa', 'Escogiendo runa', 'Interpretando', 'Listo'];
     //this.iniciarTexto();
     let x = 5;
-    this.animacionRand = "/assets/img/animaciones/" + Utils.getRand(1, 2).toString() +".gif";
+    this.animacionRand = "/assets/img/animaciones/" + Utils.getRand(1, 3).toString() + ".gif";
     
   }
 
@@ -72,6 +74,10 @@ export class InterpretacionesComponent implements OnInit {
     this.getRegistroLotes();
     this.getRegistroTema();
     this.getValores();
+  }
+
+  clickApuntador() {
+    this.mostrarApuntador = false;
   }
 
   btnIniciar() {
@@ -94,13 +100,13 @@ export class InterpretacionesComponent implements OnInit {
   }
 
   cerrarAnimacion() {
+    this.mostrarBtnInicio = true
     if(this.mostraraReintento) {
       this.mostrarReintento = true;
       return
     }
     if (this.mostraraInterpretacion) {
       this.mostrarInterpretacion = true;
-      this.mostrarBtnInicio = true
     } else if (this.mostraraCaducado) {
       this.mostrarCaducado = true;
     } else {

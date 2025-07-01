@@ -76,6 +76,7 @@ font-style: normal;
   background-image: url("../../../assets/img/fondos/camino-2.svg");
   width: 100%;
   height: 780px;
+  //background-color: #333;
 }
 
 .camino-cuatro {
@@ -146,12 +147,19 @@ font-style: normal;
 .introduccion-text {
   margin: 0;
   font-size: 15px;
-  color: #333;
+  color: #704214;
 }
 
-.desc-section {
+.descripcion-seccion {
   margin: 50px 80px;
   font-size: 20px;
+  padding: 15px;
+  width: 35%;
+  border-radius: 5px;
+  background-color: #f1f29c;
+  border: 4px #704214 dashed;
+  color: #ff7f7f;
+  font-weight: 500;
 }
 
 .mapa {
@@ -175,8 +183,8 @@ font-style: normal;
 
 .cont-table {
   //box-shadow: 12px 12px 24px #8e6300; // #fbb40e;
-  width: 70%;
-  height: 310px;
+  width: 83%;
+  height: 290px;
   margin: auto;
   //padding: 10px;
   //background-color: #483D8B;
@@ -282,9 +290,15 @@ font-style: normal;
 }
 
 .button {
-  //display: inline-block; /* Permite establecer ancho y alto */
-  width: 6vw;
-  height: 6vh;
+  //background-color: #333;
+  background-image: url("../../../assets/img/btn/boton-mapa.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  position: relative;
+  box-sizing: border-box;
+  width: 5vw;
+  height: 5vh;
   animation: escalaImagen 1.2s infinite alternate ease-in-out;
 }
 
@@ -295,5 +309,792 @@ font-style: normal;
   } to {
     filter: drop-shadow(5px 5px 5px #6b4407);
     transform: scale(1.01, 1.01);
+  }
+}
+
+.footer {
+  width: 100%;
+  //height: 120px;
+  background-color: #d38d5f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  display: inline-flex;
+  //gap: 5px;
+}
+
+.contacto {
+  //background-color: #0174df;
+  margin: auto;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-evenly;
+  display: inline-flex;
+  width: 30%;
+}
+
+.icon-contacto {
+  width: 35px;
+  height: 35px;
+}
+
+.cpr {
+  margin: 15px auto;
+  //background-color: #0174df;
+}
+
+
+/**
+* Diseño responsivo mobile
+*/
+
+@media only screen and (max-width: /*435*/455px) and (min-width: 396px) {
+
+  .fondo {
+    padding: 0;
+    margin: 0;
+  }
+
+  .bosque, .camino {
+    width: 100%;
+  }
+
+  .bosque {
+    background-image: url("../../../assets/img/fondos/mobile/mbanner.svg");
+    height: 1000px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+  }
+
+  .logo {
+    width: 330px;
+    height: 330px;
+    top: 20%;
+    margin-left: -20%;
+    //background-color: #bf890b;
+  }
+
+  .camino {
+    height: 400px;
+    //gap: 15px;
+  }
+
+  .escenario-letrero {
+    height: 880px;
+    background-image: url("../../../assets/img/fondos/mobile/fm-letrero.svg");
+    //background-color: #333;
+  }
+
+  .config-img{
+    width: 100%;
+    height: 250px;    
+    transform: translate(-50%, -50%);
+  }
+
+  .letrero {
+    background-image: url("../../../assets/img/fondos/mobile/mletrero.svg");
+    /*width: 400px;
+    height: 250px;    
+    transform: translate(-50%, -50%);*/
+    //background-color: #6b4407;
+  }
+
+  .saludo {
+    width: 100px;
+    height: 200px;
+    left: 80%;
+    transform: translate(-20%, -20%);
+    //background-color: #bf890b;
+  }
+
+  .introduccion-box {
+    //background-color: aqua;
+    width: 280px;
+    height: 160px;
+  }
+
+  .introduccion-text {
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.2;
+    overflow: scroll;
+    height: 100%;
+  }
+
+  .descripcion-seccion {
+    width: 70%;
+    margin: 0 auto;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .escenario-mapa {
+    background-image: url("../../../assets/img/fondos/mobile/fm-mapa.svg");
+    height: 880px;
+    padding: 10px 0;
+    gap: 20px;
+  }
+
+  .mapa {
+    background-image: url("../../../assets/img/fondos/mobile/mguia.svg");
+    margin: 10px 0;
+    height: 500px;
+    /*width: 95%;
+    height: 250px;    
+    transform: translate(-50%, -50%);*/
+    //background-color: #f9b951;
+  }
+
+  .cont-table {
+    width: 80%;
+    height: 300px;
+  }
+
+  .table th, .table tr {
+    font-size: 14px;
+  }
+
+  .button {
+    width: 60px;
+    height: 30px;
+    background-image: url("../../../assets/img/btn/mboton-mapa.png");
+    //background-color: #483D8B;
+  }
+
+  .mbl-direccion {
+    font-size: 11px;
+    text-align: justify;
+  }
+
+  .buscar {
+    width: 95px;
+    height: 190px;
+    left: 22%;
+    transform: translate(-90%, 25%);
+  }
+
+  .escenario-tienda {
+    height: 880px;
+    padding: 20px;
+    background-image: url("../../../assets/img/fondos/mobile/fm-mercado.svg");
+    //background-color: #333;
+  }
+
+  .puesto {
+    background-image: url("../../../assets/img/fondos/mobile/mpuesto.svg");
+    margin: 50px 0;
+    height: 560px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top;
+    box-sizing: border-box;
+    //background-color: #f1f29c;
+  }
+
+  .carrusel {
+    transform: translate(-50%, -64%);
+    width: 330px;
+  }
+
+  .carr-img {
+    height: 350px;
+  }
+
+  .presentar {
+    width: 150px;
+    height: 300px;
+    left: 80%;
+    transform: translate(-60%, 40%);
+  }
+
+  .escenario-instruccion {
+    height: 880px;
+    padding: 20px;
+    background-image: url("../../../assets/img/fondos/mobile/fm-instrucciones.svg");
+  }
+
+  .instrucciones-mbl {
+    background-color:#d38d5f;
+    width: 70%;
+    margin: 50px auto;
+    overflow-x: scroll;
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 5px solid #c87137;
+  }
+
+  .inst-img {
+    //background-color: #fff;
+    margin: auto;
+    width: 250px;
+    height: 350px;
+  }
+
+  .camino-dos {
+    background-image: url("../../../assets/img/fondos/mobile/camino2.svg");
+    width: 100%;
+    height: 660px;
+    //background-color: #333;
+  }
+
+  .camino-cuatro {
+    background-image: url("../../../assets/img/fondos/mobile/camino4.svg");
+    width: 100%;
+    height: 660px;
+    //background-color: #333;
+  }
+
+  .camino-seis {
+    background-image: url("../../../assets/img/fondos/mobile/camino6.svg");
+    width: 100%;
+    height: 660px;
+    //background-color: #333;
+  }
+
+  .deslizar {
+    //background-color: #bf890b;
+    width: 80%;
+    margin: auto;
+    position: relative;
+    transform: translate(0, -150px);
+  }
+
+  .dedo {
+    height: 140px;
+    width: 70px;
+    position: relative;
+    margin: auto;
+    animation: dezlis 8s infinite;
+    //background-color: #0174df;
+  }
+
+  @keyframes dezlis {
+    0% {
+      left: 70%;
+    }
+    50% {
+      left: 10%;
+    }
+    100% {
+      left: 70%;
+    }
+  }
+
+  .contacto {
+    width: 90%;
+  }
+
+  .icon-contacto {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media only screen and (max-width: 395px) and (min-width: 361px) {
+
+  .fondo {
+    padding: 0;
+    margin: 0;
+  }
+
+  .bosque, .camino {
+    width: 100%;
+  }
+
+  .bosque {
+    background-image: url("../../../assets/img/fondos/mobile/mbanner.svg");
+    height: 920px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+  }
+
+  .logo {
+    width: 330px;
+    height: 330px;
+    top: 20%;
+    margin-left: -25%;
+    //background-color: #bf890b;
+  }
+
+  .camino {
+    height: 400px;
+    //gap: 15px;
+  }
+
+  .escenario-letrero {
+    height: 800px;
+    width: 100%;
+    background-image: url("../../../assets/img/fondos/mobile/fm-letrero.svg");
+    //background-color: #333;
+  }
+
+  .config-img{
+    width: 100%;
+    height: 250px;    
+    transform: translate(-50%, -50%);
+  }
+
+  .letrero {
+    background-image: url("../../../assets/img/fondos/mobile/mletrero.svg");
+    /*width: 400px;
+    height: 250px;    
+    transform: translate(-50%, -50%);*/
+    //background-color: #6b4407;
+  }
+
+  .saludo {
+    width: 100px;
+    height: 200px;
+    left: 80%;
+    transform: translate(-28%, -5%);
+    //background-color: #bf890b;
+  }
+
+  .introduccion-box {
+    //background-color: aqua;
+    width: 270px;
+    height: 150px;
+  }
+
+  .introduccion-text {
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.2;
+    overflow: scroll;
+    height: 100%;
+  }
+
+  .descripcion-seccion {
+    width: 70%;
+    margin: 0 auto;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .escenario-mapa {
+    background-image: url("../../../assets/img/fondos/mobile/fm-mapa.svg");
+    height: 800px;
+    padding: 10px 0;
+    gap: 20px;
+  }
+
+  .mapa {
+    background-image: url("../../../assets/img/fondos/mobile/mguia.svg");
+    margin: 10px 0;
+    height: 500px;
+    /*width: 95%;
+    height: 250px;    
+    transform: translate(-50%, -50%);*/
+    //background-color: #f9b951;
+  }
+
+  .cont-table {
+    width: 80%;
+    height: 283px;
+  }
+
+  .table th, .table tr {
+    font-size: 14px;
+    //background-color: #333;
+  }
+
+  .button {
+    width: 60px;
+    height: 30px;
+    background-image: url("../../../assets/img/btn/mboton-mapa.png");
+    //background-color: #483D8B;
+  }
+
+  .mbl-direccion {
+    font-size: 11px;
+    text-align: justify;
+  }
+
+  .buscar {
+    width: 95px;
+    height: 190px;
+    left: 22%;
+    transform: translate(-90%, 25%);
+  }
+
+  .escenario-tienda {
+    height: 800px;
+    padding: 20px;
+    background-image: url("../../../assets/img/fondos/mobile/fm-mercado.svg");
+    //background-color: #333;
+  }
+
+  .puesto {
+    background-image: url("../../../assets/img/fondos/mobile/mpuesto.svg");
+    margin: 50px 0;
+    height: 560px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top;
+    box-sizing: border-box;
+    //background-color: #f1f29c;
+  }
+
+  .carrusel {
+    transform: translate(-50%, -64%);
+    width: 330px;
+  }
+
+  .carr-img {
+    height: 350px;
+  }
+
+  .presentar {
+    width: 150px;
+    height: 300px;
+    left: 80%;
+    transform: translate(-60%, 40%);
+  }
+
+  .escenario-instruccion {
+    height: 800px;
+    padding: 20px;
+    background-image: url("../../../assets/img/fondos/mobile/fm-instrucciones.svg");
+  }
+
+  .instrucciones-mbl {
+    background-color:#d38d5f;
+    width: 70%;
+    margin: 50px auto;
+    overflow-x: scroll;
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 5px solid #c87137;
+  }
+
+  .inst-img {
+    //background-color: #fff;
+    margin: auto;
+    width: 250px;
+    height: 350px;
+  }
+
+  .camino-dos {
+    background-image: url("../../../assets/img/fondos/mobile/camino2.svg");
+    width: 100%;
+    height: 600px;
+    //background-color: #333;
+  }
+
+  .camino-cuatro {
+    background-image: url("../../../assets/img/fondos/mobile/camino4.svg");
+    width: 100%;
+    height: 600px;
+    //background-color: #333;
+  }
+
+  .camino-seis {
+    background-image: url("../../../assets/img/fondos/mobile/camino6.svg");
+    width: 100%;
+    height: 600px;
+    //background-color: #333;
+  }
+
+  .deslizar {
+    //background-color: #bf890b;
+    width: 80%;
+    margin: auto;
+    position: relative;
+    transform: translate(0, -150px);
+  }
+
+  .dedo {
+    height: 140px;
+    width: 70px;
+    position: relative;
+    margin: auto;
+    animation: dezlis 8s infinite;
+    //background-color: #0174df;
+  }
+
+  @keyframes dezlis {
+    0% {
+      left: 70%;
+    }
+    50% {
+      left: 10%;
+    }
+    100% {
+      left: 70%;
+    }
+  }
+
+  .contacto {
+    width: 90%;
+  }
+
+  .icon-contacto {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+
+  .fondo {
+    padding: 0;
+    margin: 0;
+  }
+
+  .bosque, .camino {
+    width: 100%;
+  }
+
+  .bosque {
+    background-image: url("../../../assets/img/fondos/mobile/mbanner.svg");
+    height: 887px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+  }
+
+  .logo {
+    width: 300px;
+    height: 300px;
+    top: 20%;
+    margin-left: -22%;
+    //background-color: #bf890b;
+  }
+
+  .camino {
+    height: 400px;
+    //gap: 15px;
+  }
+
+  .escenario-letrero {
+    height: 780px;
+    width: 100%;
+    background-image: url("../../../assets/img/fondos/mobile/fm-letrero.svg");
+    //background-color: #333;
+  }
+
+  .config-img{
+    width: 100%;
+    height: 250px;    
+    transform: translate(-50%, -50%);
+  }
+
+  .letrero {
+    background-image: url("../../../assets/img/fondos/mobile/mletrero.svg");
+    /*width: 400px;
+    height: 250px;    
+    transform: translate(-50%, -50%);*/
+    //background-color: #6b4407;
+  }
+
+  .saludo {
+    width: 100px;
+    height: 200px;
+    left: 80%;
+    transform: translate(-30%, -5%);
+    //background-color: #bf890b;
+  }
+
+  .introduccion-box {
+    //background-color: aqua;
+    width: 260px;
+    height: 140px;
+  }
+
+  .introduccion-text {
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.2;
+    overflow: scroll;
+    height: 100%;
+  }
+
+  .descripcion-seccion {
+    width: 70%;
+    margin: 0 auto;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .escenario-mapa {
+    background-image: url("../../../assets/img/fondos/mobile/fm-mapa.svg");
+    height: 777px;
+    padding: 10px 0;
+    gap: 20px;
+  }
+
+  .mapa {
+    background-image: url("../../../assets/img/fondos/mobile/mguia.svg");
+    margin: 10px 0;
+    height: 500px;
+    /*width: 95%;
+    height: 250px;    
+    transform: translate(-50%, -50%);*/
+    //background-color: #f9b951;
+  }
+
+  .cont-table {
+    width: 80%;
+    height: 275px;
+  }
+
+  .table th, .table tr {
+    font-size: 14px;
+  }
+
+  .button {
+    width: 60px;
+    height: 30px;
+    background-image: url("../../../assets/img/btn/mboton-mapa.png");
+    //background-color: #483D8B;
+  }
+
+  .mbl-direccion {
+    font-size: 11px;
+    text-align: justify;
+  }
+
+  .buscar {
+    width: 95px;
+    height: 190px;
+    left: 22%;
+    transform: translate(-90%, 25%);
+  }
+
+  .escenario-tienda {
+    height: 770px;
+    padding: 20px;
+    background-image: url("../../../assets/img/fondos/mobile/fm-mercado.svg");
+    //background-color: #333;
+  }
+
+  .puesto {
+    background-image: url("../../../assets/img/fondos/mobile/mpuesto.svg");
+    margin: 50px 0;
+    height: 560px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top;
+    box-sizing: border-box;
+    //background-color: #f1f29c;
+  }
+
+  .carrusel {
+    transform: translate(-50%, -64%);
+    width: 330px;
+  }
+
+  .carr-img {
+    height: 350px;
+  }
+
+  .presentar {
+    width: 150px;
+    height: 300px;
+    left: 80%;
+    transform: translate(-60%, 40%);
+  }
+
+  .escenario-instruccion {
+    height: 770px;
+    padding: 20px;
+    background-image: url("../../../assets/img/fondos/mobile/fm-instrucciones.svg");
+  }
+
+  .instrucciones-mbl {
+    background-color:#d38d5f;
+    width: 70%;
+    margin: 50px auto;
+    overflow-x: scroll;
+    white-space: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 5px solid #c87137;
+  }
+
+  .inst-img {
+    //background-color: #fff;
+    margin: auto;
+    width: 250px;
+    height: 350px;
+  }
+
+  .camino-dos {
+    background-image: url("../../../assets/img/fondos/mobile/camino2.svg");
+    width: 100%;
+    height: 586px;
+    //background-color: #333;
+  }
+
+  .camino-cuatro {
+    background-image: url("../../../assets/img/fondos/mobile/camino4.svg");
+    width: 100%;
+    height: 587px;
+    //background-color: #333;
+  }
+
+  .camino-seis {
+    background-image: url("../../../assets/img/fondos/mobile/camino6.svg");
+    width: 100%;
+    height: 577px;
+    //background-color: #333;
+  }
+
+  .deslizar {
+    //background-color: #bf890b;
+    width: 80%;
+    margin: auto;
+    position: relative;
+    transform: translate(0, -150px);
+  }
+
+  .dedo {
+    height: 140px;
+    width: 70px;
+    position: relative;
+    margin: auto;
+    animation: dezlis 8s infinite;
+    //background-color: #0174df;
+  }
+
+  @keyframes dezlis {
+    0% {
+      left: 70%;
+    }
+    50% {
+      left: 10%;
+    }
+    100% {
+      left: 70%;
+    }
+  }
+
+  .contacto {
+    width: 90%;
+  }
+
+  .icon-contacto {
+    width: 40px;
+    height: 40px;
   }
 }
