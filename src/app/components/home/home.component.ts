@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.getRegistroPuntoVenta(true);
     this.w = window.innerWidth;
     this.h = window.innerHeight;
-    if (this.w <= 768) {
+    if (this.w <= 850) {
       this.mostrarMobile = true;
       this.imgCarrusel = 1;
       this.mostrarApuntador = true;
