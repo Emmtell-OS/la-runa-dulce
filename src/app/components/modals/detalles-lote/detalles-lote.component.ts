@@ -83,11 +83,11 @@ export class DetallesLoteComponent {
     let diasRestantes = moment().diff(moment(creacion), 'days');
 
     switch(true) {
-      case (diasRestantes < 4): //50%
+      case (diasRestantes < 1): //50%
         return 'son';
-      case (diasRestantes < 7): //37.5%
+      case (diasRestantes < 2): //37.5%
         return 'swarn';
-      case (diasRestantes < 8): //12.5%
+      case (diasRestantes < 3): //12.5%
         return 'sdan';
       default:
         return 'sout';          

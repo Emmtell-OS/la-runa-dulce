@@ -127,6 +127,10 @@
   animation-direction: alternate-reverse;
   animation-iteration-count: infinite;
   animation-timing-function: ease-out;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url("../../../assets/img/btn/mboton-ini.png");
   //background-color: #d1a020;
 }
 
@@ -218,7 +222,7 @@
   hyphens: auto;
   letter-spacing: 0.7em;
   text-decoration: line-through;
-  background-color: rgba(112, 66, 20, 0.5);
+  background-color: rgba(112, 66, 20, 0.7);
 }
 
 .fondo-contenedor {
@@ -245,7 +249,7 @@
 }
 
 .contenedor-boton {
-  margin-top: 90px;
+  margin-top: 30px;
   transform: translate(0%, -40%);
   position: relative;
 }
@@ -311,12 +315,16 @@
 
   .btn {
     width: 20vw;
-    height: 20vw;
+    height: 20vh;
   }
 
   .btnInicio {
-    width: 15vw;
-    height: 15vh;
+    width: 140px;
+    height: 70px;
+    margin: 30px 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
   }
 
   .animacion {
@@ -371,6 +379,10 @@
   .btnInicio {
     width: 40vw;
     height: 7vh;
+    margin: 30px 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
   }
 
 }

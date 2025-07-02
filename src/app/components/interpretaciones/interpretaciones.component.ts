@@ -37,7 +37,7 @@ export class InterpretacionesComponent implements OnInit {
   mostrarBtnInterpretacion: boolean;
   mostrarBtnInicio: boolean;
   mostrarApuntador: boolean;
-  limiteDias = 7;
+  limiteDias = 3;
   textInterp = '';
   textoAnimacionList: any;
   textoAnimacion: any;

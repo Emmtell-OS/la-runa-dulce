@@ -113,8 +113,9 @@
 
     <div class="contenedor-boton" *ngIf="mostrarBtnInicio">
       <a class="btn" style="margin: 0 auto" routerLink="/" target="_self">
-        <img src="../../../assets/img/btn/mboton-ini.png" class="btnInicio" 
-        *ngIf="!mostrarAnimacion && !mostrarInicio"/>
+        <!--<img src="../../../assets/img/btn/mboton-ini.png" class="btnInicio" 
+        *ngIf="!mostrarAnimacion && !mostrarInicio"/>-->
+        <div class="btnInicio" *ngIf="!mostrarAnimacion && !mostrarInicio"></div>
       </a>
     </div>
   </div>
