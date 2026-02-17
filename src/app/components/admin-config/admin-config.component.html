@@ -36,6 +36,7 @@
 
         </form>
 
+        <div class="temas">
         <table mat-table [dataSource]="datasourceTemas" #table>
             <ng-container matColumnDef="tema">
               <th mat-header-cell *matHeaderCellDef>Tema</th>
@@ -89,6 +90,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedTemasColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedTemasColumns"></tr>
         </table>
+        </div>
 
     </mat-card-content>
 </mat-card>
@@ -126,6 +128,7 @@
       </button>
     </form>
 
+    <div class="scroll-400">
     <table mat-table [dataSource]="datasourceTP" #table>
         <ng-container matColumnDef="tipoPaquete">
           <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
@@ -166,6 +169,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedTiposPaquetesColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedTiposPaquetesColumns"></tr>
     </table>
+    </div>
 
   </mat-card-content>
 </mat-card>

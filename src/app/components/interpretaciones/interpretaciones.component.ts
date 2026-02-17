@@ -8,11 +8,15 @@ import { InterpretacionesServiceService } from '../../service/interpretaciones-s
 import Utils from '../../utilities/utils';
 import { TemaService } from '../../service/tema.service';
 import { TemasModel } from '../../models/TemasModel';
+import { slideInOut } from '../../animaciones/slideInOut';
+import { slideInUp } from '../../animaciones/slideInUp';
+
 
 @Component({
   selector: 'app-interpretaciones',
   templateUrl: './interpretaciones.component.html',
   styleUrl: './interpretaciones.component.scss',
+  animations: [slideInOut, slideInUp]
 })
 export class InterpretacionesComponent implements OnInit {
   dataJsonLP = [];
@@ -31,7 +35,9 @@ export class InterpretacionesComponent implements OnInit {
   mostraraReintento: boolean;
   mostraraCaducado: boolean;
   mostrarBtnInterpretacion: boolean;
-  limiteDias = 7;
+  mostrarBtnInicio: boolean;
+  mostrarApuntador: boolean;
+  limiteDias = 3;
   textInterp = '';
   textoAnimacionList: any;
   textoAnimacion: any;
@@ -55,10 +61,12 @@ export class InterpretacionesComponent implements OnInit {
     this.mostrarCaducado = false;
     this.mostrarInterpretacion = false;
     this.mostrarBtnInterpretacion = false;
+    this.mostrarBtnInicio = false;
+    this.mostrarApuntador = true;
     this.textoAnimacionList = ['Abriendo bolsa', 'Escogiendo runa', 'Interpretando', 'Listo'];
     //this.iniciarTexto();
     let x = 5;
-    this.animacionRand = "/assets/img/animaciones/" + Utils.getRand(1, 2).toString() +".gif";
+    this.animacionRand = "/assets/img/animaciones/" + Utils.getRand(1, 3).toString() + ".gif";
     
   }
 
@@ -66,6 +74,10 @@ export class InterpretacionesComponent implements OnInit {
     this.getRegistroLotes();
     this.getRegistroTema();
     this.getValores();
+  }
+
+  clickApuntador() {
+    this.mostrarApuntador = false;
   }
 
   btnIniciar() {
@@ -84,10 +96,11 @@ export class InterpretacionesComponent implements OnInit {
       }
       this.textoAnimacion = this.textoAnimacionList[this.idTextoAnimacion];
       this.idTextoAnimacion = this.idTextoAnimacion + 1;
-    }, 100); //cambiar a 1700
+    }, 1500); //cambiar a 1700
   }
 
   cerrarAnimacion() {
+    this.mostrarBtnInicio = true
     if(this.mostraraReintento) {
       this.mostrarReintento = true;
       return
@@ -192,7 +205,6 @@ export class InterpretacionesComponent implements OnInit {
     this.imagen = this.imagen + runaCode.slice(0,2) + '.png'
     let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
     this.nombreRuna = Utils.getNombreRuna(runaCode.slice(0,2));
-    console.log(this.nombreRuna);
     
     if (filtrado !== undefined ) {
       if (filtrado[runaCode][id] !== undefined) {

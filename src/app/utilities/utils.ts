@@ -41,10 +41,7 @@ export default class Utils {
             "UR": "URUZ",
             "WU": "WUNJO"
         };
-
-        console.log(runa[runaCode]);
         
-
         return runa[runaCode];
     }
 }
