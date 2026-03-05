@@ -17,7 +17,7 @@ button {
 }
 
 .barraColor {
-    color: rgb(26, 24, 24);
+    color: #40403f;
     font-weight: 500;
     width: 140px;
     height: 25px;
@@ -28,6 +28,11 @@ button {
     justify-content: center;
     align-items: center;
     border-radius: 15px;
+}
+
+.nameColor {
+    background-color: #e4e5e0;
+    padding: 0 6px;
 }
 
 .temas{
