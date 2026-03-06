@@ -217,6 +217,9 @@ export class AdminConfigComponent {
     await this.obtenerFirebaseDataTema().then((data: any) => {
       this.catTemas = data;
     });
+    this.catTemas = this.catTemas.sort((a, b) => {
+      return a.tema.localeCompare(b.tema, undefined, { numeric: true, sensitivity: 'base' });
+    });
     this.datasourceTemas = this.catTemas;
   }
 
@@ -244,9 +247,9 @@ export class AdminConfigComponent {
       }
       this.temaService.create(this.formularioTemas.value['tema'].toUpperCase(), temaBody);
       this.getRegistroTema();
-      this.formularioTemas.reset();
       this.modificarTema = false;
     }
+    this.formularioTemas.reset();
   }
 
   editarTema(elemet: any) {
