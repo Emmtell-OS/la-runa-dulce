@@ -58,7 +58,7 @@ export class AdminInterpComponent {
     this.runasList.splice(0, this.runasList.length);
     this.runasBase = this.carga();
     this.cargarRunasCodigos();
-
+    
   }
 
   obtenerFirebaseData() {
@@ -70,6 +70,7 @@ export class AdminInterpComponent {
   }
 
   obtenerValorRuna() {
+    this.autoCompleteInputValue = this.autoCompleteInputValue.split('  ')[0];
     this.llenarInterpretaciones(this.autoCompleteInputValue);
     if(!this.selectInterp) {
       this.selectInterp = true;
@@ -227,7 +228,8 @@ export class AdminInterpComponent {
   }
 
   cargarRunasCodigos() {
-    this.runasList.push(...this.runasBase);
+    this.listaRunasConContadorInterpretaciones();
+    this.runasList.push(...this.listaRunasConContadorInterpretaciones());
     this.runas = this.runaFilterControl.valueChanges
     .pipe(
       startWith(''),
@@ -237,6 +239,20 @@ export class AdminInterpComponent {
 
   filterRunas(name: string) {
     return this.runasList.filter(run => run['runa'].toUpperCase().includes(name.toUpperCase()));
+  }
+
+  listaRunasConContadorInterpretaciones()  {
+    let total: any;
+    let runasBaseContador = [];
+    for(let runna of this.runasBase) {
+      let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runna['codigo']);
+      total = (filtrado === undefined) ? 0 : filtrado[runna['codigo']].length;
+      runasBaseContador.push({
+        "runa": runna['runa'] + "  (" + total + ")",
+        "codigo": runna['codigo']
+      });
+    }
+    return runasBaseContador;
   }
 
   public mostrarEliminar() {

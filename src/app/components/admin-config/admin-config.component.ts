@@ -220,6 +220,7 @@ export class AdminConfigComponent {
     this.catTemas = this.catTemas.sort((a, b) => {
       return a.tema.localeCompare(b.tema, undefined, { numeric: true, sensitivity: 'base' });
     });
+    this.catTemas = this.catTemas.sort((a, b) => Number(b.asignado) - Number(a.asignado));
     this.datasourceTemas = this.catTemas;
   }
 

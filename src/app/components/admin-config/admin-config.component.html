@@ -1,7 +1,7 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title>
-            Tema Interpretaciones
+            Temas Console
         </mat-card-title>
     </mat-card-header>
     <mat-card-content>
@@ -39,8 +39,11 @@
         <div class="temas">
         <table mat-table [dataSource]="datasourceTemas" #table>
             <ng-container matColumnDef="tema">
-              <th mat-header-cell *matHeaderCellDef>Tema</th>
-              <td mat-cell *matCellDef="let element">{{ element.tema }}</td>
+                <th mat-header-cell *matHeaderCellDef>Tema</th>
+                <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.asignado" class="txtTema">{{ element.tema }}</span>
+                <span *ngIf="!element.asignado">{{ element.tema }}</span>
+                </td>
             </ng-container>
     
             <ng-container matColumnDef="color">
@@ -58,7 +61,8 @@
                 (dblclick)="portaPapeles(element.imagen)"
                 matTooltip="Dos clicks para copiar ruta"
                 >
-                    {{ element.imagen | reductor }}
+                    <span *ngIf="element.asignado" class="txtTema">{{ element.imagen | reductor }}</span>
+                    <span *ngIf="!element.asignado">{{ element.imagen | reductor }}</span>
                 </td>
             </ng-container>
 

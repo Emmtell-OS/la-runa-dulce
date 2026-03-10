@@ -12,7 +12,6 @@
 .base {
   width: 350px;
   height: 95%;
-  gap: 30px;
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -51,7 +50,6 @@
   font-size: 15px;
   font-family: "Fondamento", sans-serif;
   letter-spacing: 2px;
-  //text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.6); /* Sombra */
   line-height: 1.4;
   font-weight: bold;
   color: #f9caca;
@@ -59,10 +57,6 @@
 
 .contenedor-instrucciones {
   width: 100%;
-  //display: flex;
-  //justify-content: center;
-  //background-color: aqua;
-  //flex-shrink: 0;
 }
 
 .ul-inst {
@@ -71,11 +65,9 @@
   margin: 0;
   width: 95%;
   overflow: hidden;
-  //background-color: #bf890b;
 }
 
 .li-inst {
-  //background-color: blueviolet;
   display: flex;
   justify-content: space-between;
   margin: 0;
@@ -99,7 +91,7 @@
   background-position: center;
   width: 12vw;
   height: 12vh;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   cursor: pointer;
   animation-name: btnScala;
   animation-duration: 3s;
@@ -109,8 +101,12 @@
 }
 
 .btnContinuar {
+  transform: scale(1.2, 1.2);
   background-image: url("../../../assets/img/btn/boton-continuar.png");
   flex-shrink: 0;
+  margin-top: -220px;
+  //margin-bottom: -15%;
+  animation-duration: 0s;
 }
 
 .btnMensaje {
@@ -121,6 +117,7 @@
   width: 9vw;
   height: 9vh;
   margin-bottom: 20px;
+  margin-top: -100px;
   cursor: pointer;
   animation-name: btnScala;
   animation-duration: 3s;
@@ -246,7 +243,7 @@
 }
 
 .contenedor-boton {
-  margin-top: 30px;
+  margin-top: 100px;
   transform: translate(0%, -40%);
   position: relative;
 }
@@ -278,7 +275,7 @@
 .deslizar {
   //background-color: #bf890b;
   width: 80%;
-  margin: auto;
+  margin: 0 auto;
   position: relative;
   transform: translate(0, -150px);
 }

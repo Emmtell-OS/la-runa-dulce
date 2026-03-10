@@ -43,11 +43,13 @@
         />
       </div>
     </div>
-    <div class="deslizar" *ngIf="mostrarApuntador" (click)="clickApuntador()" (scroll)="clickApuntador()">
-      <img src="../../../assets/img/instrucciones/deslizar.svg" alt=""
-        class="dedo">
-    </div>
 
+    <div class="deslizar"  (click)="clickApuntador()" (scroll)="clickApuntador()">
+      <img *ngIf="mostrarApuntador" src="../../../assets/img/instrucciones/deslizar.svg" alt=""
+        class="dedo">
+      <div class="dedo" *ngIf="!mostrarApuntador"></div>
+    </div>
+    
     <div
       class="btn btnContinuar"
       (click)="btnIniciar(); mostrarAnimacion = true"
