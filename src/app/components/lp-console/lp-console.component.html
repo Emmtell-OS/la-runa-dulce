@@ -10,7 +10,7 @@
     />
   </mat-form-field>
   <div class="scroll-400">
-    <table mat-table [dataSource]="dataSourceHistorialPaqs" #tableHistorialPaquetes>
+    <table mat-table [dataSource]="dataSourceHistorialPaqs" #tableHistorialPaquetes class="table">
       <ng-container matColumnDef="paquete">
         <th mat-header-cell *matHeaderCellDef>Paquete</th>
         <td mat-cell *matCellDef="let element">{{ element.paquete }}</td>
@@ -78,7 +78,7 @@
   />
 </mat-form-field>
 <div class="scroll-400">
-  <table mat-table [dataSource]="dataSourceHistorial" #tableHistorialLotes>
+  <table mat-table [dataSource]="dataSourceHistorial" #tableHistorialLotes class="table">
     <ng-container matColumnDef="lote">
       <th mat-header-cell *matHeaderCellDef>Lote</th>
       <td mat-cell *matCellDef="let element">{{ element.lote }}</td>

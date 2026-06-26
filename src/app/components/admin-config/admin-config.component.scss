@@ -1,3 +1,9 @@
+.section {
+    max-width: 85%;
+    margin: 70px auto;
+    background-color: #704214;
+}
+
 .mff {
     margin-left: 20px;
     margin-top: 12px;
@@ -5,15 +11,25 @@
 }
 
 button {
-    margin-left: 50px;
+    margin-left: 15px;
     width: 90px;
     height: 30px;
+    background-color: #fff6d5;
 }
 
 .txtTema {
     color: brown; 
     font-weight: bold; 
     letter-spacing: 3px;
+    
+}
+
+.table th {
+    background-color: #fcecb3;
+}
+
+.table tr {
+    background-color: #fcecb3;
 }
 
 .barraColor {
@@ -31,13 +47,14 @@ button {
 }
 
 .nameColor {
-    background-color: #e4e5e0;
+    background-color: #fcecb3;
     padding: 0 6px;
 }
 
 .temas{
     overflow-y: scroll;
     height: 300px;
+    background-color: #e6b505;
 }
 
 .scroll-400 {

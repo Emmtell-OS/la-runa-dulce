@@ -1,4 +1,4 @@
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" class="general-section">
   <div class="flotante" (click)="mostrarGenerarQR()" placeholder="Imprimir QR">
     <img
       src="../../../assets/img/icons/printer.png"
@@ -51,9 +51,7 @@
       <mat-form-field class="mff">
         <mat-label>Cantidad de paquetes</mat-label>
         <input matInput type="text" 
-        (keyup)="soloNumeros($event)"
-        (keydown)="soloNumeros($event)"
-        (keypress)="soloNumeros($event)"
+          (input)="soloNumeros()"
         formControlName="cantidad" />
       </mat-form-field>
 
@@ -109,63 +107,67 @@
   </mat-card-content>
 </mat-card>
 
-<mat-divider></mat-divider>
+<mat-divider class="line"></mat-divider>
+<mat-divider class="line"></mat-divider>
 
-<div>
+<div class="general-section">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Producción</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <table mat-table [dataSource]="datasourceProduccion">
-        <ng-container matColumnDef="lote">
-          <th mat-header-cell *matHeaderCellDef>Lote</th>
-          <td mat-cell *matCellDef="let element">{{ element.lote }}</td>
-        </ng-container>
-        <ng-container matColumnDef="paquete">
-          <th mat-header-cell *matHeaderCellDef>Paquete</th>
-          <td mat-cell *matCellDef="let element">{{ element.paquete }}</td>
-        </ng-container>
-        <ng-container matColumnDef="tipoPaquete">
-          <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
-          <td mat-cell *matCellDef="let element">{{ element.tipoPaquete }}</td>
-        </ng-container>
-        <ng-container matColumnDef="produccion">
-          <th mat-header-cell *matHeaderCellDef>Estatus</th>
-          <td mat-cell *matCellDef="let element">{{ element.produccion }}</td>
-        </ng-container>
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element; let index = index">
-            <button
-              mat-stroked-button
-              *ngIf="btnProduction[index]"
-              (click)="iniciarProduccion(index, element)"
-            >
-              Iniciar
-            </button>
-            <button
-              mat-stroked-button
-              *ngIf="!btnProduction[index]"
-              (click)="completarProduccion(element, index)"
-            >
-              Completado
-            </button>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedProduccionColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedProduccionColumns"
-        ></tr>
-      </table>
+      <div class="scroll-400">
+        <table mat-table [dataSource]="datasourceProduccion">
+          <ng-container matColumnDef="lote">
+            <th mat-header-cell *matHeaderCellDef>Lote</th>
+            <td mat-cell *matCellDef="let element">{{ element.lote }}</td>
+          </ng-container>
+          <ng-container matColumnDef="paquete">
+            <th mat-header-cell *matHeaderCellDef>Paquete</th>
+            <td mat-cell *matCellDef="let element">{{ element.paquete }}</td>
+          </ng-container>
+          <ng-container matColumnDef="tipoPaquete">
+            <th mat-header-cell *matHeaderCellDef>Tipo Paquete</th>
+            <td mat-cell *matCellDef="let element">{{ element.tipoPaquete }}</td>
+          </ng-container>
+          <ng-container matColumnDef="produccion">
+            <th mat-header-cell *matHeaderCellDef>Estatus</th>
+            <td mat-cell *matCellDef="let element">{{ element.produccion }}</td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let index = index">
+              <button
+                mat-stroked-button
+                *ngIf="btnProduction[index]"
+                (click)="iniciarProduccion(index, element)"
+              >
+                Iniciar
+              </button>
+              <button
+                mat-stroked-button
+                *ngIf="!btnProduction[index]"
+                (click)="completarProduccion(element, index)"
+              >
+                Completado
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedProduccionColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedProduccionColumns"
+          ></tr>
+        </table>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>
 
-<mat-divider></mat-divider>
+<mat-divider class="line"></mat-divider>
+<mat-divider class="line"></mat-divider>
 
-<div>
+<div class="general-section">
   <mat-card>
     <mat-card-header>
       <mat-card-title>Historial</mat-card-title>

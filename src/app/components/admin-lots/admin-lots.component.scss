@@ -14,6 +14,16 @@
   //padding: 0;
 }
 
+.general-section {
+  max-width: 80%;
+  margin: 40px auto 50px auto;
+}
+
+.line {
+  margin: 30px auto;
+  width: 90%;
+}
+
 .mff {
   margin-left: 20px;
   margin-top: 12px;
@@ -31,6 +41,11 @@ button {
 }
 
 .historial {
-  height: 500px;
+  height: 400px;
   overflow-y: scroll;
+}
+
+.scroll-400 {
+  overflow-y: scroll;
+  height: 400px;
 }

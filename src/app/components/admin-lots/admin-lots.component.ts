@@ -30,6 +30,8 @@ import Utils from '../../utilities/utils';
 import { CodiModel } from '../../models/CodiModel';
 import { environment } from '../../../environments/environment';
 import { DetallesLoteComponent } from '../modals/detalles-lote/detalles-lote.component';
+import { EmpaqueModel } from '../../models/EmpaqueModel';
+import { RUNAS_BASE } from '../constantes/runas.constants';
 
 @Component({
   selector: 'app-admin-lots',
@@ -38,7 +40,6 @@ import { DetallesLoteComponent } from '../modals/detalles-lote/detalles-lote.com
 })
 export class AdminLotsComponent implements OnInit {
 
-  dataJsonLP = [];
   formularioRegistro: FormGroup;
   lotesFilterControl: FormControl = new FormControl('');
   filteredLotes: Observable<any[]>;
@@ -85,17 +86,8 @@ export class AdminLotsComponent implements OnInit {
   ngOnInit(): void { }
 
   public async getRegistroLotes() {
-    /**conexión y consumo de Firebase */
-    this.dataJsonLP.splice(0, this.dataJsonLP.length);
     this.idsLotesBase = [];
-    await this.obtenerFirebaseData().then((data: []) => {
-      this.dataJsonLP.push(...data);
-    });
-    const arr = this.dataJsonLP.map((stg) => stg.lote);
-    this.idsLotesBase.push('Nuevo lote');
-    this.idsLotesBase.push(...arr);
-    
-    this.cargarFoliosLotes();
+    this.obtenerHistorialLotes();
     this.loadHistorialTable(true);
     this.loadProduccion(true);
   }
@@ -106,6 +98,32 @@ export class AdminLotsComponent implements OnInit {
         resolve(val);
       })
     });
+  }
+
+  obtenerHistorialLotes() {
+    this.service.getLotes().valueChanges().subscribe((lotesBase: LoteModel[]) => {
+      if (lotesBase) {
+
+        this.idsLotesBase = ['Nuevo lote'];
+
+        this.idsLotesBase.push(...lotesBase.map(l => l.lote));
+        
+        this.cargarFoliosLotes();
+      }      
+    });
+  }
+
+  cargarFoliosLotes() {
+    this.idsLotesList = this.idsLotesBase;
+    this.filteredLotes = this.lotesFilterControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(lote => lote ? this.filterLotes(lote) : this.idsLotesList.slice())
+    );
+  }
+
+  filterLotes(name: string) {
+    return this.idsLotesList.filter(lot => lot.toUpperCase().includes(name.toUpperCase()));
   }
 
   private qrLogo() {
@@ -170,9 +188,6 @@ export class AdminLotsComponent implements OnInit {
     console.log(listaTP);
     
     return listaTP;
-    /*listaTP.map((tp) => {
-      this.tipoPaqueteFiltrado.push(tp['tipoPaquete']);
-    })*/
   }
 
   obtenerFirebaseTPByTipoData(tipo: string) {
@@ -183,20 +198,6 @@ export class AdminLotsComponent implements OnInit {
     });
   }
 
-  cargarFoliosLotes() {
-    this.idsLotesList.splice(0, this.idsLotesList.length);
-    this.idsLotesList.push(...this.idsLotesBase);
-    this.filteredLotes = this.lotesFilterControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(lote => lote ? this.filterLotes(lote) : this.idsLotesList.slice())
-    );
-  }
-
-  filterLotes(name: string) {
-    return this.idsLotesList.filter(lot => lot.toUpperCase().includes(name.toUpperCase()));
-  }
-
   applyFilterHistorial(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSourceHistorial.filter = filterValue.trim().toLowerCase();
@@ -204,59 +205,96 @@ export class AdminLotsComponent implements OnInit {
 
   public loadHistorialTable(ft: boolean) {
     
-    this.historialProductos.splice(0, this.historialProductos.length);
+    // 1. Limpiamos el arreglo local y el DataSource
+    this.historialProductos = [];
     this.dataSourceHistorial = new MatTableDataSource();
-    this.dataJsonLP.forEach((lote) => {
-      let folioLote = lote['lote'];
-      let loteActivo = lote['activo'];
-      lote['paquetes'].forEach(paq => {  
-        if (paq['estatusProduccion'] === 'T') {
-          this.historialProductos.push({
-            "lote": folioLote,
-            "loteActivo": loteActivo,
-            "paquete": paq['codigo'],
-            "tipoPaquete": paq['tipoPaquete'],
-            "activo": paq['activo'],
-            "creacion": paq['creacion'],
-            "consultados": paq['consultados'].filter(x => x['consultas'] > 0).length,
-          });
-        }
-      });
+
+    // 2. Escuchamos el nodo plano de paquetes desde el servicio
+    this.service.getPaquetes().valueChanges().subscribe((paquetesBase: any[]) => {
+    if (!paquetesBase) {
+      this.dataSourceHistorial = new MatTableDataSource([]);
+      return;
+    }
+
+    this.historialProductos = [];
+
+    paquetesBase.forEach((paq) => {
+      // Filtramos en memoria: Solo nos interesan los Terminados ('T')
+      if (paq['estatusProduccion'] === 'T') {
+        
+        // Contamos cuántos empaques han sido escaneados al menos una vez
+        // Ajustado al nuevo modelo estructurado con propiedad 'consultas'
+        const totalConsultados = paq['consultados'] 
+          ? paq['consultados'].filter((x: any) => x['consultas'] > 0).length 
+          : 0;
+
+        this.historialProductos.push({
+          "lote": paq['loteId'], // Usamos la referencia directa al lote
+          "loteActivo": paq['activo'], // O la bandera del paquete, según tu regla
+          "paquete": paq['codigo'],
+          "tipoPaquete": paq['tipoPaquete'],
+          "activo": paq['activo'],
+          "creacion": paq['creacion'],
+          "consultados": totalConsultados,
+        });
+      }
     });
+
+    // 3. Ordenamos por fecha de creación (de más reciente a más antiguo)
     this.historialProductos.sort((a, b) => new Date(b.creacion).getTime() - new Date(a.creacion).getTime());
+    
+    // 4. Asignamos los datos al DataSource de Material
     this.dataSourceHistorial = new MatTableDataSource(this.historialProductos);
-    if(!ft) {
+    
+    // Si no es la primera carga y la tabla ya existe, forzamos el render
+    if (!ft && this.tableHistorial) {
       this.tableHistorial.renderRows();
     }
+  });
   }
 
   public loadProduccion(ft: boolean) {
-    this.produccionProductos.splice(0, this.produccionProductos.length);
-    this.btnProduction.splice(0, this.btnProduction.length);
-    this.dataJsonLP.forEach((lote) => {
-      let folioLote = lote['lote']
-      lote['paquetes'].forEach(paq => {  
+    this.produccionProductos = [];
+    this.btnProduction = [];
+
+    // Consumimos el nuevo nodo plano del servicio
+    this.service.getPaquetes().valueChanges().subscribe((paquetesBase: any[]) => {
+      // Si por alguna razón viene vacío, inicializamos la tabla vacía
+      if (!paquetesBase) {
+        this.datasourceProduccion = new MatTableDataSource([]);
+        return;
+      }
+
+      this.produccionProductos = [];
+      this.btnProduction = [];
+
+      paquetesBase.forEach((paq) => {
+        // Filtramos en memoria: Solo nos interesa lo que NO está terminado ('T')
         if (paq['estatusProduccion'] !== 'T') {
           this.produccionProductos.push({
-            "lote": folioLote,
+            "lote": paq['loteId'], // Ahora el paquete conoce a su lote directamente
             "paquete": paq['codigo'],
             "tipoPaquete": paq['tipoPaquete'],
             "produccion": this.getEstatusProd(paq['estatusProduccion']),
           });
-          if(paq['estatusProduccion'] === 'P') {
+
+          // Lógica de tus botones de acción
+          if (paq['estatusProduccion'] === 'P') {
             this.btnProduction.push(true);
-          } else if(paq['estatusProduccion'] === 'EP') {
+          } else if (paq['estatusProduccion'] === 'EP') {
             this.btnProduction.push(false);
           }
         }
       });
-    });
-    
-    this.datasourceProduccion = new MatTableDataSource(this.produccionProductos);
-    if(!ft) {
-      this.tableProduccion.renderRows();
 
-    }
+      // Asignamos los datos filtrados al DataSource de Material
+      this.datasourceProduccion = new MatTableDataSource(this.produccionProductos);
+
+      // Si NO es la primera carga (ft === false), forzamos el renderizado de la tabla
+      if (!ft && this.tableProduccion) {
+        this.tableProduccion.renderRows();
+      }
+    });
   }
 
   public getEstatusProd(estatus: string): string {
@@ -272,29 +310,27 @@ export class AdminLotsComponent implements OnInit {
     }
   }
 
-  public agregarPreregistro(ctrl: FormControl) {
+  /**
+   * Crea un registro de memoria en la lista stash de la tabla preregistro.
+   * 
+   * @param formularioPreregistro
+   */
+  public agregarPreregistro(formularioPreregistro: FormControl) {
     if(this.autoCompleteInputValue === undefined ||
       this.autoCompleteInputValue.toLowerCase() === 'nuevo lote' ||
       this.autoCompleteInputValue === '') {
-        this.autoCompleteInputValue = this.generateFolio().toString();
+        this.autoCompleteInputValue = Utils.generateFolio();
     }
 
     this.formularioRegistro.value.lote = this.autoCompleteInputValue;
     this.stashLoteList.push(this.formularioRegistro.value);
     this.getIdLoteList();
-    
-    ctrl.setValue(null);
+
+    formularioPreregistro.setValue(null);
     this.autoCompleteInputValue = '';
 
     this.dataSource = new MatTableDataSource(this.stashLoteList);
     this.formularioRegistro.reset();
-    //this.table.renderRows();
-  }
-
-  public validForm() {
-    if(!this.formularioRegistro.valid || this.formularioRegistro.dirty) {
-
-    }
   }
 
   public dropRow(index: any, ctrl: FormControl) {
@@ -305,11 +341,14 @@ export class AdminLotsComponent implements OnInit {
     ctrl.setValue(null);
   }
 
+  /**
+   * Actualiza la lista de folios para lotes
+   */
   public getIdLoteList() {
-    this.idsLotesList.splice(0, this.idsLotesList.length);
+    this.idsLotesList = [];
+    let loteStashList = this.stashLoteList.map(lot => lot['lote']);
     this.idsLotesList.push(...this.idsLotesBase);
-    const arr = new Set(this.stashLoteList.map((stg) => stg.lote));
-    this.idsLotesList.push(...arr);
+    this.idsLotesList.push(...loteStashList);
   }
 
   public limpiarTablaStash() {
@@ -320,49 +359,29 @@ export class AdminLotsComponent implements OnInit {
 
   /***************Crear lote json******************** */
 
-  public iniciarProduccion(index: number, element: any) {
-    this.produccionProductos[index]['produccion'] = this.getEstatusProd('EP');
-    this.datasourceProduccion = this.produccionProductos;
-    //this.tableProduccion.renderRows();    
-    this.btnProduction.splice(index, 1, false);   
-    
-    let isSaveValid = false;
-    this.dataJsonLP.find((lote => {
-      if(lote['lote'] === element['lote']) {
-        lote['paquetes'].find(paq => {
-          if(paq['codigo'] === element['paquete']) {
-            paq['estatusProduccion'] = 'EP';
-            isSaveValid = true;
-          }
-        });
-      }
-    }));
-
-    if(isSaveValid) {
-      let loteToSave = this.dataJsonLP.find(lote => lote['lote'] === element['lote'] );
-      this.service.update(element['lote'], loteToSave);
-      this.getRegistroLotes()
+  public async iniciarProduccion(index: number, element: any) {
+    try {
+      // Cambiamos el estatus en Firebase directamente usando el ID del paquete
+      await this.service.updateEstatusProduccion(element.paquete, 'EP');
+      
+      // Actualizamos localmente el botón para reflejar el cambio visual inmediato
+      this.btnProduction[index] = false;
+      this.produccionProductos[index].produccion = this.getEstatusProd('EP');
+      this.datasourceProduccion = new MatTableDataSource(this.produccionProductos);
+    } catch (error) {
+      console.error('Error al iniciar producción:', error);
     }
-
   }
 
-  public completarProduccion(element: any, index: number) {
-    let isSaveValid = false;
-    this.dataJsonLP.find((lote => {
-      if(lote['lote'] === element['lote']) {
-        lote['paquetes'].find(paq => {
-          if(paq['codigo'] === element['paquete']) {
-            paq['estatusProduccion'] = 'T';
-            isSaveValid = true;
-          }
-        });
-      }
-    }));
-
-    if(isSaveValid) {
-      let loteToSave = this.dataJsonLP.find(lote => lote['lote'] === element['lote'] );
-      this.service.update(element['lote'], loteToSave);
-      this.getRegistroLotes()
+  public async completarProduccion(element: any, index: number) {
+    try {
+      // Cambiamos el estatus a Terminado ('T') en Firebase
+      await this.service.updateEstatusProduccion(element.paquete, 'T');
+      
+      // Al ser Terminado, la suscripción de 'loadProduccion' lo filtrará 
+      // automáticamente y desaparecerá de la tabla de producción.
+    } catch (error) {
+      console.error('Error al completar producción:', error);
     }
     
   }
@@ -376,163 +395,112 @@ export class AdminLotsComponent implements OnInit {
   }
 
   public detallesPaquete(index: any, element: any) {
-    let loteObj = this.dataJsonLP.find(folio => folio['lote'] === element['lote']);
-
     const dialogRef = this.dialog.open(DetallesLoteComponent, {
-      data: {idPaquete: element['paquete'], lote: element['lote'] },
+      data: { 
+        idPaquete: element.paquete, // El código único del paquete (QR)
+        lote: element.lote           // El ID del lote
+      },
       width: '1000px',
-      height:'98%'
+      height: '98%'
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        //hacer algo al cerrar el dialogo
+        // Lógica al cerrar si la necesitas
       }
     });
-
   }
 
-  public async registrarPedido() {
-    this.createJsonLP();
+  public registrarPedido() {
+
+    // Recorremos los lotes preregistrados en tu tabla temporal
+    for (const element of this.stashLoteList) {
+      const loteId = element['lote'];
+      const cantidadPaquetes = parseInt(element['cantidad']);
+      const tipoPaquete = element['tipoPaquete'];
+
+      // Generamos y guardamos la cantidad de paquetes solicitada
+      for (let i = 0; i < cantidadPaquetes; i++) {
+        
+        // Construimos el modelo de paquete inyectando el arreglo de empaques
+        const paqueteModel: PaqueteModel = {
+          codigo: Utils.generateFolio(),
+          activo: true,
+          creacion: moment().format(),
+          estatusProduccion: 'P',
+          tipoPaquete: tipoPaquete,
+          loteId: "",
+          // Aquí se ejecuta el método de arriba y devuelve el EmpaqueModel[] perfectamente ordenado
+          consultados: this.createConsultados(tipoPaquete), 
+        };
+
+        try {
+          // Guardamos en Firebase mediante el Multi-path update del servicio
+          this.service.registrarPaquete(paqueteModel, loteId);
+        } catch (error) {
+          console.error(`Error al registrar el paquete ${paqueteModel.codigo} en el lote ${loteId}:`, error);
+        }
+      }
+    }
+
+    // Notificamos o refrescamos banderas visuales si es necesario
     this.getRegistroLotes();
     this.limpiarTablaStash();
   }
 
-  public createJsonLP() {
+  private createConsultados(tipoPaquete: string): EmpaqueModel[] {
+    const tipoPaq: TiposPaqueteModel = this.listaTP.find((tp) => tipoPaquete === tp['tipoPaquete']);
+    if (!tipoPaq) return [];
 
-    let dJsonLP;
-
-    this.stashLoteList.forEach(element => {
-
-      const paqueteList = [];
-      for (let i = 0; i < parseInt(element['cantidad']); i++) {
-        let paqueteModel: PaqueteModel = {
-          codigo: this.generateFolio().toString(),
-          activo: true,
-          creacion: moment().format(),
-          estatusProduccion: 'P',
-          tipoPaquete: element['tipoPaquete'],
-          consultados: this.createConsultados(element['tipoPaquete']),
-        };
-        paqueteList.push(paqueteModel);
+    const poolRunasDisponibles: string[] = [];
+    const limiteRunas = tipoPaq.totalEmpaques;
+  
+    // 1. Generamos el universo completo de variantes válidas (41 runas únicas posibles)
+    RUNAS_BASE.forEach((runa, index) => {
+      poolRunasDisponibles.push(runa + '01'); // Versión normal
+      
+      // Si el índice es mayor a 8, la runa admite posición invertida ('00')
+      if (index > 8) {
+        poolRunasDisponibles.push(runa + '00');
       }
-
-      let existLote = false;
-
-      this.dataJsonLP.find((pedido) => {
-        if(pedido['lote'] === element['lote']) {
-          pedido['paquetes'].push(...paqueteList);
-          existLote = true;
-        }
-      });
-      let jsonActualizar = this.dataJsonLP.find((pedido) => pedido['lote'] === element['lote']);
-      if (jsonActualizar !== undefined && jsonActualizar !== '') {
-        this.service.create(element['lote'], jsonActualizar);
-      }
-
-      if (!existLote) { 
-        dJsonLP = {
-          lote: element['lote'],
-          activo: true,
-          creacion: moment().format(),
-          paquetes: paqueteList,
-        };
-        this.dataJsonLP.push(dJsonLP);
-        this.service.create(element['lote'], dJsonLP);
-      }
-
     });
+  
+    // 2. Barajamos el pool usando el algoritmo clásico Fisher-Yates (Ultra eficiente)
+    for (let i = poolRunasDisponibles.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [poolRunasDisponibles[i], poolRunasDisponibles[j]] = [poolRunasDisponibles[j], poolRunasDisponibles[i]];
+    }
+  
+    // 3. Extraemos las runas necesarias manejando casos donde el límite supere las 41 disponibles
+    const runasSeleccionadas: string[] = [];
+    while (runasSeleccionadas.length < limiteRunas) {
+      const faltantes = limiteRunas - runasSeleccionadas.length;
+      runasSeleccionadas.push(...poolRunasDisponibles.slice(0, faltantes));
+    }
+  
+    // 4. Mapeamos directamente al nuevo formato estructurado
+    return runasSeleccionadas.map((r) => {
+      const interpretacion = Utils.elegirInterpretacion(r, this.catInterpretaciones);
+      return {
+        runaId: r,
+        timestamp: '',
+        consultas: 0,
+        interpretacionId: interpretacion === null ? 1 : interpretacion
+      };
+    });
+  }
 
-    this.loadProduccion(false);
+  public soloNumeros() {
+    // Limpia cualquier caracter que no sea dígito usando una expresión regular limpia
+    const limpio = this.formularioRegistro.value['cantidad'].replace(/[^0-9]/g, '');
     
-  }
-
-  private createConsultados(tipoPaquete: string): any {
-    let tipoPaq: TiposPaqueteModel = this.listaTP.find((tp) => tipoPaquete === tp['tipoPaquete']);
-    let runas = ['GE', 'EI', 'NG', 'JE', 'HA', 
-    'SW', 'IS', 'DA', 'OD', 'UR', 
-    'OT', 'AS', 'MA', 'AL', 'NA', 
-    'PE', 'TE', 'KA', 'WU', 'FE', 
-    'RA', 'LA', 'EH', 'BE', 'TH'];
-    let consultadosList = [];
-    let runasIdList = [];
-    let limiteRunas = tipoPaq.totalEmpaques;
-    let existRuna = false;
-
-    while(runasIdList.length < limiteRunas) {
-      let indexR = Utils.getRand(0, 24); //this.getRand(24, 0);
-      let runa = '';
-      let invertido = '01';
-      if (indexR > 8) {
-        if(Utils.getRand(1, 100) % 2 != 0) {
-          invertido = '00';
-        }
-      }
-      runa = runas[indexR] + invertido;
-      if(limiteRunas > 41 && runasIdList.length >= 41) {          
-        if(runasIdList.filter((rdl) => rdl === runa).length < Math.ceil(limiteRunas/41)) {
-          runasIdList.push(runa);
-        }
-      } else {
-        if (!runasIdList.includes(runa)) {
-          runasIdList.push(runa);
-        }
-      }
-    }
-
-    runasIdList.map((r) => {
-      let interpretacion = Utils.elegirInterpretacion(r, this.catInterpretaciones);
-      let consultadosObject = new Object();
-      consultadosObject[r] = '';
-      consultadosObject['consultas'] = 0;
-      consultadosObject['inter'] = (interpretacion === null) ? 1 : interpretacion;
-      consultadosList.push(consultadosObject);
-    });
-
-    return consultadosList;
-  }
-
-  private generateFolio(): String {
-    let indice: string = '';
-
-    for (let i = 1; i <= 10; i++) {
-      let rand = Utils.getRand(48, 122); //this.getRand(122, 48);
-      while ((rand > 90 && rand < 97) || (rand > 57 && rand < 65)) {
-        rand = Utils.getRand(48, 122); //this.getRand(122, 48);
-      }
-      indice = indice + String.fromCharCode(rand);
-    }
-
-    return indice;
-  }
-
-  public soloNumeros(val: any) {
-    let specialKeys = ['', 'Shift', 'Alt', 'Control', 'AltGraph']
-    let regex = /^\d+$/
-    let result = val['key']
-    if(!regex.test(val['key'])) {
-      if(this.formularioRegistro.value['cantidad'].length > 0) {
-        result = this.formularioRegistro.value['cantidad'].replace(val['key'], '');
-      } else {
-        result = ''
-      }
-    } else {
-      result = this.formularioRegistro.value['cantidad'];
-    }
-    this.formularioRegistro.setValue({
-      lote: this.formularioRegistro.value['lote'],
-      tipoPaquete: this.formularioRegistro.value['tipoPaquete'],
-      cantidad: result
-    });
-    
+    this.formularioRegistro.patchValue({
+      cantidad: limpio
+    }, { emitEvent: false });
   }
 
   private getRand(MAX:number, MIN:number): number {
     return Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
   }
 
-  private printJson() {
-    console.log(this.dataJsonLP);
-    console.log(JSON.stringify(this.dataJsonLP));
-  }
 }

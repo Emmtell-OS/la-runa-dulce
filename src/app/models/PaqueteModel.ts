@@ -1,10 +1,13 @@
+import { EmpaqueModel } from "./EmpaqueModel";
+
 export interface PaqueteModel {
 
     codigo: string;
     activo: boolean;
     creacion: any;
-    estatusProduccion: string;
+    estatusProduccion: 'P' | 'EP' | 'T';
     tipoPaquete: string;
-    consultados: {};
+    loteId: string;
+    consultados: EmpaqueModel[];
 
 }

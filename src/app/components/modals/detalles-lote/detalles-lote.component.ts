@@ -1,9 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { EmpaqueModel } from './../../../models/EmpaqueModel';
+import { Component, Inject, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import moment from 'moment';
 import { DialogData } from '../../../models/DialogData';
 import { SemaforoModel } from '../../../models/SemaforoModel';
 import { ProcessLotesService } from '../../../service/process-lotes.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { PaqueteModel } from '../../../models/PaqueteModel';
 
 @Component({
   selector: 'app-detalles-lote',
@@ -13,9 +16,8 @@ import { ProcessLotesService } from '../../../service/process-lotes.service';
 export class DetallesLoteComponent {
 
   readonly dialogRef = inject(MatDialogRef<DetallesLoteComponent>);
-  readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+  //readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
-  dataJsonLP = [];
   tipoPaquete: string;
   creacion: any; //string
   activo: string;
@@ -23,55 +25,51 @@ export class DetallesLoteComponent {
   numPaquete = this.data.idPaquete;
   runas: SemaforoModel[] = [];
 
-  constructor(private service: ProcessLotesService) {
-    this.getRegistroLotes();
+  public paqueteInfo: PaqueteModel;
+
+  constructor(
+    private service: ProcessLotesService,
+    @Inject(MAT_DIALOG_DATA) public data: any // Aquí recibimos el { idPaquete, lote } que enviamos
+  ) { }
+
+  ngOnInit() {
+    this.cargarDatosPaquete();
   }
 
-  public async getRegistroLotes() {
-    /**conexión y consumo de Firebase */
-    await this.obtenerFirebaseData().then((data: []) => {
-      this.dataJsonLP.push(...data);
-    });
-    this.setValues();
-  }
+/**
+ * Encapsula la lógica de suscripción reactiva
+ */
+private cargarDatosPaquete() {
+  const idPaquete = this.data.idPaquete;
 
-  obtenerFirebaseData() {
-    return new Promise((resolve, reject) => {
-      this.service.getAll().valueChanges().subscribe(val => {
-        resolve(val);
-      })
+  if (idPaquete) {
+    this.service.getPaqueteByCodi(idPaquete).subscribe((paqueteCompleto: any) => {
+      if (paqueteCompleto) {
+        this.paqueteInfo = paqueteCompleto;                
+        this.setValues();        
+      }
     });
   }
+}
 
   refrescar() {
-    this.dataJsonLP.splice(0, this.dataJsonLP.length);
     this.runas = [];
-    this.getRegistroLotes();
+    this.cargarDatosPaquete();
   }
 
   public setValues() {
-
-    this.dataJsonLP.find((lot) => {
-      if(lot['lote'] === this.lote) {
-        lot['paquetes'].find((paq) => {
-          if (paq['codigo'] === this.numPaquete) {
-            this.tipoPaquete = paq['tipoPaquete'];
-            this.creacion = moment(paq['creacion']).format("DD/MM/YYYY");
-            this.activo = paq['activo'] ? 'En uso' : 'Inactivo';
-            paq['consultados'].map(r => {
-              this.runas.push({
-                url: '/assets/img/runas/' + Object.keys(r)[0].slice(0,2) + '.png',
-                codr: Object.keys(r)[0],
-                consultas: r['consultas'],
-                semaforo: this.getSemaforoClas(r[Object.keys(r)[0]]),
-                inver: (Object.keys(r)[0].slice(-2) === '00') ? 'invertida' : ''
-              });
-            });
-          }
-        });
-      }
+    this.tipoPaquete = this.paqueteInfo.tipoPaquete.toUpperCase();
+    this.creacion = moment(this.paqueteInfo.creacion).format("DD/MM/YYYY");
+    this.activo = (this.paqueteInfo.activo) ? 'En uso' : 'Inactivo';
+    this.paqueteInfo.consultados.map((paq: EmpaqueModel) => {
+      this.runas.push({
+        url: '/assets/img/runas/' + paq.runaId.slice(0,2) + '.png',
+        codr: paq.runaId,
+        consultas: paq.consultas,
+        semaforo: this.getSemaforoClas(paq.timestamp),
+        inver: (paq.runaId.slice(-2) === '00') ? 'invertida' : ''
+      });
     });
-
   }
 
   public getSemaforoClas(creacion: string): string {

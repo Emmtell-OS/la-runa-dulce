@@ -1,3 +1,4 @@
+import { LoteModel } from './../../models/LotelModel';
 import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -5,6 +6,7 @@ import { LotesConsoleModel } from '../../models/LotesConsoleModel';
 import { PaquetesConsoleModel } from '../../models/PaquetesConsoleModel';
 import { ProcessLotesService } from '../../service/process-lotes.service';
 import { EliminarComponent } from '../modals/eliminar/eliminar.component';
+import { PaqueteModel } from '../../models/PaqueteModel';
 
 @Component({
   selector: 'lp-console',
@@ -12,6 +14,9 @@ import { EliminarComponent } from '../modals/eliminar/eliminar.component';
   styleUrl: './lp-console.component.scss'
 })
 export class LpConsoleComponent {
+
+  loteList: LoteModel[] = [];
+  paqueteList: PaqueteModel[] = [];
 
   dataJsonLP = [];
   displayedLotesColumns: string[] = ['lote', 'paquetes', 'fecha', 'estatus', 'actions'];
@@ -27,38 +32,41 @@ export class LpConsoleComponent {
   @ViewChild(MatTable) tableHistorialPaquetes!: MatTable<PaquetesConsoleModel>;
 
   constructor(private service: ProcessLotesService) {
-    this.getRegistroLotes();
+    this.getRegistroLotes(true);
   }
 
-  public async getRegistroLotes() {
+  public async getRegistroLotes(ft: boolean) {
     /**conexión y consumo de Firebase */
-    this.dataJsonLP.splice(0, this.dataJsonLP.length);
-    await this.obtenerFirebaseData().then((data: []) => {
-      this.dataJsonLP.push(...data);
+    await this.obtenerFirebaseData().then(() => {
+      this.loadHistorialLoteTable(ft);
+      this.loadHistorialPaqsTable(ft);
     });
-    
-    this.loadHistorialTable(true);
-    this.loadHistorialPaqsTable(true);
   }
 
   obtenerFirebaseData() {
-    return new Promise((resolve, reject) => {
-      this.service.getAll().valueChanges().subscribe(val => {
-        resolve(val);
-      })
+    return new Promise((resolve) => {
+      this.service.getLotes().valueChanges().subscribe(lot => {
+        this.loteList.splice(0, this.loteList.length);
+        this.loteList.push(...lot); 
+        
+        this.service.getPaquetes().valueChanges().subscribe(paq => {
+          this.paqueteList.splice(0, this.paqueteList.length);
+          this.paqueteList.push(...paq);
+          resolve('');
+        });
+      });
     });
   }
 
-  public loadHistorialTable(ft: boolean) {
-    
+  public loadHistorialLoteTable(ft: boolean) {
     this.historialLotes.splice(0, this.historialLotes.length);
     this.dataSourceHistorial = new MatTableDataSource();  
-    this.dataJsonLP.forEach((lote) => {     
+    this.loteList.forEach((lote: LoteModel) => {     
       this.historialLotes.push({
-        "lote": lote['lote'],
-        "paquetes": (lote['paquetes'] === '') ? '0' : lote['paquetes'].length,
-        "creacion": lote['creacion'],
-        "activo": lote['activo']
+        "lote": lote.lote,
+        "paquetes": this.paqueteList.filter(paq => paq.loteId === lote.lote).length.toString(),
+        "creacion": lote.creacion,
+        "activo": lote.activo
       });
     });
     this.historialLotes.sort((a, b) => new Date(b.creacion).getTime() - new Date(a.creacion).getTime());
@@ -72,20 +80,16 @@ export class LpConsoleComponent {
     
     this.historialPaqs.splice(0, this.historialPaqs.length);
     this.dataSourceHistorialPaqs = new MatTableDataSource();
-    this.dataJsonLP.filter((lt) => lt['activo'] === true).forEach((lote) => {
-      let folioLote = lote['lote']
-      let isEliminarPaq = (lote['paquetes'].length > 1) ? true : false;
-      lote['paquetes'].forEach(paquete => {
-        this.historialPaqs.push({
-          "paquete": paquete['codigo'],
-          "tipoPaquete": paquete['tipoPaquete'],
-          "lote": folioLote,
-          "creacion": paquete['creacion'],
-          "activo": paquete['activo'],
-          "isEliminar": isEliminarPaq
-        });
+    this.paqueteList.map((paq: PaqueteModel) => {
+      let isEliminarPaq = (this.paqueteList.filter(paqt => paqt.loteId === paq.loteId).length > 1) ? true : false;
+      this.historialPaqs.push({
+        "paquete": paq.codigo,
+        "tipoPaquete": paq.tipoPaquete,
+        "lote": paq.loteId,
+        "creacion": paq.creacion,
+        "activo": paq.activo.toString(),
+        "isEliminar": isEliminarPaq
       });
-      
     });
     this.historialPaqs.sort((a, b) => new Date(b.creacion).getTime() - new Date(a.creacion).getTime());
     this.dataSourceHistorialPaqs = new MatTableDataSource(this.historialPaqs);
@@ -118,22 +122,15 @@ export class LpConsoleComponent {
       if (result) {
         this.desactivarLote(element);
       } else {
-        this.loadHistorialTable(false);
+        this.loadHistorialLoteTable(false);
       }
     });
   }
 
   desactivarLote(element: any) {
-    this.dataJsonLP.find((lote => {
-      if(lote['lote'] === element['lote']) {
-        (lote['activo']) ? lote['activo'] = false : lote['activo'] = true; 
-      }
-    }));
-
-    let loteToSave = this.dataJsonLP.find(lote => lote['lote'] === element['lote'] );
-    this.service.update(element['lote'], loteToSave);
-    this.getRegistroLotes();
-    this.loadHistorialTable(false);
+    let statusUpdate = (element['activo'] === 'true') ? 'false' : 'true';
+    this.service.updateLoteEstatusActivo(element['lote'], statusUpdate);
+    this.getRegistroLotes(false);
   }
 
   public mostrarEliminarLote(element: any) {
@@ -154,9 +151,19 @@ export class LpConsoleComponent {
   }
 
   eliminarLote(element: any) {
-    this.service.delete(element['lote']);
-    this.getRegistroLotes();
-    this.loadHistorialTable(false);
+    const loteId = element['lote'];
+
+    this.service.deleteLoteCascada(loteId, this.paqueteList)
+      .then(() => {
+        console.log('¡Lote y todos sus paquetes eliminados en una sola operación!');
+        
+        // 2. Refrescamos la tabla SOLO cuando Firebase confirme que ya borró todo en el servidor
+        this.getRegistroLotes(false);
+      })
+      .catch((error) => {
+        console.error('Error al intentar eliminar en cascada:', error);
+      });
+    this.getRegistroLotes(false);
   }
 
   public mostrarDesactivarPaquete(element: any) {
@@ -180,20 +187,9 @@ export class LpConsoleComponent {
   }
 
   desactivarPaquete(element: any) {
-    this.dataJsonLP.find((lote => {
-      if(lote['lote'] === element['lote']) {
-        lote['paquetes'].forEach(paq => {
-          if(paq['codigo'] === element['paquete']) {
-            (paq['activo']) ? paq['activo'] = false : paq['activo'] = true;     
-          }
-        });
-      }
-    }));
-
-    let loteToSave = this.dataJsonLP.find(lote => lote['lote'] === element['lote'] );
-    this.service.update(element['lote'], loteToSave);
-    this.getRegistroLotes();
-    this.loadHistorialTable(false);
+    let statusUpdate = (element['activo'] === 'true') ? 'false' : 'true';
+    this.service.updatePaqueteEstatusActivo(element['paquete'], statusUpdate);
+    this.getRegistroLotes(false);
   }
 
   public mostrarEliminarPaquete(element: any) {
@@ -215,22 +211,9 @@ export class LpConsoleComponent {
   }
 
   eliminarPaquete(element: any) {
-    let paqueteIndex = 0;
-    this.dataJsonLP.find((lote => {
-      if(lote['lote'] === element['lote']) {
-        paqueteIndex = lote['paquetes'].findIndex(paq => paq['codigo'] === element['paquete']);
-        lote['paquetes'].splice(paqueteIndex, 1);
-        if (lote['paquetes'].length === 0) {
-          lote['activo'] = false;
-          lote['paquetes'] = '';
-        }
-      }
-    }));
-
-    let loteToSave = this.dataJsonLP.find(lote => lote['lote'] === element['lote'] );
-    this.service.update(element['lote'], loteToSave);
-    this.getRegistroLotes();
-    this.loadHistorialPaqsTable(false);
+    
+    this.service.deletePaquete(element['paquete']);
+    this.getRegistroLotes(false);
 
   }
 
