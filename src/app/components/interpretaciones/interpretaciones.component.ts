@@ -1,4 +1,6 @@
-import { map, timeout } from 'rxjs/operators';
+import { PaqueteModel } from './../../models/PaqueteModel';
+import { LoteModel } from './../../models/LotelModel';
+import { map, take, timeout } from 'rxjs/operators';
 import { Component, inject, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
@@ -10,6 +12,8 @@ import { TemaService } from '../../service/tema.service';
 import { TemasModel } from '../../models/TemasModel';
 import { slideInOut } from '../../animaciones/slideInOut';
 import { slideInUp } from '../../animaciones/slideInUp';
+import { forkJoin } from 'rxjs';
+import { EmpaqueModel } from '../../models/EmpaqueModel';
 
 
 @Component({
@@ -71,7 +75,7 @@ export class InterpretacionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getRegistroLotes();
+    //this.getRegistroLotes();
     this.getRegistroTema();
     this.getValores();
   }
@@ -138,66 +142,50 @@ export class InterpretacionesComponent implements OnInit {
 
   private getValores(): any {
     let codi = this.activateRoute.snapshot.paramMap.get('codi');
-    this.valueL = codi.slice(0, 10);
-    this.valueP = codi.slice(-10);
-    this.valueE = codi.slice(10, 14);
-  }
-
-  showInterpretacion(): any {
-    let valid = this.isValid();
-    if (valid) {
-      this.mostraraInterpretacion = true;
+    if (codi.length === 24) {
+      this.valueL = codi.slice(0, 10);
+      this.valueP = codi.slice(-10);
+      this.valueE = codi.slice(10, 14);
+      this.getRegistroInterpretaciones();
+      this.orquestadorDeInterpretaciones(this.valueL, this.valueP, this.valueE);
     } else {
-      (this.textInterp === null) ? this.mostrarReintento = true : this.mostraraCaducado = true;
+      this.mostrarReintento = true
     }
   }
 
-  private isValid(): any {
-    let valid = false;
-
-    this.dataJsonLP.find((lote) => {
-      if (lote['lote'] === this.valueL && lote['activo']) {
-        lote['paquetes'].find((paq) => {
-          if (paq['codigo'] === this.valueP && paq['activo']) {
-            let indexEmp = paq['consultados'].findIndex((em) =>
-              Object.keys(em).includes(this.valueE)
-            );
-            if (indexEmp !== -1) {
-              if (paq['consultados'][indexEmp][this.valueE] !== '') {
-                if (
-                  moment().diff(
-                    moment(paq['consultados'][indexEmp][this.valueE], false),
-                    'days'
-                  ) < this.limiteDias
-                ) {
-                  
-                  this.obtenerInterpretacion(paq['consultados'][indexEmp]['inter'], this.valueE);
-                  let contadorConsultas = paq['consultados'][indexEmp]['consultas'];
-                  contadorConsultas += this._UNO;
-                  paq['consultados'][indexEmp]['consultas'] = contadorConsultas;
-                  valid = (this.textInterp === null) ? false : true;
-                }
-              } else {
-                paq['consultados'][indexEmp][this.valueE] = moment().format();
-                paq['consultados'][indexEmp]['consultas'] = 1;
-                this.obtenerInterpretacion(
-                  paq['consultados'][indexEmp]['inter'],
-                  this.valueE
-                );
-                valid = (this.textInterp === null) ? false : true;
-              }
-            }
+  orquestadorDeInterpretaciones(loteRecibido: string, paqueteRecibido: string, runeCode: string) {
+    forkJoin({
+      lote: this.service.getLoteByCodi(loteRecibido).pipe(take(1)),
+      paquete: this.service.getPaqueteByCodi(paqueteRecibido).pipe(take(1))
+    }).subscribe({
+      next: ({ lote, paquete }) => {
+        if (lote && paquete) {
+          let consultado: EmpaqueModel = paquete['consultados'].find((emp: EmpaqueModel) => runeCode === emp.runaId);
+          if (consultado && lote['activo'] && paquete['activo'] && this.isLimiteDiasValido(consultado['timestamp'])) {                        
+            this.obtenerInterpretacion(consultado['interpretacionId'], runeCode);            
+            if (consultado.timestamp !== '') {
+              consultado.consultas += this._UNO;
+            } else {
+              consultado.timestamp = moment().format();
+              consultado.consultas = this._UNO;
+            }            
+            this.service.updateConsultadosPaquete(paquete['codigo'], paquete['consultados'])
+            .then(() => (this.textInterp === null) ? this.mostrarReintento = true : this.mostraraInterpretacion = true)
+            .catch(err => this.mostraraCaducado = true);
+            return;
           }
-        });
-      }
+          this.mostraraCaducado = true;              
+        }
+      },
+      error: (err) => console.error('Error al consultar Firebase:', err)
     });
+  }
 
-    if(valid) {
-      let loteToSave = this.dataJsonLP.find((lote) => lote['lote'] === this.valueL && lote['activo'])
-      this.service.update(this.valueL.toString(), loteToSave);
+  isLimiteDiasValido(fechaConsultado: string): boolean {
+    if(fechaConsultado === '') {
+      return true;
     }
-
-    return valid;
+    return moment().diff(moment(fechaConsultado, 'YYYY-MM-DDTHH:mm:ssZ'),'days') < this.limiteDias
   }
 
   private obtenerInterpretacion(id: number, runaCode: string) {
@@ -224,7 +212,6 @@ export class InterpretacionesComponent implements OnInit {
     await this.obtenerFirebaseDataInterp().then((data: []) => {
       this.catInterpretaciones = data;
     });
-    this.showInterpretacion();
   }
 
   obtenerFirebaseDataInterp() {
@@ -259,6 +246,7 @@ export class InterpretacionesComponent implements OnInit {
     }
     setTimeout(() => {
       this.mostrarInicio = true
+      console.log(this.catTemas.imagen)
       this.TEMAIMG = {
         //'background-image': `url('./assets/bkg-interpretacion/${this.catTemas.imagen}')`,
         'background-image': `url('${this.catTemas.imagen}')`,

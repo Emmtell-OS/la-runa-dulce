@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { PaqueteModel } from '../models/PaqueteModel';
 import { Observable } from 'rxjs';
+import { EmpaqueModel } from '../models/EmpaqueModel';
 
 @Injectable({
   providedIn: 'root'
@@ -87,11 +88,28 @@ export class ProcessLotesService {
   }
 
   /**
+   * Actualiza únicamente el arreglo de empaques consultados de un paquete específico.
+   */
+  updateConsultadosPaquete(paqueteId: string, nuevosConsultados: EmpaqueModel[]): Promise<void> {
+  return this.db.object(`${this.paquetesPath}/${paqueteId}`).update({
+    consultados: nuevosConsultados
+  });
+}
+
+  /**
    * CONSULTA DIRECTA DE UN UNICO PAQUETE:
    * Trae los datos de un paquete en específico usando su ID (código QR) en tiempo real.
    */
   getPaqueteByCodi(paqueteId: string): Observable<any> {
     return this.db.object(`${this.paquetesPath}/${paqueteId}`).valueChanges();
+  }
+
+  /**
+   * CONSULTA DIRECTA DE UN UNICO LOTE:
+   * Trae los datos de un lote en específico usando su ID (código QR) en tiempo real.
+   */
+  getLoteByCodi(loteId: string): Observable<any> {
+    return this.db.object(`${this.lotesPath}/${loteId}`).valueChanges();
   }
 
   /**
