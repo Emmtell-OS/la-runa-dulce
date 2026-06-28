@@ -6,8 +6,8 @@ import { CodiDetailesComponent } from './components/codi-detailes/codi-detailes.
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: 'consultas/interpretacion/:codi', component: InterpretacionesComponent  },
-  { path: 'consultas/interpretacion/:codi/detailes', component: CodiDetailesComponent  },
+  { path: 'consultas/:codi', component: InterpretacionesComponent  },
+  { path: 'consultas/:codi/detailes', component: CodiDetailesComponent  },
   { path: 'admon-lots', component: ConfigComponent },
   { path: 'admin-lots', component: ConfigComponent },
   { path: '', component: HomeComponent },

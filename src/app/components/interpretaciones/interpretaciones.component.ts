@@ -160,24 +160,29 @@ export class InterpretacionesComponent implements OnInit {
     }).subscribe({
       next: ({ lote, paquete }) => {
         if (lote && paquete) {
+          const isLoteActivo = (lote['activo'] === true || lote['activo'] === 'true');
+          const isPaqueteActivo = (paquete['activo'] === true || paquete['activo'] === 'true');          
           let consultado: EmpaqueModel = paquete['consultados'].find((emp: EmpaqueModel) => runeCode === emp.runaId);
-          if (consultado && lote['activo'] && paquete['activo'] && this.isLimiteDiasValido(consultado['timestamp'])) {                        
+          if (consultado && isLoteActivo && isPaqueteActivo && this.isLimiteDiasValido(consultado['timestamp'])) {                        
             this.obtenerInterpretacion(consultado['interpretacionId'], runeCode);            
             if (consultado.timestamp !== '') {
               consultado.consultas += this._UNO;
             } else {
               consultado.timestamp = moment().format();
-              consultado.consultas = this._UNO;
+              consultado.consultas = this._UNO;              
             }            
             this.service.updateConsultadosPaquete(paquete['codigo'], paquete['consultados'])
             .then(() => (this.textInterp === null) ? this.mostrarReintento = true : this.mostraraInterpretacion = true)
-            .catch(err => this.mostraraCaducado = true);
+            .catch(err => this.mostrarReintento = true);
             return;
-          }
-          this.mostraraCaducado = true;              
+          }             
         }
+        this.mostraraCaducado = true; 
       },
-      error: (err) => console.error('Error al consultar Firebase:', err)
+      error: (err) => {
+        this.mostrarReintento = true
+        console.error('Error al consultar Firebase:', err)
+      }
     });
   }
 
@@ -215,7 +220,7 @@ export class InterpretacionesComponent implements OnInit {
   }
 
   obtenerFirebaseDataInterp() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.interpretacionesService.getAll().valueChanges().subscribe(val => {
         resolve(val);
       })
@@ -245,8 +250,7 @@ export class InterpretacionesComponent implements OnInit {
       'background-color': color
     }
     setTimeout(() => {
-      this.mostrarInicio = true
-      console.log(this.catTemas.imagen)
+      this.mostrarInicio = true      
       this.TEMAIMG = {
         //'background-image': `url('./assets/bkg-interpretacion/${this.catTemas.imagen}')`,
         'background-image': `url('${this.catTemas.imagen}')`,

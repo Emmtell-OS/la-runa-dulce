@@ -3,6 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ProcessLotesService } from '../../service/process-lotes.service';
 import { environment } from '../../../environments/environment';
 import { CodiModel } from '../../models/CodiModel';
+import { forkJoin, take } from 'rxjs';
+import { EmpaqueModel } from '../../models/EmpaqueModel';
+import { LoteJsonModel } from '../../models/LoteJsonModel';
+import { PaqueteModel } from '../../models/PaqueteModel';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-codi-detailes',
@@ -10,9 +15,11 @@ import { CodiModel } from '../../models/CodiModel';
   styleUrl: './codi-detailes.component.scss',
 })
 export class CodiDetailesComponent implements OnInit {
+  lote: LoteJsonModel;
+  paquete: PaqueteModel;
   image: string;
-  lote: string;
-  paquete: string;
+  loteCode: string;
+  paqueteCode: string;
   runaCode: string;
   tipoPaquete: string;
   consultados: string;
@@ -24,6 +31,7 @@ export class CodiDetailesComponent implements OnInit {
   qrList: CodiModel[] = [];
   isExist: boolean;
   mensajeExist: string;
+  _ZERO = 0;
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -31,101 +39,67 @@ export class CodiDetailesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getRegistroLotes();
+    this.getValores();
   }
 
-  private async getRegistroLotes() {
-    /**conexión y consumo de Firebase */
-    try {
-      this.dataJsonLP = [];
-      await this.obtenerFirebaseData().then((data: []) => {
-        this.dataJsonLP = data;
-      });
-      this.getValores();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  obtenerFirebaseData() {
-    return new Promise((resolve, reject) => {
-      this.service
-        .getAll()
-        .valueChanges()
-        .subscribe((val) => {
-          resolve(val);
-        });
-    });
-  }
-
-  private getValores(): any {
+  private getValores() {
+    this.qrList = [];
     let codi = this.activateRoute.snapshot.paramMap.get('codi');
-    this.lote = codi.slice(0, 10);
-    this.paquete = codi.slice(-10);
+    this.loteCode = codi.slice(0, 10);
+    this.paqueteCode = codi.slice(-10);
     this.runaCode = codi.slice(10, 14);
     this.image = './assets/img/runas/' + this.runaCode.slice(0, 2) + '.png';
     this.pathQR = this.pathBase + codi;
 
-    let lot = this.dataJsonLP.find((lotes) => lotes['lote'] === this.lote);
-    if (lot === undefined) {
-      this.mensajeExist = `Lote - ${this.lote}`;
-      this.isExist = false;
-      return;
-    }
-    let paq = lot['paquetes'].find(
-      (paquetes) => paquetes['codigo'] === this.paquete
-    );
-    if (paq === undefined) {
-      this.mensajeExist = `Paquete - ${this.paquete} del Lote - ${this.lote}`;
-      this.isExist = false;
-      return;
-    }
-    try {
-      let consul = paq['consultados'].find(
-        (cns) => Object.keys(cns)[0] === this.runaCode
-      );
-      this.consultados = consul['consultas'];
-      this.estatus = paq['activo'] ? 'ACTIVO' : 'INACTIVO';
-      this.tipoPaquete = paq['tipoPaquete'];
-      this.mostrar = true;
-    } catch (error) {
-      this.mensajeExist = `elemento, intenta de nuevo.`;
-      this.isExist = false;
-      return;
-    }
-
-    this.qrList.push({
-      codi: this.pathQR,
-      img: this.image,
-      folio: '',
+    forkJoin({
+      lote: this.service.getLoteByCodi(this.loteCode).pipe(take(1)),
+      paquete: this.service.getPaqueteByCodi(this.paqueteCode).pipe(take(1))
+    }).subscribe({
+      next: ({ lote, paquete }) => {
+        if (!lote) {
+          this.mensajeExist = `Lote - ${this.loteCode}`;
+          this.isExist = false;
+          return;
+        } else if (!paquete) {
+          this.mensajeExist = `Paquete - ${this.paqueteCode} del Lote - ${this.loteCode}`;
+          this.isExist = false;
+          return;
+        } else {
+          this.paquete = paquete;
+          this.lote = lote;
+          try {
+            let consultado: EmpaqueModel = paquete['consultados'].find((emp: EmpaqueModel) => this.runaCode === emp.runaId);
+            this.consultados = consultado.consultas.toString();
+            this.estatus = paquete['activo'] ? 'ACTIVO' : 'INACTIVO';
+            this.tipoPaquete = paquete['tipoPaquete'];
+            this.mostrar = true;
+          } catch (error) {
+            this.mensajeExist = `elemento, intenta de nuevo.`;
+            this.isExist = false;
+            return;
+          }
+      
+          this.qrList.push({
+            codi: this.pathQR,
+            img: this.image,
+            folio: '',
+          });
+          this.isExist = true;
+        }
+      },
+      error: (err) => {        
+        console.error('Error al consultar Firebase:', err)
+      }
     });
-    this.isExist = true;
   }
 
   reiniciarConsultados() {
-    let isSaveValid = false;
-    this.dataJsonLP.find((lote) => {
-      if (lote['lote'] === this.lote) {
-        lote['paquetes'].find((paq) => {
-          if (paq['codigo'] === this.paquete) {
-            let indexConsultado = paq['consultados'].findIndex(
-              (elm) => Object.keys(elm)[0] === this.runaCode
-            );
-            paq['consultados'][indexConsultado][this.runaCode] = '';
-            paq['consultados'][indexConsultado]['consultas'] = 0;
-            isSaveValid = true;
-          }
-        });
-      }
-    });
+    let consultado: EmpaqueModel = this.paquete['consultados'].find((emp: EmpaqueModel) => this.runaCode === emp.runaId);
+    consultado.consultas = this._ZERO;
+    consultado.timestamp = '';
 
-    if (isSaveValid) {
-      let loteToSave = this.dataJsonLP.find(
-        (lote) => lote['lote'] === this.lote
-      );
-      this.service.update(this.lote, loteToSave);
-      this.getRegistroLotes();
-      this.qrList = [];
-    }
+    this.service.updateConsultadosPaquete(this.paquete['codigo'], this.paquete['consultados'])
+            .then(() => { this.getValores(); })
+            .catch(err => console.error('Hubo un error => ' + err));    
   }
 }
