@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    pathInterp: 'http://localhost:4200/consultas/interpretacion/',
+    pathInterp: 'http://localhost:4200/consultas/',
     path: 'https://larunadulce.com.mx',
     firebase: {
         apiKey: 'AIzaSyDgs2akf2FgZ_mA_XUUPKvWg2MD_LAl3LY',

@@ -26,6 +26,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatRadioModule} from '@angular/material/radio';
 
 import { AdminInterpComponent } from './components/admin-interp/admin-interp.component';
 import { ConfigComponent } from './components/configs/config.component';
@@ -57,6 +58,8 @@ import { PuntoVentaConsoleComponent } from './components/punto-venta-console/pun
 import { DetallesPuntoVentaComponent } from './components/modals/detalles-punto-venta/detalles-punto-venta.component';
 import { BooleanPipe } from './pipes/boolean.pipe';
 import { FormatDatePipe } from './pipes/format-date.pipe';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -103,6 +106,8 @@ import { FormatDatePipe } from './pipes/format-date.pipe';
     MatIconModule,
     MatTooltipModule,
     MatSlideToggleModule,
+    MatRadioModule,
+    FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule
   ],
