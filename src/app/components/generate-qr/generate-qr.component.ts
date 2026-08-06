@@ -145,7 +145,7 @@ export class GenerateQrComponent implements OnInit {
         });
 
         const nombreRuna = Utils.getNombreRuna(runaCode.substring(0,2));
-        const titulo = `${nombreRuna} - ${seleccionado.tipoPaquete.toUpperCase()}`;
+        const titulo = `${nombreRuna}`;
 
         doc.setFontSize(7);
         doc.setFont('Helvetica', 'bold');
@@ -220,7 +220,7 @@ export class GenerateQrComponent implements OnInit {
         // Pintar elementos dentro del recuadro
         doc.setFontSize(6);
         doc.setFont('Helvetica', 'bold');
-        doc.text('La runa dulce', x + (boxWidth / 2), y + 10, { align: 'center' });
+        doc.text('La Runa Dulce', x + (boxWidth / 2), y + 10, { align: 'center' });
 
         // QR
         doc.addImage(qrDataUrl, 'PNG', x + 5, y + 12, boxWidth - 10, boxWidth - 10, undefined, 'FAST');
