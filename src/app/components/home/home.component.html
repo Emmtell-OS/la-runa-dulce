@@ -11,17 +11,30 @@
   <div class="camino escenario-letrero">
     <div class="letrero config-img">
       <div class="introduccion-box">
-        <p class="introduccion-text">
-          !Bienvenido a La Runa Dulce!<br><br>
-          El lugar donde fusionamos el misticismo de las runas con la tecnología. 
-          Interpretamos el mensaje de las runas antiguas en consejos prácticos y accesibles, que encontrarás al alcance de un QR.
-        </p>
-        <p class="introduccion-text">
-          La magia te espera en nuestras bolsas de dulces, productos diversos, o también puedes adquirir los QR de forma individual para tus productos.
-        </p>
-        <p class="introduccion-text">
-          Somos la excusa perfecta para un dulce placer y una dosis de inspiración. ¡Sumérgete o acompaña a tu producto en un mundo donde el sabor y el conocimiento se unen para inspirar cada día!
-        </p>
+
+        <div #glideTexts class="glide glide--texts">
+          <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides">
+              <li class="glide__slide introduccion-text">                
+                <h2>Magia, sabor y tecnología al alcance de un QR.</h2>
+                <p>¡Bienvenido a La Runa Dulce! Fusionamos el misticismo de las runas con consejos prácticos e inspiradores para tu día a día.</p>            
+              </li>
+              <li class="glide__slide introduccion-text">
+                <h2>Más que un dulce, una dosis de inspiración</h2>
+                <p>Disfruta de nuestras bolsas de dulces. Escanea tu código y descubre tu runa.</p>
+              </li>
+              <li class="glide__slide introduccion-text">
+                <h2>Lleva la magia a tus propios productos</h2>
+                <p>Acompaña tus galletas o regalos con nuestras etiquetas QR individuales.</p>
+              </li>
+            </ul>
+          </div>
+          <!-- Controles unificados opcionales -->
+          <div class="glide__arrows" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">‹</button>
+            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">›</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="saludo config-img"></div>
@@ -76,19 +89,19 @@
     <div class="puesto config-img">
       <div class="carrusel">
         <div>
-          <div #glide>
+          <div #glideImages class="glide glide--images">
             <div class="glide__track" data-glide-el="track">
               <ul class="glide__slides">
-                <li>
+                <li class="glide__slide">
                   <div class="carr-img">Img 1</div>
                 </li>
-                <li>
+                <li class="glide__slide">
                   <div class="carr-img">Img 2</div>
                 </li>
-                <li>
+                <li class="glide__slide">
                   <div class="carr-img">Img 3</div>
                 </li>
-                <li>
+                <li class="glide__slide">
                   <div class="carr-img">Img 4</div>
                 </li>
               </ul>

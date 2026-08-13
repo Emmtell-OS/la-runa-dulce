@@ -23,7 +23,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   h: number; //eliminar en produccion
 
   @ViewChild(MatTable) tablePuntoVenta!: MatTable<PuntosVentaModel>;
-  @ViewChild('glide', { static: true }) glideRef: ElementRef;
+  
+  @ViewChild('glideImages') glideImagesRef!: ElementRef;
+  @ViewChild('glideTexts') glideTextsRef!: ElementRef;
+
+  private glideImagesInstance: any;
+  private glideTextsInstance: any;
 
   constructor(private servicePuntoVenta: PuntosVentaService) {
     this.getRegistroPuntoVenta(true);
@@ -41,32 +46,33 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 ngOnInit(): void {
   AOS.init();
- }
-
- ngAfterViewInit(){
-  //AOS.init();
-  new Glide(//'.glide'
-    this.glideRef.nativeElement, {
-    type: 'carousel',
-    startAt: 0,
-    perView: this.imgCarrusel,
-    autoplay: 3000,
-    hoverpause: true,
-    keyboard: true,
-    swipeThreshold: 5,
-    dragThreshold: 10,
-    //gap: 50
-    /*breakpoints: {
-      800: {
-        perView: 2
-      },
-      480: {
-        perView: 1
-      }
-    }*/
-  }
-  ).mount();
 }
+
+ngAfterViewInit(){
+  // Carrusel imagenes
+  this.glideImagesInstance = new Glide(this.glideImagesRef.nativeElement, {
+    type: 'carousel',
+    autoplay: 5000,
+    animationDuration: 800,    
+    dragThreshold: 10
+  });
+
+  // Carrusel texto
+  this.glideTextsInstance = new Glide(this.glideTextsRef.nativeElement, {
+    type: 'carousel',
+    autoplay: 10000,
+    animationDuration: 800
+  });
+
+  // Montar las dos instancias de forma independiente
+  this.glideImagesInstance.mount();
+  this.glideTextsInstance.mount();
+}
+  ngOnDestroy(): void {
+    // Destruir instancias para prevenir fugas de memoria
+    if (this.glideImagesInstance) this.glideImagesInstance.destroy();
+    if (this.glideTextsInstance) this.glideTextsInstance.destroy();
+  }
 
   private async getRegistroPuntoVenta(ft: boolean) {
     /**conexión y consumo de Firebase */
