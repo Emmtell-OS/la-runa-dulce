@@ -1,0 +1,255 @@
+/* ==========================================================================
+  Configuración de Colores y Variables
+  ========================================================================== */
+  $bg-beige: #fbf8f3;       /* Fondo general beige suave */
+  $bg-textarea: #f7f2ea;    /* Fondo del área de texto ligeramente contrastado */
+  $border-beige: #dcd3c5;    /* Borde suave cálido */
+  $primary-focus: #8c6d46;   /* Enfocado tono café */
+  
+  /* 1. Modificador de rotación para la imagen de la runa */
+  .invertida {
+    transform: rotate(180deg);
+  }
+  
+  /* 2. Contenedor principal de la tarjeta (Modal) */
+  mat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    min-height: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+    background-color: $bg-beige !important; /* Fondo beige para descansar la vista */
+  }
+  
+  /* Transparencia en subcontenedores para mantener fondo beige */
+  mat-card-header,
+  mat-card-content,
+  mat-card-actions {
+    background-color: transparent !important;
+  }
+  
+  /* 3. Encabezado de la runa (Imagen, Nombre e Interpretación breve) */
+  mat-card-header {
+    flex: 0 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 8px;
+      width: 100%;
+  
+      img {
+        max-width: 90px;
+        height: auto;
+        object-fit: contain;
+        margin: 0 auto;
+      }
+  
+      p {
+        margin: 0;
+        text-align: center;
+        width: 100%;
+      }
+  
+      .runa-nombre {
+        font-weight: 700;
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+        color: #1e293b;
+      }
+  
+      .runa-interp {
+        font-size: 0.95rem;
+        color: #64748b;
+      }
+    }
+  }
+  
+  /* 4. Contenido principal (Modo lectura y Modo edición) */
+  mat-card-content {
+    flex: 1 1 auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0;
+    overflow-y: auto;
+  
+    /* Texto de interpretación en modo lectura */
+    .interpretacion-text-container {
+      width: 90%;
+      margin: 0 auto;
+      text-align: center;
+  
+      p {
+        font-family: 'Fondamento', cursive, serif;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #2c2c2c;
+        margin: 0;
+        text-align: center;
+        white-space: pre-wrap;
+      }
+    }
+  
+    /* Campo de texto en modo edición */
+    .textarea-container {
+      width: 100%;
+      min-height: 180px;
+      height: 30vh;
+      display: flex;
+  
+      textarea {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        resize: vertical;
+        padding: 12px;
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 17px; /* Aumentado a 17px */
+        line-height: 1.5;
+        outline: none;
+        
+        background-color: $bg-textarea !important;
+        color: #2c2c2c;
+        border: 1px solid $border-beige;
+  
+        &:focus {
+          border-color: $primary-focus;
+          box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.2);
+        }
+      }
+    }
+  }
+  
+  /* 5. Acciones y Botonera inferior */
+  mat-card-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 12px 0 !important;
+    gap: 16px;
+    margin-top: auto;
+  
+    .button-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      gap: 20px;
+  
+      /* Tamaño de botones táctiles ampliado para móviles */
+      button {
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+        border-radius: 50% !important;
+  
+        mat-icon {
+          font-size: 32px !important;
+          width: 32px !important;
+          height: 32px !important;
+          line-height: 32px !important;
+        }
+      }
+  
+      .icon-btn {
+        transition: transform 0.2s ease, background-color 0.2s ease;
+  
+        &:hover {
+          transform: scale(1.08);
+        }
+      }
+  
+      .edit-btn {
+        color: #0284c7;
+        background-color: #f0f9ff;
+  
+        &:hover {
+          background-color: #e0f2fe;
+        }
+      }
+  
+      .delete-btn {
+        color: #dc2626;
+        background-color: #fef2f2;
+  
+        &:hover {
+          background-color: #fee2e2;
+        }
+      }
+  
+      .close-btn {
+        color: #475569;
+        background-color: #f1f5f9;
+  
+        &:hover {
+          background-color: #e2e8f0;
+        }
+      }
+    }
+  
+    /* Contenedor de confirmación de eliminación corregido en vertical */
+    .confirm-delete-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      margin-top: 8px;
+  
+      p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #475569;
+        padding: 0 12px;
+        line-height: 1.4;
+      }
+  
+      .input-action-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+  
+        input[type="text"] {    
+          width: 80%;
+          max-width: 220px;
+          border: 1px solid #767676;
+          border-radius: 6px;
+          padding: 8px 12px;
+          box-sizing: border-box;
+          font-family: inherit;
+          font-size: 15px;
+          text-align: center;
+          outline: none;
+          background-color: #ffffff;
+          
+          &:focus {
+            border-color: #dc2626;
+          }
+        }
+  
+        button {
+          width: auto !important;
+          height: auto !important;
+          min-width: 120px !important;
+          padding: 8px 16px !important;
+          border-radius: 6px !important;
+        }
+      }
+    }
+  }

@@ -1,0 +1,77 @@
+<mat-card>
+    <mat-card-header>
+      <!-- ⚡ Reemplazamos el estilo inline por la clase header-content -->
+      <div class="header-content">
+        <img [src]="imgRuna" [class]="tipoRuna" alt="Runa" />
+        <p class="runa-nombre">{{ nombreRuna }}</p>
+        <p class="runa-interp">{{ interpRuna }}</p>
+      </div>
+    </mat-card-header>
+  
+    <mat-card-content>
+      <div class="textarea-container" *ngIf="mostrarEditar">
+        <textarea 
+          [formControl]="miTextoControl" 
+          rows="5" 
+          placeholder="Escribe aquí la interpretación...">
+        </textarea>
+      </div>
+  
+      <!-- ⚡ Envolvemos en la clase interpretacion-text-container para centrar el texto -->
+      <div class="interpretacion-text-container" *ngIf="!mostrarEditar">
+        <p>{{ interpretacion }}</p>
+      </div>
+    </mat-card-content>
+  
+    <mat-card-actions>
+      <div class="button-group">
+        <button
+          mat-mini-fab 
+          color="primary" 
+          (click)="save()"
+          *ngIf="mostrarEditar">
+          <mat-icon>save</mat-icon>
+        </button>
+  
+        <button 
+          mat-icon-button 
+          class="icon-btn edit-btn"
+          (click)="editarInterp()"
+          *ngIf="!mostrarEditar">
+          <mat-icon>edit</mat-icon>
+        </button>
+  
+        <button 
+          mat-icon-button 
+          class="icon-btn delete-btn"
+          *ngIf="mostrarBotonEliminar" 
+          (click)="showEliminar()">
+          <mat-icon>delete</mat-icon>
+        </button>
+  
+        <button 
+          mat-icon-button 
+          class="icon-btn close-btn"
+          mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+  
+      <div *ngIf="mostrarEliminar" class="confirm-delete-container">            
+        <p>Escribe el nombre de la runa para confirmar que deseas eliminar esta interpretación:</p>
+        <div class="input-action-row">
+          <input
+            type="text"
+            (input)="evaluarCadena($any($event.target).value)" 
+            autocomplete="off">
+          <button 
+            mat-flat-button 
+            color="warn"
+            *ngIf="mostrarConfirmarEliminar" 
+            (click)="eliminar()">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </mat-card-actions>
+  </mat-card>
