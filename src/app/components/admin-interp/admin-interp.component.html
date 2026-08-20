@@ -1,98 +1,79 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title> Administrador de interpretaciones </mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="mbl">
-    <form [formGroup]="formularioInterpretaciones">
+<mat-card appearance="outlined">
+<mat-card-header>
+    <mat-card-title>Administrador de Interpretaciones</mat-card-title>
+</mat-card-header>
 
-      <!--autocomplete-->
-      <mat-form-field class="mff">
-        <mat-label>Escribre una runa</mat-label>
-        <input
-          type="text"
-          matInput
-          placeholder="Runa"
-          [formControl]="runaFilterControl"
-          [matAutocomplete]="auto"
-          formControlName="runa"
-        />
-        <mat-autocomplete
-          autoActiveFirstOption
-          #auto="matAutocomplete"
-          (optionSelected)="autoCompleteInputValue = $event.option.value; obtenerValorRuna()"
-        >
-          <mat-option *ngFor="let runa of runas | async" [value]="runa['runa']">
-            {{ runa['runa'] }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-
-      <!--interpretacion-->
-      <mat-form-field *ngIf = "selectInterp" class="mff">
-        <mat-label *ngIf = "selectInterp" >Interpretación</mat-label>
-
-        <mat-select formControlName="interpretacion" (closed)="obtenerValorInterpretacion()" *ngIf = "selectInterp">
-          <mat-option
-            *ngFor="let interpretacion of interpretaciones"
-            [value]="interpretacion"
-            >{{ interpretacion }}</mat-option
-          >
+<mat-card-content>
+    <!-- Contenedor del Filtro -->
+    <div class="filter-container">
+    <mat-form-field appearance="fill" class="custom-filter-field">
+        <mat-label>Filtrar runa</mat-label>
+        <input 
+        matInput 
+        type="text" 
+        (input)="filtroRunas($any($event.target).value)" 
+        autocomplete="off">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="orden-select">
+        <mat-label>Ordenar por</mat-label>
+        <mat-select (selectionChange)="ordenar($event.value)" defaultValue="d">
+            <mat-option value="d">Por defecto</mat-option>
+            <mat-option value="na">Nombre (A - Z)</mat-option>
+            <mat-option value="nd">Nombre (Z - A)</mat-option>
+            <mat-option value="ia">Interpretaciones (Menor a Mayor)</mat-option>
+            <mat-option value="id">Interpretaciones (Mayor a Menor)</mat-option>
         </mat-select>
-      </mat-form-field>
+    </mat-form-field>
+    </div>
 
-      <!--Buttons-->
-        <button
-        mat-stroked-button
-        *ngIf="btnEditar"
-        (click)="editarInterpretacion()"
-        >
-          <span>Editar</span>
+    <!-- Carrusel Horizontal de Runas (2 filas) -->
+    <div class="two-rows-container">
+    @for (runa of interpCardList; track runa.codigoRuna) {
+        <mat-card id="mt-crd" (click)="show(runa)">
+        <mat-card-content>
+            <img [src]="runa.imagen" [class]="runa.tipo" [alt]="runa.nombre" />
+            <p>{{ runa.nombre }}</p>
+            <p>{{ runa.interpretacionesSize }}</p>                        
+        </mat-card-content>
+        </mat-card>
+    }
+    </div>
+
+    <!-- GRID DINÁMICO DE INTERPRETACIONES -->
+    <mat-card *ngIf="mostrarGrid" class="grid-card-detail">
+    <mat-card-header>
+        <div class="header-content">
+        <img [src]="imgRunaGrid" [class]="tipoRunaGrid" [alt]="nombreRunaGrid" />
+        <p class="runa-nombre">{{ nombreRunaGrid }}</p>
+        <p class="runa-interp">{{ interpRunaGrid }}</p>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div *ngIf="mostrarInterpVacia" class="empty-state">
+        <p>Esta runa no tiene interpretaciones, registra la primera.</p>
+        <button mat-stroked-button (click)="abrirDiaogInterpretacion(null)">
+            Registrar Primer Interpretación
         </button>
-
-        <button
-        mat-stroked-button
-        *ngIf="btnEditar"
-        (click)="mostrarEliminar()"
-        >
-          <span>Eliminar</span>
+        </div>
+        
+        <div *ngIf="!mostrarInterpVacia" class="add-button-wrapper">
+        <button mat-mini-fab class="btn-add-custom" (click)="abrirDiaogInterpretacion(null)">
+            <mat-icon>add</mat-icon>
         </button>
-
-        <button
-        mat-stroked-button
-        *ngIf="btnCreate"
-        (click)="registrarInterpretacion()"
-        > <span>{{ txtbtn }}</span> </button>
-      
-
-      <!--Input descripcion-->
-
-      <div  class="d-descripcion-i">
-        <mat-form-field *ngIf="descripcionInput" appearence="fill" class="descripcion-i">
-          <mat-label>Descripción...</mat-label>
-          <textarea
-            matInput
-            cdkTextareaAutosize
-            #autosize="cdkTextareaAutosize"
-            cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="500"
-            formControlName="descripcion"
-          >
-          </textarea>
-        </mat-form-field>
-
-        <div *ngIf="mostrarMensaje" class="mbl">
-          <p>{{mensaje}}</p>
         </div>
 
-        <!--Parrafo descripcion -->
-      <div *ngIf= "descripcionP" class="descripcion">
-        <p>
-          {{ descripcionParrafo }}
-        </p>
-      </div>
-
-      </div>
-    </form>
-
-  </mat-card-content>
+        <div class="four-columns-container">
+        @for (interpretacion of interpretacionesList; track interpretacion.indice) {
+            <mat-card id="mt-crd" (click)="abrirDiaogInterpretacion(interpretacion)">
+            <mat-card-content>                                
+                <p class="num-interp"><strong>#{{ interpretacion.indice }}</strong></p>
+                <p>{{ interpretacion.interp | formatoInterpretacion }}</p>                        
+            </mat-card-content>
+            </mat-card>
+        }
+        </div>
+    </mat-card-content>
+    </mat-card>        
+</mat-card-content>
 </mat-card>

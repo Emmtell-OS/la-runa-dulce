@@ -59,6 +59,8 @@ import { DetallesPuntoVentaComponent } from './components/modals/detalles-punto-
 import { BooleanPipe } from './pipes/boolean.pipe';
 import { FormatDatePipe } from './pipes/format-date.pipe';
 import { FormsModule } from '@angular/forms';
+import { InterpretacionDescripcionComponent } from './components/modals/interpretacion-descripcion/interpretacion-descripcion.component';
+import { FormatoInterpretacionPipe } from './pipes/formato-interpretacion.pipe';
 
 
 @NgModule({
@@ -82,6 +84,8 @@ import { FormsModule } from '@angular/forms';
     DetallesPuntoVentaComponent,
     BooleanPipe,
     FormatDatePipe,
+    InterpretacionDescripcionComponent,
+    FormatoInterpretacionPipe,
   ],
   imports: [
     BrowserModule,

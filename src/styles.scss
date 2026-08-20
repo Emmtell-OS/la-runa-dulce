@@ -10,3 +10,38 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/* Centrado del overlay panel de Angular Material */
+.cdk-overlay-pane {
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+margin: 0 auto !important;
+}
+
+/* Regla personalizada si usas panelClass: 'modal-responsive' */
+.modal-responsive {
+margin: 0 auto !important;
+
+.mat-mdc-dialog-container,
+.mdc-dialog__surface {
+    margin: 0 auto !important;
+    width: 95vw !important;
+    max-width: 95vw !important;
+    height: auto;
+    max-height: 99vh !important;
+}
+}
+
+/* Opcional: Aplicarlo únicamente en pantallas pequeñas (hasta 432px) */
+@media (max-width: 432px) {
+.modal-responsive {
+    .mat-mdc-dialog-container .mdc-dialog__surface {
+        width: 95vw !important;
+        max-width: 95vw !important;
+        height: auto;
+        max-height: 99vh !important;
+    }
+}
+}

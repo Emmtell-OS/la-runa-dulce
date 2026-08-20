@@ -1,89 +1,277 @@
-.d-descripcion-i {
-    //background-color: aqua;
-    height: 300px;
+/* 1. Estilos generales de imágenes y modificadores */
+img {
+  width: 50%;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain;
+  margin: 10px auto;
+  display: block;
+}
+
+.invertida {
+  transform: rotate(180deg);
+}
+
+/* 2. Tarjetas individuales dentro de las grillas */
+#mt-crd {
+  margin: 0;
+  width: 170px;
+  border-style: solid;
+  border-width: medium;
+  border-radius: 7px;
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  mat-card-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-}
+    justify-content: center;
+    height: 100%;
+    padding: 12px;
+    box-sizing: border-box;
 
-.descripcion-i {
-    width: 1200px;
-    height: 550px;
-}
-
-.descripcion {
-    width: 1200px;
-    text-align: justify;
-    font-size: 18px;
-}
-
-.mff {
-    margin-left: 20px;
-    margin-top: 12px;
-    width: 260px;
-}
-
-span {
-    color: #fff;
-}
-
-button {
-    background-color: rgb(224, 102, 3);
-}
-
-@media only screen and (min-width: 440px) {
-    button {
-        margin-left: 50px;
-        width: 90px;
-        height: 30px;
-    }
-}
-
-@media only screen and (max-width: 435px) {
-    form {
-        //consorcio juridico amex
-        //validacion.contacto@conjur.com.mx
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
+    p {
+      margin: 4px 0;
+      font-weight: 500;
     }
 
-    .mbl {
-        width: 92%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    .num-interp {
+      font-family: 'Fondamento';
+      font-size: 70px;
+      color: #704214;
+      margin-bottom: 25px;
     }
+  }
+}
 
-    .descripcion {
-        margin-top: 50px;
-        align-items: center;
-        width: 100%;
-        font-size: 20px;
-        line-height: 1.5;
+/* 3. Contenedor del Filtro (Actualizado) */
+.filter-container {
+  width: 80%;
+  margin: 0 auto 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  box-sizing: border-box;
+
+  .custom-filter-field {
+    width: 100%;
+  }
+
+  .orden-select {
+    width: 40%;
+    margin-top: 4px;
+  }
+}
+
+/* 4. Carrusel Horizontal de Runas (2 filas) */
+.two-rows-container {
+  width: 80%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0 auto 40px auto;
+  display: grid;
+  grid-template-rows: repeat(2, 230px);
+  grid-auto-flow: column;
+  grid-auto-columns: 180px;
+  gap: 16px;
+  
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+
+  padding: 16px;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  background-color: aliceblue;
+  border-radius: 8px;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 4px;
+
+    &:hover {
+      background: #64748b;
     }
+  }
+}
 
-    button {
-        width: 100%;
-        height: 40px;
-        font-size: 18px;
-        margin-bottom: 30px;
-    }
+/* 5. Tarjeta y encabezado del detalle de la runa */
+.grid-card-detail {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    .d-descripcion-i {
-        width: 100%;
-        height: 100%;
-    }
+  mat-card-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
 
-    .descripcion-i {
-        width: 100%;
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      img {
+        max-width: 90px;
         height: auto;
-        font-size: 20px;
-        line-height: 1.5;
-    }
+        object-fit: contain;
+        margin: 0 auto 12px auto;
+      }
 
+      p {
+        margin: 2px 0;
+        text-align: center;
+      }
+
+      .runa-nombre {
+        font-weight: 700;
+        font-size: 1.2rem;
+      }
+
+      .runa-interp {
+        color: #64748b;
+        font-size: 0.95rem;
+      }
+    }
+  }
+
+  mat-card-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* 6. Botón '+' alineado a la derecha */
+.add-button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 16px;
+  box-sizing: border-box;
+  margin: 16px 0 24px 0;
+
+  .btn-add-custom {
+    background-color: #e2e8f0 !important;
+    color: #1e293b !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #cbd5e1 !important;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* 7. Grid de Interpretaciones (4 columnas por defecto) */
+.four-columns-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 100%;
+  margin: 0 auto 30px auto;
+  padding: 16px;
+  box-sizing: border-box;
+
+  #mt-crd {
+    width: 100%;
+    height: 100%;
+    min-height: 180px;
+  }
+}
+
+/* 📱 8. Responsivo Corregido para Móviles (max-width: 432px) */
+@media (max-width: 432px) {
+
+  .filter-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+
+    .orden-select {
+      width: 100%;
+    }
+  }
+
+  .grid-card-detail {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+  }
+
+  .two-rows-container {
+    width: calc(100% - 16px);
+    max-width: 100vw;
+    margin: 20px auto 30px auto;
+    padding: 12px 8px;
+    grid-template-rows: repeat(2, 200px);
+    grid-auto-columns: 140px;
+    gap: 10px;
+    box-sizing: border-box;
+  }
+
+  #mt-crd {
+    width: 100%;
+    
+    mat-card-content {
+      padding: 8px;
+
+      p {
+        font-size: 0.85rem;
+      }
+
+      .num-interp {
+        font-size: 44px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .four-columns-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 8px 0;
+    width: 100%;
+    box-sizing: border-box;
+
+    #mt-crd {
+      width: 100%;
+      height: auto;
+      min-height: 150px;
+    }
+  }
 }

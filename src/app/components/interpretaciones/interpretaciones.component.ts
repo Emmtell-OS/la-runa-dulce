@@ -120,18 +120,6 @@ export class InterpretacionesComponent implements OnInit {
     clearInterval(this.intervalTextoAnimacion);
   }
 
-  private async getRegistroLotes() {
-    /**conexión y consumo de Firebase */
-    try {
-      await this.obtenerFirebaseData().then((data: []) => {
-        this.dataJsonLP = data;
-      });
-      this.getRegistroInterpretaciones();      
-    } catch (error) {
-      this.mostraraReintento = true;
-    }
-  }
-
   obtenerFirebaseData() {
     return new Promise((resolve, reject) => {
       this.service.getAll().valueChanges().subscribe(val => {
@@ -195,36 +183,24 @@ export class InterpretacionesComponent implements OnInit {
 
   private obtenerInterpretacion(id: number, runaCode: string) {
     
+    //TODO ajustar a la nueva estructura de interpretaciones
     this.imagen = this.imagen + runaCode.slice(0,2) + '.png'
-    let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
+    let filtrado = this.catInterpretaciones[id];
     this.nombreRuna = Utils.getNombreRuna(runaCode.slice(0,2));
     
-    if (filtrado !== undefined ) {
-      if (filtrado[runaCode][id] !== undefined) {
-        this.textInterp = filtrado[runaCode][id];
-        return;
-      } 
+    if (filtrado !== undefined && filtrado !== '') {
+      this.textInterp = filtrado;
+      return; 
     }
 
-    let interpretacion = Utils.elegirInterpretacion(runaCode, this.catInterpretaciones); 
-    this.textInterp = (interpretacion === null) ? null : filtrado[runaCode][interpretacion];
-
+    let interpretacion = Utils.elegirInterpretacion(this.catInterpretaciones); 
+    this.textInterp = (interpretacion === null) ? null : this.catInterpretaciones[interpretacion];
   }
 
   public async getRegistroInterpretaciones() {
-    this.catInterpretaciones.splice(0, this.catInterpretaciones.length)
-    /**conexión y consumo de Firebase */
-    await this.obtenerFirebaseDataInterp().then((data: []) => {
-      this.catInterpretaciones = data;
-    });
-  }
-
-  obtenerFirebaseDataInterp() {
-    return new Promise((resolve) => {
-      this.interpretacionesService.getAll().valueChanges().subscribe(val => {
-        resolve(val);
-      })
-    });
+    this.interpretacionesService.getTipo(this.valueE).valueChanges().subscribe(val => {
+      this.catInterpretaciones = val[1];
+    })
   }
 
   /*-------------------------------------TEMAS---------------------------------------------------------------*/

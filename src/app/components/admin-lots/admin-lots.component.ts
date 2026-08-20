@@ -1,37 +1,27 @@
-import { resolve } from 'path';
 import { TableModel } from './../../models/TableModel';
 import { LoteModel } from './../../models/LotelModel';
 import { ProcessLotesService } from './../../service/process-lotes.service';
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-
 import { PaqueteModel } from '../../models/PaqueteModel';
-import { HttpClient } from '@angular/common/http';
-
-import { MatCardModule } from '@angular/material/card';
 import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { HistorialTableModel } from '../../models/HistorialTableModel';
 import { MatDialog } from '@angular/material/dialog';
-
 import { ProduccionModel } from '../../models/ProduccionModel';
 import moment from 'moment';
-import {MatDividerModule} from '@angular/material/divider';
 import { GenerateQrComponent } from '../generate-qr/generate-qr.component';
-import { rejects } from 'assert';
 import { TipoPaquetesServiceService } from '../../service/tipo-paquetes-service.service';
-import { log } from 'console';
 import { TiposPaqueteModel } from '../../models/TiposPaqueteModel';
-import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
 import Utils from '../../utilities/utils';
 import { CodiModel } from '../../models/CodiModel';
 import { environment } from '../../../environments/environment';
 import { DetallesLoteComponent } from '../modals/detalles-lote/detalles-lote.component';
 import { EmpaqueModel } from '../../models/EmpaqueModel';
 import { RUNAS_BASE } from '../constantes/runas.constants';
+import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
+import { InterpretacionModel } from '../../models/InterpretacionModel';
 
 @Component({
   selector: 'app-admin-lots',
@@ -72,7 +62,7 @@ export class AdminLotsComponent implements OnInit {
 
   constructor(private service: ProcessLotesService, 
               private tpService: TipoPaquetesServiceService,
-              private interpretacionervice: InterpretacionesServiceService) {
+              private interpretacionesService: InterpretacionesServiceService) {
     this.getRegistroLotes();
     this.getRegistroTiposPaquete();
     this.formularioRegistro = new FormGroup({
@@ -90,14 +80,6 @@ export class AdminLotsComponent implements OnInit {
     this.obtenerHistorialLotes();
     this.loadHistorialTable(true);
     this.loadProduccion(true);
-  }
-
-  obtenerFirebaseData() {
-    return new Promise((resolve, reject) => {
-      this.service.getAll().valueChanges().subscribe(val => {
-        resolve(val);
-      })
-    });
   }
 
   obtenerHistorialLotes() {
@@ -162,20 +144,9 @@ export class AdminLotsComponent implements OnInit {
     });
   }
 
-  public async getRegistroInterpretaciones() {
-    this.catInterpretaciones.splice(0, this.catInterpretaciones.length)
-    /**conexión y consumo de Firebase */
-    await this.obtenerFirebaseDataInterp().then((data: []) => {
-      this.catInterpretaciones = data;
-    });
-
-  }
-
-  obtenerFirebaseDataInterp () {
-    return new Promise((resolve, reject) => {
-      this.service.getAll().valueChanges().subscribe(val => {
-        resolve(val);
-      })
+  public getRegistroInterpretaciones() {
+    this.interpretacionesService.getAll().valueChanges().subscribe(interps => {
+      this.catInterpretaciones = interps;
     });
   }
 
@@ -331,6 +302,7 @@ export class AdminLotsComponent implements OnInit {
 
     this.dataSource = new MatTableDataSource(this.stashLoteList);
     this.formularioRegistro.reset();
+    this.getRegistroInterpretaciones();
   }
 
   public dropRow(index: any, ctrl: FormControl) {
@@ -477,15 +449,16 @@ export class AdminLotsComponent implements OnInit {
       const faltantes = limiteRunas - runasSeleccionadas.length;
       runasSeleccionadas.push(...poolRunasDisponibles.slice(0, faltantes));
     }
-  
+
     // 4. Mapeamos directamente al nuevo formato estructurado
     return runasSeleccionadas.map((r) => {
-      const interpretacion = Utils.elegirInterpretacion(r, this.catInterpretaciones);
+      let listaInterpretaciones: InterpretacionModel = this.catInterpretaciones.filter((interp: InterpretacionModel) => interp.claveRuna === r)[0];
+      const interpretacion = Utils.elegirInterpretacion(listaInterpretaciones.interpretaciones);
       return {
         runaId: r,
         timestamp: '',
         consultas: 0,
-        interpretacionId: interpretacion === null ? 1 : interpretacion
+        interpretacionId: interpretacion === null ? 0 : interpretacion
       };
     });
   }

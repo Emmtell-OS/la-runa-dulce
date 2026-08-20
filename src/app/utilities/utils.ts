@@ -19,12 +19,11 @@ export default class Utils {
     return indice;
     }
 
-    static elegirInterpretacion(runaCode: string, catInterpretaciones: any): number {
-        let filtrado = catInterpretaciones.find((runa: {}) => Object.keys(runa)[0] === runaCode);
-        if (filtrado === undefined) {
+    static elegirInterpretacion(catInterpretaciones: any): number {
+        if (catInterpretaciones === undefined || catInterpretaciones[0] === '') {
             return null;
         } else {
-            return this.getRand(0, filtrado[runaCode].length -1);
+            return this.getRand(0, catInterpretaciones.length -1);
         }
     }
 

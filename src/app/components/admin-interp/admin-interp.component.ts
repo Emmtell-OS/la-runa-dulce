@@ -1,449 +1,206 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, map, startWith } from 'rxjs';
 import { InterpretacionesServiceService } from '../../service/interpretaciones-service.service';
-import { limit } from 'firebase/firestore';
-import { log } from 'console';
-import { EliminarComponent } from '../modals/eliminar/eliminar.component';
+import Utils from '../../utilities/utils';
 import { MatDialog } from '@angular/material/dialog';
+import { InterpretacionDescripcionComponent } from '../modals/interpretacion-descripcion/interpretacion-descripcion.component';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-interp',
+  selector: 'admin-interp',
   templateUrl: './admin-interp.component.html',
   styleUrl: './admin-interp.component.scss'
 })
 export class AdminInterpComponent {
 
+  catInterpData: any[] = [];
+  interpCardList: any[] = [];
+  rutaImagenesRunas = './assets/img/runas/';
+  mostrarGrid = false;
+  mostrarInterpVacia = false;
+  imgRunaGrid: any;
+  nombreRunaGrid: any;
+  interpRunaGrid: any;
+  tipoRunaGrid: any;
+  codigoRunaGrid: any;
+  interpretacionesList: any[] = [];
+  interpCardListOriginal: any[] = [];
+  interpCardListOrdenada: any[] = [];
 
-  formularioInterpretaciones: FormGroup;
-  interpretaciones: string[] = [];
-  autoCompleteInputValue: any;
-  runaFilterControl: FormControl = new FormControl('', Validators.required);
-  runas: Observable<any[]>;
-  catInterpretaciones = [];
-  runasList = [];
-  runasBase = [];
-  interpretacionControl: any; //FormControl = new FormControl('');
-  descripcionInput = false;
-  descripcionP = false;
-  selectInterp = false;
-  btnEditar = false;
-  btnCreate = false;
-  txtActualizar = 'Actualizar';
-  txtRegistrar = 'Registrar';
-  txtbtn = '';
-  descripcionParrafo = 'descripción...';
-  mostrarMensaje = false;
-  mensaje = null;
-  _REGISTRADO = 'Se ha registrado la interpretación para ';
-  _ERROR = 'La descripción no puede estar vacía y debe tener más de 10 caracteres';
   readonly dialog = inject(MatDialog);
-  toDeleteObject: any;
 
-  constructor(private service: InterpretacionesServiceService) {
-    this.getRegistroInterpretaciones();
-    this.formularioInterpretaciones = new FormGroup({
-      runa: new FormControl('', Validators.required),
-      interpretacion: new FormControl('', Validators.required),
-      descripcion: new FormControl('')
-    });
+  constructor(private service: InterpretacionesServiceService) {    
+    this.getCatInterpretaciones();
   }
 
-  public async getRegistroInterpretaciones() {
-    this.catInterpretaciones.splice(0, this.catInterpretaciones.length)
-    /**conexión y consumo de Firebase */
-    await this.obtenerFirebaseData().then((data: []) => {
-      this.catInterpretaciones = data;
-    });
-    this.runasList.splice(0, this.runasList.length);
-    this.runasBase = this.carga();
-    this.cargarRunasCodigos();
-    
-  }
-
-  obtenerFirebaseData() {
-    return new Promise((resolve, reject) => {
-      this.service.getAll().valueChanges().subscribe(val => {
-        resolve(val);
-      })
-    });
-  }
-
-  obtenerValorRuna() {
-    this.autoCompleteInputValue = this.autoCompleteInputValue.split('  ')[0];
-    this.llenarInterpretaciones(this.autoCompleteInputValue);
-    if(!this.selectInterp) {
-      this.selectInterp = true;
-    }
-    this.formularioInterpretaciones.reset();
-    this.descripcionInput = false;
-    this.descripcionP = false;
-    this.btnCreate = false;
-    this.btnEditar = false;
-    this.formularioInterpretaciones.setValue({
-      runa: this.autoCompleteInputValue,
-      interpretacion: null,
-      descripcion: null
-    });
-  }
-
-  obtenerValorInterpretacion() {
-    this.mostrarMensaje = false;
-    let seleccionado = this.formularioInterpretaciones.value['interpretacion'];
-    if (seleccionado === null || seleccionado === undefined || seleccionado === '') {
-      return;
-    }
-    let runa = this.formularioInterpretaciones.value['runa'];
-    let runaCode = this.runasBase.find((r) => r['runa'] === runa)['codigo'];
-    let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
-
-    if (seleccionado === 'NUEVO') {
-      this.txtbtn = this.txtRegistrar;
-      this.btnCreate = true;
-      this.descripcionInput = true;
-      this.btnEditar = false;
-      this.descripcionP = false;
-    } else {
-      this.btnCreate = false;
-      this.descripcionInput = false;
-      this.descripcionP = true;
-      this.btnEditar = true;
-      this.descripcionParrafo = filtrado[runaCode][seleccionado - 1];
-      this.toDeleteObject = {
-        'runaCode': runaCode,
-        'runa': runa,
-        'numero': seleccionado
-      };
+  // 1. Convertimos el Observable a Promesa esperable con firstValueFrom
+  async getCatInterpretaciones(): Promise<void> {
+    const catInterpretaciones = await firstValueFrom(this.service.getAll().valueChanges());
+    if (catInterpretaciones) {
+      this.catInterpData = catInterpretaciones;
+      this.renderizarCards();
     }
   }
 
-  registrarInterpretacion() {
-    let descripcion = this.formularioInterpretaciones.value['descripcion'];
-    let descripcionValida = this.validarDescripcion(descripcion);
-    let runaCode = this.runasBase.find((r) => r['runa'] === this.formularioInterpretaciones.value['runa'])['codigo'];
-    if(this.formularioInterpretaciones.value['interpretacion'] === 'NUEVO' && descripcionValida) {
-
-      let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
+  // 2. Método sincrónico para armar la lista de tarjetas
+  renderizarCards(): void {
+    this.interpCardList = []; // Limpiamos para evitar duplicados
+    this.catInterpData.forEach((interp: any) => {
+      const key = interp.claveRuna;
+      const runa = Utils.getNombreRuna(key.substring(0, 2));
+      const tipo = key.substring(2, 4);
+      const size = (interp.interpretaciones[0] === '') ? 0 : interp.interpretaciones.length;
       
-      if (filtrado === undefined) {
-        //console.log('nueva runa');
-        let req = new Object();
-        req[runaCode] = [descripcion];
-        this.service.create(this.formularioInterpretaciones.value['runa'], req);
-      } else {
-        //console.log('nueva interpretacion');
-        filtrado[runaCode].push(descripcion);
-        this.service.create(this.formularioInterpretaciones.value['runa'], filtrado);
-      }
+      this.interpCardList.push({
+        "nombre": (tipo === '00') ? runa + ' INVERTIDA' : runa + ' DIRECTA',
+        "imagen": this.rutaImagenesRunas + key.substring(0, 2) + ".png",
+        "tipo": (tipo === '00') ? 'invertida' : '',
+        "interpretacionesList": interp.interpretaciones,
+        "interpretacionesSize": size + " Interpretaciones",
+        "codigoRuna": interp.claveRuna
+      });
+    });
+    this.interpCardListOriginal = [...this.interpCardList];
+    this.interpCardListOrdenada = [...this.interpCardList];
+  }
 
-      this.reiniciar(this.formularioInterpretaciones.value['runa']);
+  filtroRunas(termino: string): void {
+    this.ordenar('nombre-desc');
+    // Si el parámetro viene vacío, restablecemos la lista original completa
+    if (!termino || termino.trim() === '') {
+      this.interpCardList = [...this.interpCardListOriginal];
       return;
     }
   
-    if(!descripcionValida) {
-      this.pintarMensaje(null);
-    } else {
-      //Actualizar
-      let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
-      filtrado[runaCode].splice([this.formularioInterpretaciones.value['interpretacion'] -1], 1, descripcion)
-      this.service.create(this.formularioInterpretaciones.value['runa'], filtrado);
-      this.reiniciar(this.formularioInterpretaciones.value['runa']);
-    }
-    
-  }
-
-  editarInterpretacion() {
-
-    this.formularioInterpretaciones.setValue({
-      runa: this.formularioInterpretaciones.value['runa'],
-      interpretacion: this.formularioInterpretaciones.value['interpretacion'],
-      descripcion: this.descripcionParrafo
+    const busqueda = termino.toLowerCase().trim();
+  
+    // Búsqueda por coincidencias en nombre, código de runa o dentro del texto de las interpretaciones
+    this.interpCardList = this.interpCardListOriginal.filter(item => {
+      const coincideNombre = item.nombre.toLowerCase().includes(busqueda);
+      const coincideCodigo = item.codigoRuna.toLowerCase().includes(busqueda);
+  
+      return coincideNombre || coincideCodigo;
     });
-
-    this.txtbtn = this.txtActualizar;
-    this.btnEditar = false;
-    this.btnCreate = true;
-    this.descripcionP = false;
-    this.descripcionInput = true;
   }
 
-  validarDescripcion(descripcion: any): any {
-
-    if (descripcion !== '' && descripcion !== null && descripcion.toString().length > 10 &&
-        descripcion !== undefined && descripcion.trim() !== '') {
-          return true;
-        }
-
-    return false
-  }
-
-  reiniciar(runa: string) {
-    this.formularioInterpretaciones.reset();
-    this.btnCreate = false;
-    this.btnEditar = false;
-    this.selectInterp = false;
-    this.descripcionInput = false;
-    this.descripcionP = false;
-    this.pintarMensaje(runa);
-    this.getRegistroInterpretaciones();
-  }
-
-  pintarMensaje(msj: string) {
-    switch(msj) {
-      case null:
-        this.mensaje = this._ERROR;
-      break;
-      case 'eliminar':
-        this.mensaje = `Se ha eliminado la interpretación ${this.toDeleteObject['numero']} de ${this.toDeleteObject['runa']}`;
-      break
+  ordenar(criterio: string): void {
+    switch (criterio) {
+      case 'na': // Nombre ASC
+        this.interpCardListOrdenada = [...this.interpCardListOriginal].sort((a, b) =>
+          a.nombre.localeCompare(b.nombre)
+        );
+        break;
+  
+      case 'nd': // Nombre DESC
+        this.interpCardListOrdenada = [...this.interpCardListOriginal].sort((a, b) =>
+          b.nombre.localeCompare(a.nombre)
+        );
+        break;
+  
+      case 'ia': // Interpretación ASC
+        this.interpCardListOrdenada = [...this.interpCardListOriginal].sort((a, b) => {
+          const numA = parseInt(a.interpretacionesSize, 10) || 0;
+          const numB = parseInt(b.interpretacionesSize, 10) || 0;
+          return numA - numB;
+        });
+        break;
+  
+      case 'id': // Interpretación DESC
+        this.interpCardListOrdenada = [...this.interpCardListOriginal].sort((a, b) => {
+          const numA = parseInt(a.interpretacionesSize, 10) || 0;
+          const numB = parseInt(b.interpretacionesSize, 10) || 0;
+          return numB - numA;
+        });
+        break;
+  
+      case 'd': // Default
       default:
-        this.mensaje = this._REGISTRADO + msj;
-      break
+        this.interpCardListOrdenada = [...this.interpCardListOriginal];
+        break;
     }
-    //this.mensaje = (msj !== null) ? this._REGISTRADO + msj : this._ERROR;
-    this.mostrarMensaje = true;
-    setTimeout(() => {
-      this.mostrarMensaje = false;
-      this.mensaje = '';
-    }, 6000);
+  
+    // Actualizamos la lista vinculada a la plantilla
+    this.interpCardList = [...this.interpCardListOrdenada];
   }
 
-  llenarInterpretaciones(runa: any) {
-    let limit = null;
-    this.interpretaciones.splice(0, this.interpretaciones.length);
-    this.interpretaciones.push('NUEVO');
-    let runaCode = this.runasBase.find((r) => r['runa'] === runa)['codigo'];
-    let filtrado = this.catInterpretaciones.find((r) => Object.keys(r).includes(runaCode.toString()));
+  show(runa: any) {
+    this.imgRunaGrid = runa['imagen'];
+    this.nombreRunaGrid = runa['nombre'];
+    this.interpRunaGrid = runa['interpretacionesSize'];
+    this.tipoRunaGrid = runa['tipo'];
+    this.codigoRunaGrid = runa['codigoRuna'];
+    
+    // Limpiamos la lista previa para no encadenar elementos anteriores
+    this.interpretacionesList = [];
 
-    if (filtrado !== undefined) {
-      
-      limit = Number(filtrado[runaCode].length);
-      
-      for (let i = 0; i < limit; i++) {
-        let toAdd = i + 1;
-        this.interpretaciones.push(toAdd.toString());
-      }
-      
-    }
-  }
-
-  cargarRunasCodigos() {
-    this.listaRunasConContadorInterpretaciones();
-    this.runasList.push(...this.listaRunasConContadorInterpretaciones());
-    this.runas = this.runaFilterControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(lote => lote ? this.filterRunas(lote) : this.runasList.slice())
-    );
-  }
-
-  filterRunas(name: string) {
-    return this.runasList.filter(run => run['runa'].toUpperCase().includes(name.toUpperCase()));
-  }
-
-  listaRunasConContadorInterpretaciones()  {
-    let total: any;
-    let runasBaseContador = [];
-    for(let runna of this.runasBase) {
-      let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runna['codigo']);
-      total = (filtrado === undefined) ? 0 : filtrado[runna['codigo']].length;
-      runasBaseContador.push({
-        "runa": runna['runa'] + "  (" + total + ")",
-        "codigo": runna['codigo']
+    if (runa['interpretacionesList'][0] === '') {
+      this.interpRunaGrid = 0 + " Interpretaciones";
+      this.mostrarInterpVacia = true;
+    } else {
+      this.mostrarInterpVacia = false;
+      runa['interpretacionesList'].forEach((int: any, index: number) => {
+        this.interpretacionesList.push({
+          "indice": index + 1,
+          "interp": int
+        });
       });
     }
-    return runasBaseContador;
+    this.mostrarGrid = true;
   }
 
-  public mostrarEliminar() {
-    const dialogRef = this.dialog.open(EliminarComponent, {
-      data: {seccion: 'interpretacion', values: this.toDeleteObject},
-      width: '300px',
-      height:'170px'
+  abrirDiaogInterpretacion(interp: any) {
+    let dataInterp: any;
+    if (interp === null) {
+      dataInterp = {
+        "consecutivo": this.interpRunaGrid.split(' ')[0],
+        "runa": this.nombreRunaGrid,
+        "codigo": this.codigoRunaGrid,
+        "img": this.imgRunaGrid,
+        "interp": "",
+        "tipo": this.tipoRunaGrid
+      };
+    } else {
+      dataInterp = {
+        "consecutivo": interp['indice'] - 1,
+        "runa": this.nombreRunaGrid,
+        "codigo": this.codigoRunaGrid,
+        "img": this.imgRunaGrid,
+        "interp": interp['interp'],
+        "tipo": this.tipoRunaGrid
+      };
+    }
+
+    const dialogRef = this.dialog.open(InterpretacionDescripcionComponent, {
+      data: dataInterp,
+      panelClass: 'modal-responsive',
+      width: '95vw',
+      maxWidth: '95vw',
+      height: 'auto',
+      maxHeight: '99vh'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.eliminar(this.toDeleteObject['runaCode']);
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.reiniciar();
     });
-    
   }
 
-  eliminar(runaCode: string) {
-    let filtrado = this.catInterpretaciones.find((runa) => Object.keys(runa)[0] === runaCode);
-    filtrado[runaCode].splice([this.toDeleteObject['numero']-1], 1);
-    this.service.create(this.toDeleteObject['runa'], filtrado);
-    this.reiniciar('eliminar');
-  }
+  // 3. Reiniciar secuencial y seguro
+  async reiniciar() {
+    // A) Reseteo de estados
+    this.catInterpData = [];
+    this.interpCardList = [];
+    this.interpretacionesList = [];
+    this.mostrarInterpVacia = false;
 
-  carga() {
-    return [
-      {
-        'runa': 'GEBO',
-        'codigo': 'GE01'
-      },
-      {
-        'runa': 'EIHWAZ',
-        'codigo': 'EI01'
-      },
-      {
-        'runa': 'INGUZ',
-        'codigo': 'NG01'
-      },
-      {
-        'runa': 'JERA',
-        'codigo': 'JE01'
-      },
-      {
-        'runa': 'HAGALAZ',
-        'codigo': 'HA01'
-      },
-      {
-        'runa': 'SOWELU',
-        'codigo': 'SW01'
-      },
-      {
-        'runa': 'ISA',
-        'codigo': 'IS01'
-      },
-      {
-        'runa': 'DAGAZ',
-        'codigo': 'DA01'
-      },
-      {
-        'runa': 'ODIN',
-        'codigo': 'OD01'
-      },
-      {
-        'runa': 'URUZ',
-        'codigo': 'UR01'
-      },
-      {
-        'runa': 'URUZ-I',
-        'codigo': 'UR00'
-      },
-      {
-        'runa': 'OTHILA',
-        'codigo': 'OT01'
-      },
-      {
-        'runa': 'OTHILA-I',
-        'codigo': 'OT00'
-      },
-      {
-        'runa': 'ANSUZ',
-        'codigo': 'AS01'
-      },
-      {
-        'runa': 'ANSUZ-I',
-        'codigo': 'AS00'
-      },
-      {
-        'runa': 'MANNAZ',
-        'codigo': 'MA01'
-      },
-      {
-        'runa': 'MANNAZ-I',
-        'codigo': 'MA00'
-      },
-      {
-        'runa': 'ALGIZ',
-        'codigo': 'AL01'
-      },
-      {
-        'runa': 'ALGIZ-I',
-        'codigo': 'AL00'
-      },
-      {
-        'runa': 'NAUTHIZ',
-        'codigo': 'NA01'
-      },
-      {
-        'runa': 'NAUTHIZ-I',
-        'codigo': 'NA00'
-      },
-      {
-        'runa': 'PERTH',
-        'codigo': 'PE01'
-      },
-      {
-        'runa': 'PERTH-I',
-        'codigo': 'PE00'
-      },
-      {
-        'runa': 'TEIWAZ',
-        'codigo': 'TE01'
-      },
-      {
-        'runa': 'TEIWAZ-I',
-        'codigo': 'TE00'
-      },
-      {
-        'runa': 'KANO',
-        'codigo': 'KA01'
-      },
-      {
-        'runa': 'KANO-I',
-        'codigo': 'KA00'
-      },
-      {
-        'runa': 'WUNJO',
-        'codigo': 'WU01'
-      },
-      {
-        'runa': 'WUNJO-I',
-        'codigo': 'WU00'
-      },
-      {
-        'runa': 'FEHU',
-        'codigo': 'FE01'
-      },
-      {
-        'runa': 'FEHU-I',
-        'codigo': 'FE00'
-      },
-      {
-        'runa': 'RAIDO',
-        'codigo': 'RA01'
-      },
-      {
-        'runa': 'RAIDO-I',
-        'codigo': 'RA00'
-      },
-      {
-        'runa': 'EHWAZ',
-        'codigo': 'EH01'
-      },
-      {
-        'runa': 'EHWAZ-I',
-        'codigo': 'EH00'
-      },
-      {
-        'runa': 'BERKANA',
-        'codigo': 'BE01'
-      },
-      {
-        'runa': 'BERKANA-I',
-        'codigo': 'BE00'
-      },
-      {
-        'runa': 'THURIZAS',
-        'codigo': 'TH01'
-      },
-      {
-        'runa': 'THURIZAS-I',
-        'codigo': 'TH00'
-      },
-      {
-        'runa': 'LAGUZ',
-        'codigo': 'LA01'
-      },
-      {
-        'runa': 'LAGUZ-I',
-        'codigo': 'LA00'
+    // B) Esperamos REALMENTE a que traiga la información de Firebase
+    await this.getCatInterpretaciones();
+
+    // C) Si tenemos seleccionada una runa activa en el grid, refrescamos su vista
+    if (this.codigoRunaGrid) {
+      const runaSeleccionada = this.interpCardList.find(item => item.codigoRuna === this.codigoRunaGrid);
+      if (runaSeleccionada) {
+        this.show(runaSeleccionada);
       }
-    ];
+    }
   }
 
 }

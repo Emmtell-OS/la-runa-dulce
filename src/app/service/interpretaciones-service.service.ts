@@ -27,11 +27,15 @@ export class InterpretacionesServiceService {
   }
 
   update(idInterp:string, interpretacion: any): any {
-    return this.dataConfig.set(idInterp, interpretacion);
+
+    return this.db.object(this.dbPath + '/interpretaciones/' + idInterp).update({
+      interpretaciones: interpretacion
+    });
+    //return this.dataConfig.set(idInterp, interpretacion);
   }
 
   delete(idInterp:string): any {
-    return this.db.list(this.dbPath).remove(idInterp);
+    return this.db.list(this.dbPath + '/interpretaciones/').remove(idInterp);
   }
 
 }
