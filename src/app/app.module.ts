@@ -11,7 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminLotsComponent } from './components/admin-lots/admin-lots.component';
 import { InterpretacionesComponent } from './components/interpretaciones/interpretaciones.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -32,12 +31,9 @@ import { AdminInterpComponent } from './components/admin-interp/admin-interp.com
 import { ConfigComponent } from './components/configs/config.component';
 import { GenerateQrComponent } from './components/generate-qr/generate-qr.component';
 import { QRCodeModule } from 'angularx-qrcode';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
-import { getMessaging, provideMessaging } from '@angular/fire/messaging';
-import { getStorage, provideStorage } from '@angular/fire/storage';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
@@ -61,6 +57,7 @@ import { FormatDatePipe } from './pipes/format-date.pipe';
 import { FormsModule } from '@angular/forms';
 import { InterpretacionDescripcionComponent } from './components/modals/interpretacion-descripcion/interpretacion-descripcion.component';
 import { FormatoInterpretacionPipe } from './pipes/formato-interpretacion.pipe';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 
 
 @NgModule({
@@ -86,6 +83,7 @@ import { FormatoInterpretacionPipe } from './pipes/formato-interpretacion.pipe';
     FormatDatePipe,
     InterpretacionDescripcionComponent,
     FormatoInterpretacionPipe,
+    AdminLoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -115,7 +113,12 @@ import { FormatoInterpretacionPipe } from './pipes/formato-interpretacion.pipe';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule
   ],
-  providers: [{provide: APP_BASE_HREF, useValue: '/'}],
+  providers: [
+    {provide: APP_BASE_HREF, useValue: '/'},
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase())
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

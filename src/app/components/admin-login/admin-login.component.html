@@ -1,0 +1,15 @@
+<div class="login-card">
+<div *ngIf="!cargando; else loader" class="action-container">
+    <button *ngIf="!mensaje" (click)="solicitarAcceso()" class="btn-request">
+    <img src="assets/img/btn/boton-acceder.png" alt="Acceder" />
+    </button>
+
+    <p *ngIf="mensaje" class="feedback-msg">{{ mensaje }}</p>
+</div>
+
+<ng-template #loader>
+    <div class="loader-container">
+    <p>Procesando solicitud...</p>
+    </div>
+</ng-template>
+</div>
