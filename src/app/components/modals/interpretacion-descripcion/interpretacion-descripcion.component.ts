@@ -1,8 +1,10 @@
 import { InterpretacionModel } from './../../../models/InterpretacionModel';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { InterpretacionesServiceService } from './../../../service/interpretaciones-service.service';
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnInit, inject, DestroyRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'interpretacion-descripcion',
@@ -11,6 +13,7 @@ import { FormControl } from '@angular/forms';
 })
 export class InterpretacionDescripcionComponent implements OnInit{
 
+  private destroyRef = inject(DestroyRef);
   readonly dialogRef = inject(MatDialogRef<InterpretacionDescripcionComponent>);
   miTextoControl = new FormControl('');
 
@@ -53,6 +56,8 @@ export class InterpretacionDescripcionComponent implements OnInit{
       this.interpRuna = 'Esta es la interpretacion ' + consecutivo;
       this.mostrarBotonEliminar = true;
     }
+
+    this.escucharAutoGuardado();
   }
 
   obtenerInterpretacion(tipo: string) {
@@ -82,17 +87,35 @@ export class InterpretacionDescripcionComponent implements OnInit{
       && this.interpretacion !== '') {
         this.accion = "editar";
     }
+
+  }
+
+  private escucharAutoGuardado(): void {
+    this.miTextoControl.valueChanges
+      .pipe(
+        debounceTime(1000), // Espera 1000ms de inactividad tras la última tecla
+        filter(() => this.mostrarEditar), // Garantiza que solo guarde si está en modo edición
+        takeUntilDestroyed(this.destroyRef) // Cancela la suscripción cuando el componente se destruye
+      )
+      .subscribe(nuevoTexto => {
+        if (nuevoTexto !== null && this.registroInterpretacion) {
+          this.save();
+        }
+      });
   }
 
   save() {
     this.interpretacion = this.miTextoControl.value;
-    this.mostrarEditar = false
     switch (this.accion) {
       case 'primera':
         this.registroInterpretacion[1][0] = this.interpretacion;
+        this.accion = 'editar';
+        this.indice = 0;
       break;
       case 'nueva':
         this.registroInterpretacion[1].push(this.interpretacion);
+        this.accion = 'editar';
+        this.indice = this.registroInterpretacion[1].length - 1;
       break;
       case 'editar':
         this.registroInterpretacion[1][this.indice] = this.interpretacion;
@@ -101,11 +124,10 @@ export class InterpretacionDescripcionComponent implements OnInit{
 
     this.service.update(this.registroInterpretacion[0], this.registroInterpretacion[1]);
 
-    if (this.accion === 'primera') {
-      this.dialogRef.close();
-    }
+  }
 
-    this.mostrarBotonEliminar = true;
+  cerrarEditar() {
+    this.mostrarEditar = false;
   }
 
   editarInterp() {

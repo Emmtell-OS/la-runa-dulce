@@ -116,7 +116,6 @@ export class PuntoVentaConsoleComponent {
   }
 
   editar(element: PuntosVentaModel) {
-    console.log(element);
     
     this.isEdit = true
     this.editId = element.id

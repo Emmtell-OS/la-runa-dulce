@@ -156,7 +156,6 @@ export class AdminLotsComponent implements OnInit {
     await this.obtenerFirebaseTPByTipoData(tipo).then((data: TiposPaqueteModel) => {
       listaTP = data;
     });
-    console.log(listaTP);
     
     return listaTP;
   }

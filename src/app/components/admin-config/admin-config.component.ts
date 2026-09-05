@@ -132,8 +132,7 @@ export class AdminConfigComponent {
     let existe = this.catTipoPaquete.filter((tp) =>  tp.tipoPaquete === ftp);
     if (existe.length === 0 || this.modificar) {
       if (this.modificar) {
-        console.log(this.tipoPaqueteUpdate);
-        
+
         this.eliminarTipoPaquete(this.tipoPaqueteUpdate, true);
       }
       let tiposPaquetesModel: TiposPaqueteModel = {
@@ -279,9 +278,7 @@ export class AdminConfigComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log(element.tema);
-        
+      if (result) {        
         this.eliminarTema(element.tema, false);
       }
     });

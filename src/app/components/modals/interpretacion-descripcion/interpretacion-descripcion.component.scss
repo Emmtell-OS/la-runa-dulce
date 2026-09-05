@@ -1,8 +1,8 @@
 /* ==========================================================================
   Configuración de Colores y Variables
   ========================================================================== */
-  $bg-beige: #fbf8f3;       /* Fondo general beige suave */
-  $bg-textarea: #f7f2ea;    /* Fondo del área de texto ligeramente contrastado */
+  $bg-beige: #fccd82;       /* Fondo general beige suave */
+  $bg-textarea: #fccd82;    /* Fondo del área de texto ligeramente contrastado */
   $border-beige: #dcd3c5;    /* Borde suave cálido */
   $primary-focus: #8c6d46;   /* Enfocado tono café */
   
@@ -15,12 +15,12 @@
   mat-card {
     display: flex;
     flex-direction: column;
-    align-items: center;
     height: 100%;
-    min-height: 100%;
-    padding: 24px;
+    max-height: 100vh; /* Evita que la tarjeta sobrepase la ventana */
+    padding: 16px;     /* Reducido de 24px para ganar espacio vertical */
     box-sizing: border-box;
-    background-color: $bg-beige !important; /* Fondo beige para descansar la vista */
+    background-color: $bg-beige !important;
+    overflow: hidden;  /* Mantiene los bordes de la tarjeta limpios */
   }
   
   /* Transparencia en subcontenedores para mantener fondo beige */
@@ -30,13 +30,13 @@
     background-color: transparent !important;
   }
   
-  /* 3. Encabezado de la runa (Imagen, Nombre e Interpretación breve) */
+  /* 3. Encabezado de la runa */
   mat-card-header {
-    flex: 0 0 auto;
+    flex: 0 0 auto; /* No se estira ni se encoge */
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 12px; /* Reducido de 20px */
   
     .header-content {
       display: flex;
@@ -44,11 +44,11 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 8px;
+      gap: 4px; /* Reducido para compactar encabezado */
       width: 100%;
   
       img {
-        max-width: 90px;
+        max-width: 65px; /* Optimizado de 90px para pantallas móviles */
         height: auto;
         object-fit: contain;
         margin: 0 auto;
@@ -62,38 +62,49 @@
   
       .runa-nombre {
         font-weight: 700;
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         letter-spacing: 1px;
         color: #1e293b;
       }
   
       .runa-interp {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
         color: #64748b;
       }
     }
   }
   
-  /* 4. Contenido principal (Modo lectura y Modo edición) */
+  /* 4. Contenido principal (Área desplazable con scroll) */
   mat-card-content {
-    flex: 1 1 auto;
+    flex: 1 1 auto; /* Toma todo el espacio disponible entre header y actions */
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    padding: 16px 0;
-    overflow-y: auto;
+    padding: 8px 0;
+    overflow-y: auto; /* Permite scroll vertical interno si el texto es largo */
+    box-sizing: border-box;
+
+    /* Personalización de barra de desplazamiento suave */
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #d1c7b7;
+      border-radius: 4px;
+    }
   
     /* Texto de interpretación en modo lectura */
     .interpretacion-text-container {
-      width: 90%;
+      width: 95%;
       margin: 0 auto;
       text-align: center;
   
       p {
         font-family: 'Fondamento', cursive, serif;
-        font-size: 20px;
-        line-height: 1.6;
+        font-size: 18px; /* Ajustado ligeramente de 20px para mejor lectura */
+        line-height: 1.5;
         color: #2c2c2c;
         margin: 0;
         text-align: center;
@@ -104,22 +115,21 @@
     /* Campo de texto en modo edición */
     .textarea-container {
       width: 100%;
-      min-height: 180px;
-      height: 30vh;
+      height: 100%;
+      min-height: 150px;
       display: flex;
   
       textarea {
         width: 100%;
         height: 100%;
         box-sizing: border-box;
-        resize: vertical;
+        resize: none;
         padding: 12px;
         border-radius: 6px;
         font-family: inherit;
-        font-size: 17px; /* Aumentado a 17px */
+        font-size: 16px;
         line-height: 1.5;
         outline: none;
-        
         background-color: $bg-textarea !important;
         color: #2c2c2c;
         border: 1px solid $border-beige;
@@ -134,12 +144,13 @@
   
   /* 5. Acciones y Botonera inferior */
   mat-card-actions {
+    flex: 0 0 auto; /* Fijo en el pie de la tarjeta */
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     width: 100% !important;
-    padding: 12px 0 !important;
-    gap: 16px;
+    padding: 8px 0 0 0 !important;
+    gap: 12px;
     margin-top: auto;
   
     .button-group {
@@ -147,20 +158,20 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      gap: 20px;
+      gap: 16px;
   
-      /* Tamaño de botones táctiles ampliado para móviles */
+      /* Tamaño de botones ajustado para optimizar espacio */
       button {
-        width: 56px !important;
-        height: 56px !important;
-        min-width: 56px !important;
+        width: 46px !important;
+        height: 46px !important;
+        min-width: 46px !important;
         border-radius: 50% !important;
   
         mat-icon {
-          font-size: 32px !important;
-          width: 32px !important;
-          height: 32px !important;
-          line-height: 32px !important;
+          font-size: 24px !important;
+          width: 24px !important;
+          height: 24px !important;
+          line-height: 24px !important;
         }
       }
   
@@ -175,7 +186,7 @@
       .edit-btn {
         color: #0284c7;
         background-color: #f0f9ff;
-  
+
         &:hover {
           background-color: #e0f2fe;
         }
@@ -184,7 +195,7 @@
       .delete-btn {
         color: #dc2626;
         background-color: #fef2f2;
-  
+
         &:hover {
           background-color: #fee2e2;
         }
@@ -193,47 +204,45 @@
       .close-btn {
         color: #475569;
         background-color: #f1f5f9;
-  
+
         &:hover {
           background-color: #e2e8f0;
         }
       }
     }
   
-    /* Contenedor de confirmación de eliminación corregido en vertical */
     .confirm-delete-container {
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 12px;
-      margin-top: 8px;
+      gap: 8px;
   
       p {
         margin: 0;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: #475569;
-        padding: 0 12px;
-        line-height: 1.4;
+        padding: 0 8px;
+        line-height: 1.3;
       }
   
       .input-action-row {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         width: 100%;
   
         input[type="text"] {    
           width: 80%;
-          max-width: 220px;
+          max-width: 200px;
           border: 1px solid #767676;
           border-radius: 6px;
-          padding: 8px 12px;
+          padding: 6px 10px;
           box-sizing: border-box;
           font-family: inherit;
-          font-size: 15px;
+          font-size: 14px;
           text-align: center;
           outline: none;
           background-color: #ffffff;
@@ -246,8 +255,8 @@
         button {
           width: auto !important;
           height: auto !important;
-          min-width: 120px !important;
-          padding: 8px 16px !important;
+          min-width: 110px !important;
+          padding: 6px 12px !important;
           border-radius: 6px !important;
         }
       }

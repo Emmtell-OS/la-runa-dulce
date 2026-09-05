@@ -155,7 +155,6 @@ export class LpConsoleComponent {
 
     this.service.deleteLoteCascada(loteId, this.paqueteList)
       .then(() => {
-        console.log('¡Lote y todos sus paquetes eliminados en una sola operación!');
         
         // 2. Refrescamos la tabla SOLO cuando Firebase confirme que ya borró todo en el servidor
         this.getRegistroLotes(false);
