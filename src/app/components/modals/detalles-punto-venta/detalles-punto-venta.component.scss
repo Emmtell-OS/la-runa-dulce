@@ -1,28 +1,53 @@
 .cont {
     border: 2px solid #3d3b3b;
     border-radius: 15px;
-    padding: 10px;
+    padding: 15px 10px;
     margin: 10px;
     box-shadow: 5px 5px 7px #8e8c8c;
-    //float: left;
+    display: flex;
+    align-items: center;  
+    overflow: hidden;   
+    height: auto;
+    box-sizing: border-box;
 }
 
+/* 1. Evita que la etiqueta de título (ej. "Dirección:") se reduzca */
+.cont > p {
+    margin: 0;
+    flex-shrink: 0; 
+}
 
-
+/* 2. Ajustes al contenedor de la descripción */
 .desc {
     margin-left: 15px;
+    padding-right: 15px; /* Espacio de margen interno a la derecha */
+    flex: 1;             /* Toma todo el espacio disponible dentro del .cont */
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;    /* Evita desbordamientos horizontales */
+}
+
+/* 3. Ajustes al texto/párrafo dentro de .desc */
+.desc p {
+    margin: 0;
+    word-break: break-word;     /* Rompe enlaces largos si no caben en una línea */
+    overflow-wrap: anywhere;
 }
 
 .med {
     width: 200px;
+    padding: 5px;
 }
 
 .med-d {
     width: 320px;
+    padding: 5px;
 }
 
 .big {
     width: 400px;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 .hor {
@@ -30,4 +55,45 @@
     justify-content: center;
     justify-content: space-evenly;
     overflow: hidden;
+}
+
+mat-card {
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    /* Cambia la orientación de las filas a columna */
+    .hor {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin: 20px 0;
+    }
+
+    /* Aplica las dimensiones solicitadas a cada contenedor */
+    .cont,
+    .med,
+    .med-d,
+    .big {
+        width: 100% !important;
+        height: auto;          /* Se ajusta al contenido si la dirección ocupa 2 líneas */
+        min-height: 40px;
+        box-sizing: border-box;
+        margin: 5px 0;         
+    }
+
+    .cont {
+        padding: 8px 12px;    
+        display: flex;
+        align-items: center;  
+        overflow: hidden;   
+    }
+    
+    .cont p {        
+        font-size: 16px;
+    }
+
+    button {
+        margin-top: 20px;
+    }
 }

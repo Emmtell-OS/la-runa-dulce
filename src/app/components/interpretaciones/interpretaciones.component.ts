@@ -42,6 +42,7 @@ export class InterpretacionesComponent implements OnInit {
   mostrarBtnInicio: boolean;
   mostrarApuntador: boolean;
   limiteDias = 3;
+  limiteInterpretacion = 7;
   textInterp = '';
   textoAnimacionList: any;
   textoAnimacion: any;
@@ -55,6 +56,9 @@ export class InterpretacionesComponent implements OnInit {
   TEMAIMG: any;
   bkgInterpretacion = '';
   nombreRuna: string;
+  caducidadDias = 0;
+  caducidadConsultas = 0;
+
 
   constructor(private activateRoute: ActivatedRoute, 
               private service: ProcessLotesService,
@@ -136,6 +140,7 @@ export class InterpretacionesComponent implements OnInit {
       this.valueE = codi.slice(10, 14);
       this.getRegistroInterpretaciones();
       this.orquestadorDeInterpretaciones(this.valueL, this.valueP, this.valueE);
+
     } else {
       this.mostrarReintento = true
     }
@@ -151,7 +156,12 @@ export class InterpretacionesComponent implements OnInit {
           const isLoteActivo = (lote['activo'] === true || lote['activo'] === 'true');
           const isPaqueteActivo = (paquete['activo'] === true || paquete['activo'] === 'true');          
           let consultado: EmpaqueModel = paquete['consultados'].find((emp: EmpaqueModel) => runeCode === emp.runaId);
-          if (consultado && isLoteActivo && isPaqueteActivo && this.isLimiteDiasValido(consultado['timestamp'])) {                        
+          console.log(consultado.consultas)
+          if (consultado 
+            && isLoteActivo 
+            && isPaqueteActivo 
+            && this.isLimiteDiasValido(consultado['timestamp'])
+            && consultado.consultas < this.limiteInterpretacion) {                        
             this.obtenerInterpretacion(consultado['interpretacionId'], runeCode);            
             if (consultado.timestamp !== '') {
               consultado.consultas += this._UNO;
@@ -159,6 +169,7 @@ export class InterpretacionesComponent implements OnInit {
               consultado.timestamp = moment().format();
               consultado.consultas = this._UNO;              
             }            
+            this.getCaducidad(consultado['timestamp'], consultado.consultas);
             this.service.updateConsultadosPaquete(paquete['codigo'], paquete['consultados'])
             .then(() => (this.textInterp === null) ? this.mostrarReintento = true : this.mostraraInterpretacion = true)
             .catch(err => this.mostrarReintento = true);
@@ -201,6 +212,12 @@ export class InterpretacionesComponent implements OnInit {
     this.interpretacionesService.getTipo(this.valueE).valueChanges().subscribe(val => {
       this.catInterpretaciones = val[1];
     })
+  }
+
+  getCaducidad(fechaConsultado: string, consultados: number) {
+    console.log(consultados)
+    this.caducidadDias = this.limiteDias - moment().diff(moment(fechaConsultado, 'YYYY-MM-DDTHH:mm:ssZ'),'days');
+    this.caducidadConsultas = this.limiteInterpretacion - consultados;
   }
 
   /*-------------------------------------TEMAS---------------------------------------------------------------*/

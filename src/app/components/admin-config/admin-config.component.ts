@@ -1,3 +1,4 @@
+import { AuthServiceService } from './../../service/auth-service.service';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TiposPaqueteModel } from '../../models/TiposPaqueteModel';
@@ -38,7 +39,8 @@ export class AdminConfigComponent {
 
   constructor(private tpService: TipoPaquetesServiceService,
               private temaService: TemaService,
-              private clipboard: Clipboard) {
+              private clipboard: Clipboard,
+              private authService: AuthServiceService) {
     this.getRegistroTiposPaquete();
     this.getRegistroTema();
     this.formularioTiposPaquetes = new FormGroup({
@@ -294,6 +296,10 @@ export class AdminConfigComponent {
     tema['asignado'] = true;
     this.temaService.create(tema.tema, tema);
     this.getRegistroTema();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
 

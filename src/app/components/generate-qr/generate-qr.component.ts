@@ -158,7 +158,7 @@ export class GenerateQrComponent implements OnInit {
         doc.setFont('Helvetica', 'normal');
         doc.text('Escanea para tu interpretación', size / 2, size - 15, { align: 'center' });
         doc.text(`Encuentranos en ${environment.path}`, size / 2, size - 6, { align: 'center' });
-      }
+      } 
     }
 
     doc.save(`lrd-${moment().format('DD-MM-YYYY')}.pdf`);

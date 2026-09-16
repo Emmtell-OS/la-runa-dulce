@@ -34,7 +34,7 @@ margin: 0 auto !important;
 }
 }
 
-/* Opcional: Aplicarlo únicamente en pantallas pequeñas (hasta 432px) */
+
 @media (max-width: 432px) {
 .modal-responsive {
     .mat-mdc-dialog-container .mdc-dialog__surface {
@@ -44,4 +44,15 @@ margin: 0 auto !important;
         max-height: 99vh !important;
     }
 }
+}
+
+
+th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #ffffff;
+    color: #333;
+    padding: 12px;
+    border-bottom: 2px solid #ccc;
 }

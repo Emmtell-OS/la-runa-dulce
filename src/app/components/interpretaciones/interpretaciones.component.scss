@@ -301,10 +301,26 @@
   }
 }
 
+.caducidad {
+  width: 100%;
+  font-family: "Passero One", cursive;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    color: #fff;
+    margin: 0;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
 @media only screen and (max-width: 1024px) and (min-width: 440px) {
 
   .base {
-    height: 1000px;
+    height: 100%;
   }
 
   .btn {
@@ -373,7 +389,7 @@
   .btnInicio {
     width: 40vw;
     height: 7vh;
-    margin: 30px 0;
+    margin: 10px 0;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;

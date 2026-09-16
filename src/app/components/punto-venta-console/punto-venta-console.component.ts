@@ -183,7 +183,10 @@ export class PuntoVentaConsoleComponent {
   mostrarDetalles(element: PuntosVentaModel) {
     const dialogRef = this.dialog.open(DetallesPuntoVentaComponent, {
       data: element,
-      width: '70%'
+      width: '95%',
+      maxWidth: '100%',
+      height: '80%',
+      maxHeight: '100%'
     });
   }
 }
