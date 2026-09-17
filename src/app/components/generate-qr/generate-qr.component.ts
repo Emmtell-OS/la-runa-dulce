@@ -133,8 +133,10 @@ export class GenerateQrComponent implements OnInit {
     for (const seleccionado of this.preseleccionados) {
       const itemData = this.dataSource.data.find(d => d.paquete === seleccionado.paquete);
       if (!itemData || !itemData.consultados) continue;
+      let punto = '.';
 
       for (const runaCode of itemData.consultados) {
+        
         if (!esPrimeraPagina) doc.addPage([size, size]);
         esPrimeraPagina = false;
 
@@ -144,7 +146,8 @@ export class GenerateQrComponent implements OnInit {
           runaCode: runaCode.substring(0,2)
         });
 
-        const nombreRuna = Utils.getNombreRuna(runaCode.substring(0,2));
+        let nombreRuna = Utils.getNombreRuna(runaCode.substring(0,2)) + punto;
+        
         const titulo = `${nombreRuna}`;
 
         doc.setFontSize(7);
@@ -156,8 +159,9 @@ export class GenerateQrComponent implements OnInit {
 
         doc.setFontSize(6);
         doc.setFont('Helvetica', 'normal');
-        doc.text('Escanea para tu interpretación', size / 2, size - 15, { align: 'center' });
-        doc.text(`Encuentranos en ${environment.path}`, size / 2, size - 6, { align: 'center' });
+        doc.text(`Escanea para tu interpretación${punto}`, size / 2, size - 15, { align: 'center' });
+        doc.text(`Encuentranos en ${environment.path}${punto}`, size / 2, size - 6, { align: 'center' });
+        punto = '';
       } 
     }
 
@@ -190,6 +194,7 @@ export class GenerateQrComponent implements OnInit {
     for (const seleccionado of this.preseleccionados) {
       const itemData = this.dataSource.data.find(d => d.paquete === seleccionado.paquete);
       if (!itemData || !itemData.consultados) continue;
+      let punto = '.';
 
       for (const runaCode of itemData.consultados) {
         
@@ -215,12 +220,12 @@ export class GenerateQrComponent implements OnInit {
           data: urlAcortada,
           runaCode: runaCode.substring(0,2)
         });
-        const nombreRuna = Utils.getNombreRuna(runaCode.substring(0,2));
+        const nombreRuna = Utils.getNombreRuna(runaCode.substring(0,2)) + punto;
 
         // Pintar elementos dentro del recuadro
         doc.setFontSize(6);
         doc.setFont('Helvetica', 'bold');
-        doc.text('La Runa Dulce', x + (boxWidth / 2), y + 10, { align: 'center' });
+        doc.text(`La Runa Dulce${punto}`, x + (boxWidth / 2), y + 10, { align: 'center' });
 
         // QR
         doc.addImage(qrDataUrl, 'PNG', x + 5, y + 12, boxWidth - 10, boxWidth - 10, undefined, 'FAST');
@@ -228,8 +233,9 @@ export class GenerateQrComponent implements OnInit {
         // Identificadores de pie de etiqueta
         doc.setFontSize(5);
         doc.setFont('Helvetica', 'normal');
-        doc.text(`Obten tu consejo de ${nombreRuna}`, x + (boxWidth / 2), y + boxHeight - 9, { align: 'center' });
-        doc.text('Escanea para tu interpretación', x + (boxWidth / 2), y + boxHeight - 3, { align: 'center' });        
+        doc.text(`Obten tu consejo de ${nombreRuna}${punto}`, x + (boxWidth / 2), y + boxHeight - 9, { align: 'center' });
+        doc.text(`Escanea para tu interpretación${punto}`, x + (boxWidth / 2), y + boxHeight - 3, { align: 'center' });        
+        punto = '';
 
         // Avanzar a la siguiente columna
         currentCol++;

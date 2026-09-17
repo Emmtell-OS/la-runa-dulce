@@ -185,25 +185,11 @@ export class AdminConfigComponent {
   }
 
   public soloNumeros(val: any) {
-    let specialKeys = ['', 'Shift', 'Alt', 'Control', 'AltGraph']
-    let regex = /^\d+$/
-    let result = val['key']
-    if(!regex.test(val['key'])) {
-      if(this.formularioTiposPaquetes.value['totalEmpaques'].length > 0) {
-        result = this.formularioTiposPaquetes.value['totalEmpaques'].replace(val['key'], '');
-      } else {
-        result = ''
-      }
-    } else {
-      result = this.formularioTiposPaquetes.value['totalEmpaques'];
-    }
-    let tipoP = this.formularioTiposPaquetes.value['tipoPaquete'];
-    tipoP = tipoP.trimStart().trimEnd()
-    this.formularioTiposPaquetes.setValue({
-      tipoPaquete: tipoP,
-      totalEmpaques: result
-    });
+    const limpio = this.formularioTiposPaquetes.value['totalEmpaques'].replace(/[^0-9]/g, '');
     
+    this.formularioTiposPaquetes.patchValue({
+      totalEmpaques: limpio
+    }, { emitEvent: false });
   }
 
   portaPapeles(textoCopiar: string) {

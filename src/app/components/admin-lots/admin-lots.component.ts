@@ -472,8 +472,4 @@ export class AdminLotsComponent implements OnInit {
     }, { emitEvent: false });
   }
 
-  private getRand(MAX:number, MIN:number): number {
-    return Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
-  }
-
 }

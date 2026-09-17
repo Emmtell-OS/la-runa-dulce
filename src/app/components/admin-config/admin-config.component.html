@@ -120,9 +120,7 @@
             <input
             type="text"
             matInput
-            (keyup)="soloNumeros($event)"
-            (keydown)="soloNumeros($event)"
-            (keypress)="soloNumeros($event)"
+            (input)="soloNumeros($event)"
             formControlName="totalEmpaques"/>
         </mat-form-field>
 

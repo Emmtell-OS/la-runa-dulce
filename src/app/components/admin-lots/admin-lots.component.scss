@@ -80,3 +80,19 @@ button {
   overflow-y: scroll;
   height: 400px;
 }
+
+@media (max-width: 432px) {
+  .filtro {
+    width: 100%;
+  }
+
+  .general-section {
+    max-width: 95%;
+  }
+
+  .mff {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+  }
+}

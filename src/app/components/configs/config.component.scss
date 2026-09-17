@@ -1,0 +1,53 @@
+/* En el componente padre donde envuelves a mat-tab-group */
+.contenedor-principal {
+    overflow: visible !important; /* Permite que sticky detecte el scroll de la ventana */
+}
+
+/* Variables CSS de Material Design 3 para forzar el color café (#704214) en las líneas y ripples */
+::ng-deep .mat-mdc-tab-group,
+::ng-deep .mat-mdc-tab-nav-bar {
+  --mdc-tab-indicator-active-indicator-color: #704214 !important;
+  --mat-tab-header-active-ripple-color: #704214 !important;
+  --mat-tab-header-inactive-ripple-color: #704214 !important;
+}
+
+/* Configuración de estilos globales para el tab de Material */
+::ng-deep .mat-mdc-tab-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  background-color: #f1f29cff !important; /* Fondo hexadecimal fijado */
+  border-bottom: 1px solid #704214 !important; /* Línea inferior */
+  font-family: 'Passero One', cursive !important;
+}
+
+/* Evita que el contenedor corte el comportamiento sticky */
+mat-tab-group,
+.mat-mdc-tab-group {
+  overflow: visible !important;
+  background-color: #f1f29cff;
+}
+
+/* 1. Texto de pestañas NO seleccionadas */
+::ng-deep .mat-mdc-tab:not(.mdc-tab--active) .mdc-tab__text-label {
+  color: #f9cacaff !important;
+  font-family: 'Passero One', cursive !important;
+  opacity: 1 !important;
+}
+
+/* 2. Texto de la pestaña SELECCIONADA (Resalto) */
+::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: #704214 !important;
+  font-family: 'Passero One', cursive !important;
+}
+
+/* 3. Indicador / Línea inferior activa (Resalto) */
+::ng-deep .mat-mdc-tab-group .mdc-tab-indicator__content--active-accordion-tab-line,
+::ng-deep .mat-mdc-tab-group .mdc-tab-indicator__content--active-slide {
+  border-color: #704214 !important;
+}
+
+::ng-deep .mat-mdc-tab-indicator .mdc-tab-indicator__content,
+::ng-deep .mdc-tab-indicator .mdc-tab-indicator__content--underline {
+  border-color: #704214 !important;
+}

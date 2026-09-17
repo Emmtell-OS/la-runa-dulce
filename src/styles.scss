@@ -35,6 +35,21 @@ margin: 0 auto !important;
 }
 
 
+/* Agrega esto en tu styles.scss global */
+.mat-mdc-tab-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e0e0e0;
+}
+  
+  /* Fuerza al grupo de tabs y contenedores intermedios a no cortar el sticky */
+mat-tab-group,
+  .mat-mdc-tab-group {
+    overflow: visible !important;
+}
+
 @media (max-width: 432px) {
 .modal-responsive {
     .mat-mdc-dialog-container .mdc-dialog__surface {
