@@ -4,7 +4,6 @@
 
 .gridItem {
     margin: 4px;
-    //background-color: aqua;
     width: 20px;
 }
 
@@ -21,52 +20,116 @@ span {
     margin-left: 30px;
 }
 
-.filtro {
-    margin-top: 30px;
-    margin-bottom: 20px;
-    margin-left: 15px;
-    width: 70%;
+/* Acciones superiores */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-button {
-    margin-left: 50px;
-    width: 90px;
-    height: 30px;
+.filtro {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.formato-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.formato-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: gray;
+}
+
+.btn-generate {
+    height: 45px;
+    width: auto;
     box-shadow: 4px 4px 9px rgb(150, 149, 149);
 }
 
-.btn-closes {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 25px;
-}
-
 .btn-close {
-position: fixed;
-bottom: 32px;
-right: 32px;
-z-index: 1000;
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 1000;
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    background-color: #1e293b !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-/* Dimensiones del FAB circular */
-width: 56px !important;
-height: 56px !important;
-min-width: 56px !important;
-border-radius: 50% !important;
-padding: 0 !important;
-
-/* Fondo del botón */
-background-color: #1e293b !important;
-
-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-&:hover {
-    transform: scale(1.08);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-}
+    &:hover {
+        transform: scale(1.08);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    }
 }
 
 mat-card {
     height: 100%;
+}
+
+/* --- ESTILOS GENERALES DE LA TABLA Y CENTRADO --- */
+.tabla-container {
+    width: 95%;
+    max-width: 95%;
+    height: 500px;
+    max-height: 500px;
+    margin: 20px auto;      /* Centra el contenedor horizontalmente */
+    overflow: auto;         /* Permite scroll-v y scroll-h */
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    min-width: 600px;       /* Ancho mínimo para forzar el scroll horizontal si la pantalla es estrecha */
+}
+
+/* Alineación de texto centrada en la tabla */
+th.mat-mdc-header-cell,
+td.mat-mdc-cell {
+    text-align: center !important;
+    vertical-align: middle;
+}
+
+/* Fondo sólido obligatorio en la cabecera para que el contenido scrolleable no se transparente por debajo */
+.mat-mdc-header-row {
+    background-color: #ffffff !important;
+}
+
+/* --- VISTA MOBILE --- */
+@media (max-width: 768px) {
+    .header-actions {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .filtro,
+    .btn-generate {
+        width: 100% !important;
+        margin-left: 0;
+    }
+
+    .formato-container {
+        width: 100%;
+        align-items: center;
+    }
+
+    /* Ajustes específicos para pantallas pequeñas */
+    .tabla-container {
+        width: 100%;
+        height: 410px;
+        margin: 15px auto;
+    }
 }

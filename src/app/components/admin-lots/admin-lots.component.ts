@@ -360,7 +360,8 @@ export class AdminLotsComponent implements OnInit {
   public mostrarGenerarQR() {
     const dialogRef = this.dialog.open(GenerateQrComponent, {
       data: '',
-      width: '1000px',
+      width: '95%',
+      maxWidth: '100%',
       height:'98%'
     });
   }
