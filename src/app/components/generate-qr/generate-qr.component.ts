@@ -161,7 +161,7 @@ export class GenerateQrComponent implements OnInit {
       } 
     }
 
-    doc.save(`lrd-${moment().format('DD-MM-YYYY')}.pdf`);
+    doc.save(this.generarNombreDocumento());
     this.limpiarInterfaz();
   }
 
@@ -240,7 +240,7 @@ export class GenerateQrComponent implements OnInit {
       }
     }
 
-    doc.save(`la-runa-dulce-${moment().format('DD-MM-YYYY')}.pdf`);
+    doc.save(this.generarNombreDocumento());
     this.limpiarInterfaz();
   }
 
@@ -255,5 +255,11 @@ export class GenerateQrComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  generarNombreDocumento(): string {
+    let folio = Utils.generateFolio().substring(0, 5);
+    let date = moment().format('DDMMYYYY');
+    return `lrd${date}${folio}.pdf`;
   }
 }
