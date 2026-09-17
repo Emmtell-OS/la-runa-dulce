@@ -155,8 +155,7 @@ export class InterpretacionesComponent implements OnInit {
         if (lote && paquete) {
           const isLoteActivo = (lote['activo'] === true || lote['activo'] === 'true');
           const isPaqueteActivo = (paquete['activo'] === true || paquete['activo'] === 'true');          
-          let consultado: EmpaqueModel = paquete['consultados'].find((emp: EmpaqueModel) => runeCode === emp.runaId);
-          console.log(consultado.consultas)
+          let consultado: EmpaqueModel = paquete['consultados'].find((emp: EmpaqueModel) => runeCode === emp.runaId);          
           if (consultado 
             && isLoteActivo 
             && isPaqueteActivo 
@@ -215,7 +214,6 @@ export class InterpretacionesComponent implements OnInit {
   }
 
   getCaducidad(fechaConsultado: string, consultados: number) {
-    console.log(consultados)
     this.caducidadDias = this.limiteDias - moment().diff(moment(fechaConsultado, 'YYYY-MM-DDTHH:mm:ssZ'),'days');
     this.caducidadConsultas = this.limiteInterpretacion - consultados;
   }
