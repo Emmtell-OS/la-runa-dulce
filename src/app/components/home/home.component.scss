@@ -113,20 +113,18 @@ font-style: normal;
 }
 
 .letrero {
-  //margin-top: 90px ;
-  width: 47vw;
-  height: 47vh;
+  width: 40vw;
+  height: 40vh;
   background-image: url("../../../assets/img/fondos/letrero.svg");
   transform: translate(-95%, -50%);
-  //background-color: #6b4407;
 }
 
 .saludo {
   //margin-top: 90px ;
-  width: 50vw;
-  height: 50vh;
+  width: 30vw;
+  height: 30vh;
   background-image: url("../../../assets/img/fondos/saludo.svg");
-  transform: translate(-45%, -35%);
+  transform: translate(-45%, -25%);
 }
 
 .introduccion-box {
@@ -172,17 +170,13 @@ font-style: normal;
   height: 30vw;
   background-image: url("../../../assets/img/fondos/guia.svg");
   transform: translate(-20%, -50%);
-  //background-color: #483d8b;
 }
 
 .buscar {
-  //margin-top: 90px ;
-  width: 40vw;
-  height: 40vh;
+  width: 45vw;
+  height: 45vh;
   background-image: url("../../../assets/img/fondos/buscar.svg");
-  transform: translate(-80%, -20%);
-  
-  //background-color: #483d8b;
+  transform: translate(-75%, -20%);
 }
 
 .cont-table {
@@ -222,38 +216,38 @@ font-style: normal;
 
 .puesto {
   //margin-top: 90px ;
-  width: 60vw;
-  height: 60vh;
+  width: 600px;
+  height: 600px;
   background-image: url("../../../assets/img/fondos/puesto.svg");
   //top: 50%;
   //left: 50%;
-  transform: translate(-80%, -50%);
+  transform: translate(-95%, -45%);
   //background-color: #483d8b;
 }
 
 .presentar {
   //margin-top: 90px ;
   width: 20vw;
-  height: 50vh;
+  height: 35vh;
   background-image: url("../../../assets/img/fondos/presentar.svg");
   //top: 50%;
   //left: 50%;
-  transform: translate(-20%, -30%);
+  transform: translate(-35%, 10%);
   //background-color: #483d8b;
 }
 
 .carrusel {
-  width: 50%;
+  width: 60%;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -70%);
+  transform: translate(-50%, -62%);
   background-color: #333;
 }
 
 .carr-img {
   //width: 250px;
-  height: 230px;
+  height: 268px;
   background-color: #0174df;
 }
 
@@ -514,10 +508,10 @@ font-style: normal;
   }
 
   .presentar {
-    width: 190px;
-    height: 380px;
+    width: 100px;
+    height: 300px;
     left: 80%;
-    transform: translate(-60%, 40%);
+    transform: translate(-60%, 90%);
   }
 
   .escenario-instruccion {
@@ -992,9 +986,9 @@ font-style: normal;
   }
 
   .buscar {
-    width: 95px;
-    height: 190px;
-    left: 20%;
+    width: 120px;
+    height: 220px;
+    left: 25%;
     transform: translate(-90%, 50%);
   }
 
@@ -1026,10 +1020,10 @@ font-style: normal;
   }
 
   .presentar {
-    width: 150px;
-    height: 300px;
-    left: 80%;
-    transform: translate(-60%, 40%);
+    width: 120px;
+    height: 220px;
+    //left: 80%;
+    transform: translate(60%, 70%);
   }
 
   .escenario-instruccion {
