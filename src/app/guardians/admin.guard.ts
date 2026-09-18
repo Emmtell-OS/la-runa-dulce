@@ -3,6 +3,7 @@ import { Router, CanActivateFn } from '@angular/router';
 import { Auth, authState } from '@angular/fire/auth';
 import { map, take } from 'rxjs/operators';
 import { AuthServiceService } from '../service/auth-service.service';
+import { environment } from '../../environments/environment';
 
 
 export const adminGuard: CanActivateFn = () => {
@@ -16,6 +17,11 @@ export const adminGuard: CanActivateFn = () => {
       // 1. Verificamos que exista usuario en Firebase
       // 2. Comprobamos que no hayan transcurrido más de 12 horas
       const esValida = authService.sesionEsValida();
+      
+      console.log(environment.production)
+      if (!environment.production) {
+        return true;
+      }
 
       if (user && esValida) {
         return true;
